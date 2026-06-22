@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>账单分期-长安银行</title><meta content="2" name="pageType"/>
+<meta content="账单分期" name="pageTitle"/>
+<meta content="长安银行,账单分期" name="keywords"/>
+<link href="../../style/animate.min.css" rel="stylesheet"/>
+<link href="../../style/slick.css" rel="stylesheet"/>
+<link href="../../style/slick-theme.css" rel="stylesheet"/>
+<link href="../../style/public.css" rel="stylesheet"/>
+<link href="../../style/ny.css" rel="stylesheet"/>
+<link href="../../images/icon.ico" rel="Shortcut Icon"/>
+<style>
+    .art-main{background: none;padding:0px;}
+ .art-main .tab {padding: 0.4rem 0.6rem 0.6rem;}
+   
+   
+   .wybk .wy2 h3 {
+    padding-top: 0.3rem;
+    font-size: 0.24rem;
+    color: #333;
+    line-height: 0.36rem;}
+
+.wybk .wy2 p {
+    color: #555555;
+    font-size: 0.2rem;
+    line-height: 0.36rem;}
+    
+    
+.wybk .wy2 p strong {
+    color: #C6151D;}
+    
+   
+   </style>
+<!--Announced by Visual SiteBuilder 9-->
+<link href="../../_sitegray/_sitegray_d.css" rel="stylesheet" type="text/css"/>
+<script language="javascript" src="../../_sitegray/_sitegray.js"></script>
+<!-- CustomerNO:776562626572323069754754525a5742000400014753 -->
+<link href="../../fqywjs.vsb.css" rel="stylesheet" type="text/css"/>
+<script src="../../system/resource/js/counter.js" type="text/javascript"></script>
+<script type="text/javascript">_jsq_(1047,'/fqywjs.jsp',-1,2080012826)</script>
+</head>
+<body>
+<!-- pc导航 -->
+<div class="pc show">
+<div class="head wp flex">
+<div class="logo">
+<!-- 网站logo图片地址请在本组件"内容配置-网站logo"处填写 -->
+<a href="../../index.htm"><img alt="" src="../../images/logo.png"/></a></div>
+<div class="head-r">
+<div class="head-t">
+<span><script language="javascript" src="../../system/resource/js/dynclicks.js"></script><script language="javascript" src="../../system/resource/js/openlink.js"></script><a href="javascript:;" onclick='_addDynClicks("wburl", 2080012826, 41674)' target="_blank">客服热线：（029）96669</a>| 
+                        
+<a href="../../index/jgwd.htm" onclick='_addDynClicks("wburl", 2080012826, 99110)' target="_blank">机构网点</a>
+</span>
+<script src="../../rt/ccabchina.com/gtInit.js"></script>
+<a class="ghb" href="javascript:GtInit.elderly.open();"> <img alt="" src="../../images/head-ghb2.png"/>关怀版</a>
+<a class="ghb wza" href="javascript:void(0);" id="gt_btn"> <img alt="" src="../../images/head-ghb.png"/>无障碍浏览</a>
+<script language="javascript" src="../../system/resource/js/base64.js"></script><script language="javascript" src="../../system/resource/js/jquery/jquery-latest.min.js"></script><script language="javascript" src="../../system/resource/vue/vue.js"></script><script language="javascript" src="../../system/resource/vue/bluebird.min.js"></script><script language="javascript" src="../../system/resource/vue/axios.js"></script><script language="javascript" src="../../system/resource/vue/polyfill.js"></script><script language="javascript" src="../../system/resource/vue/token.js"></script><link href="../../system/resource/vue/static/element/index.css" rel="stylesheet" type="text/css"/><script language="javascript" src="../../system/resource/vue/static/element/index.js"></script><script language="javascript" src="../../system/resource/vue/static/public.js"></script><div id="divu3"></div>
+<script id="htmlu3" type="text/html">
+    <div id="appu3">
+        <div v-if="!isError">
+        <div class="search">
+            <input type="text" placeholder="请输入检索关键词" class="text"autocomplete=off v-model=query.keyWord @keyup.enter="onSubmit">
+            <input  class="button"  name="submit_button" type="button" value="" v-on:click="onSubmit()"/>
+        </div>  </div>
+        <div v-if="isError" style="color: #b30216; font-size:18px;text-align: center;padding:20px;">
+            应用维护中！
+        </div>
+    </div>
+</script>
+<script>
+    $("#divu3").html($("#htmlu3").text());
+</script>
+<script>
+    var appOwner = "2080012826";
+    var token = gettoken(10);
+    var urlPrefix = "/aop_component/";
+
+    jQuery.support.cors = true;
+    $.ajaxSetup({
+        beforeSend: function (request, settings) {
+            request.setRequestHeader("Authorization", token);
+            request.setRequestHeader("owner", appOwner);
+        }
+    });
+
+    new Vue({
+        el: "#appu3",
+        data: function () {
+            return {
+                query: {
+                    keyWord: "",//搜索关键词
+                    owner: appOwner,
+                    token: token,
+                    urlPrefix: urlPrefix,
+                    lang:"i18n_zh_CN"
+                },
+                isError: false
+            }
+        },
+        mounted: function () {
+            var _this = this;
+            // _this.init();
+        },
+        methods: {
+            init: function(){
+                $.ajax({
+                    url: "/aop_component//webber/search/test",
+                    type: "get",
+                    success: function (response) {
+                        if (response.code == "0000") {
+                        } else if (response.code == "220") {
+                            _this.isError = true;
+                            console.log(response);
+                        } else if (!response.code) {
+                            _this.isError = true;
+                            console.log(response);
+                        }
+                    },
+                    error: function (response) {
+                        _this.isError = true;
+                    }
+                });
+            },
+            onSubmit: function (e) {
+                var url = "/views/search/modules/resultpc/soso.html";
+                if ("10" == "1" || "10" == "2") {
+                    url = "" + url;
+                }
+                var _this = this;
+                var query = _this.query;
+                if (url.indexOf("?") > -1) {
+                    url = url.split("?")[0];
+                }
+                if (query.keyWord) {
+                    var query = new Base64().encode(JSON.stringify(query));
+                    window.open(url + "?query=" + query);
+                } else {
+                    alert("请填写搜索内容")
+                }
+            },
+        }
+    })
+</script>
+</div>
+<div class="nav"><ul class="flex">
+<li>
+<a href="../../xwjr/zayEd.htm" target="_blank">小微金融</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../xwjr/zayEd.htm" target="_blank">长安优E贷</a></dt>
+<dd><a href="../../info/1022/1165.htm" target="_blank">优税e贷</a></dd>
+<dd><a href="../../info/1022/1164.htm" target="_blank">优房e贷</a></dd>
+<dd><a href="../../info/1022/1163.htm" target="_blank">优农e贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xwjr/zaVd.htm" target="_blank">长安V贷</a></dt>
+<div>
+<dd><a href="../../info/1038/1082.htm" target="_blank">固定资产贷款</a></dd>
+<dd><a href="../../info/1038/1083.htm" target="_blank">流动资金贷款</a></dd>
+<dd><a href="../../info/1038/1084.htm" target="_blank">个人经营贷款</a></dd>
+<dd><a href="../../info/1038/1081.htm" target="_blank">存续贷</a></dd>
+<dd><a href="../../info/1038/1077.htm" target="_blank">快速贷</a></dd>
+<dd><a href="../../info/1038/1078.htm" target="_blank">循环贷</a></dd>
+<dd><a href="../../info/1038/1079.htm" target="_blank">商票通</a></dd>
+<dd><a href="../../info/1038/1080.htm" target="_blank">银票通</a></dd>
+<dd><a href="../../info/1038/1021.htm" target="_blank">园区贷</a></dd>
+<dd><a href="../../info/1038/1026.htm" target="_blank">市场贷</a></dd>
+<dd><a href="../../info/1038/1030.htm" target="_blank">政采贷</a></dd>
+<dd><a href="../../info/1038/1025.htm" target="_blank">医保贷</a></dd>
+<dd><a href="../../info/1038/1024.htm" target="_blank">药供贷</a></dd>
+<dd><a href="../../info/1038/1135.htm" target="_blank">烟商贷</a></dd>
+<dd><a href="../../info/1038/1020.htm" target="_blank">物业贷</a></dd>
+<dd><a href="../../info/1038/1022.htm" target="_blank">厂房购置贷</a></dd>
+<dd><a href="../../info/1038/1023.htm" target="_blank">核心供应链贷</a></dd>
+<dd><a href="../../info/1038/1029.htm" target="_blank">创业担保贷</a></dd>
+<dd><a href="../../info/1038/1028.htm" target="_blank">秦青优惠贷</a></dd>
+</div>
+</dl>
+<dl>
+<dt><a href="../../xwjr/zakcd.htm" target="_blank">长安科创贷</a></dt>
+<dd><a href="../../info/1020/1037.htm" target="_blank">秦创贷</a></dd>
+<dd><a href="../../info/1020/1036.htm" target="_blank">秦科贷</a></dd>
+<dd><a href="../../info/1020/1035.htm" target="_blank">工信贷</a></dd>
+<dd><a href="../../info/1020/1034.htm" target="_blank">专精特新企业贷</a></dd>
+<dd><a href="../../info/1020/1033.htm" target="_blank">知识产权质押贷</a></dd>
+<dd><a href="../../info/1020/1032.htm" target="_blank">军民融合贷</a></dd>
+<dd><a href="../../info/1020/1031.htm" target="_blank">瞪羚企业贷</a></dd>
+<dd><a href="../../info/1020/1136.htm" target="_blank">积分贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xwjr/zaxnd.htm" target="_blank">长安兴农贷</a></dt>
+<dd><a href="../../info/1021/1040.htm" target="_blank">集体经济组织贷款</a></dd>
+<dd><a href="../../info/1021/1038.htm" target="_blank">农户生产经营贷款</a></dd>
+<dd><a href="../../info/1021/1039.htm" target="_blank">农民专业合作社贷款</a></dd>
+<dd><a href="../../info/1021/1045.htm" target="_blank">富硒产业贷</a></dd>
+<dd><a href="../../info/1021/1044.htm" target="_blank">苹果产业贷</a></dd>
+<dd><a href="../../info/1021/1043.htm" target="_blank">食用菌产业贷</a></dd>
+<dd><a href="../../info/1021/1042.htm" target="_blank">地域特色农业贷</a></dd>
+<dd><a href="../../info/1021/1041.htm" target="_blank">美丽乡村贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xwjr/xwdt/xwzx.htm" target="_blank">小微动态</a></dt>
+<dd><a href="../../xwjr/xwdt/xwzx.htm" target="_blank">小微资讯</a></dd>
+<dd><a href="../../xwjr/xwdt/xwsp.htm" target="_blank">小微视频</a></dd>
+</dl>
+</div>
+</div>
+</li>
+<li>
+<a href="../../grjr/jjk.htm" target="_blank">个人金融</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../grjr/jjk.htm" target="_blank">借记卡</a></dt>
+<dd><a href="../../grjr/jjk/pk.htm" target="_blank">普卡</a></dd>
+<dd><a href="../../grjr/jjk/jk.htm" target="_blank">金卡</a></dd>
+<dd><a href="../../grjr/jjk/bjk.htm" target="_blank">白金卡</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/cxyw.htm" target="_blank">储蓄业务</a></dt>
+<dd><a href="../../grjr/cxyw/ckdjz.htm" target="_blank">存款大家族</a></dd>
+<dd><a href="../../grjr/cxyw/hqcxck.htm" target="_blank">活期储蓄存款</a></dd>
+<dd><a href="../../grjr/cxyw/dhlbck.htm" target="_blank">定活两便存款</a></dd>
+<dd><a href="../../grjr/cxyw/zczqdqck.htm" target="_blank">整存整取定期存款</a></dd>
+<dd><a href="../../grjr/cxyw/lczqdqck.htm" target="_blank">零存整取定期存款</a></dd>
+<dd><a href="../../grjr/cxyw/grtzck.htm" target="_blank">个人通知存款</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/grdk.htm" target="_blank">个人贷款</a></dt>
+<dd><a href="../../grjr/grdk/grzfdk.htm" target="_blank">个人住房贷款</a></dd>
+<dd><a href="../../grjr/grdk/grzhxfdk.htm" target="_blank">个人综合消费贷款</a></dd>
+<dd><a href="../../info/3241/3231.htm" target="_blank">长乐贷</a></dd>
+<dd><a href="../../grjr/grdk/grsyfdk.htm" target="_blank">个人商用房贷款</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/cfgl.htm" target="_blank">财富管理</a></dt>
+<dd><a href="../../grjr/cfgl/jjdxyw.htm" target="_blank">基金代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/axbyw.htm" target="_blank">安鑫宝业务</a></dd>
+<dd><a href="../../grjr/cfgl/dlbxyw.htm" target="_blank">代理保险业务</a></dd>
+<dd><a href="../../grjr/cfgl/dlswgjsyw.htm" target="_blank">代理实物贵金属业务</a></dd>
+<dd><a href="../../grjr/cfgl/xtdxyw.htm" target="_blank">信托代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/lcdxyw.htm" target="_blank">理财代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/zcgljhdxyw.htm" target="_blank">资产管理计划代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/sfcg.htm" target="_blank">三方存管</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/sdyw1/aef.htm" target="_blank">收单业务</a></dt>
+<dd><a href="../../grjr/sdyw1/aef.htm" target="_blank">安e付</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/kqzc.htm" target="_blank">客群政策</a></dt>
+<dd><a href="../../grjr/kqzc/kqdy.htm" target="_blank">客群定义</a></dd>
+<dd><a href="../../grjr/kqzc/gjzc.htm" target="_blank">国家政策</a></dd>
+</dl>
+<dl>
+<dt><a href="https://ebank.ccabchina.com/mbank/wap/index.html#/Schema/Index/Index " target="_blank">个人电子银行</a></dt>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="https://wm.ccabchina.com" target="_blank">金长安理财</a>
+<div>
+<div>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/ProductPresentation" target="_blank">公募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/PrivatePlacement" target="_blank">私募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/Sell" target="_blank">信息披露</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/recommendation" target="_blank">客户服务</a></dt>
+</dl>
+</div> </div>
+</li>
+<li style="display: none;">
+<a href="https://wm.ccabchina.com/phone/" target="_blank">金长安理财</a>
+<div>
+<div>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/product/index?name=%E5%85%AC%E5%8B%9F%E7%90%86%E8%B4%A2" target="_blank">公募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/product/Placement?name=%E7%A7%81%E5%8B%9F%E7%90%86%E8%B4%A2" target="_blank">私募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/info/index?name=%E4%BF%A1%E6%81%AF%E6%8A%AB%E9%9C%B2" target="_blank">信息披露</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/service/index?name=%E5%AE%A2%E6%88%B7%E6%9C%8D%E5%8A%A1" target="_blank">客户服务</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E6%8A%95%E8%B5%84%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA" target="_blank">投资人员公示</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E9%94%80%E5%94%AE%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA" target="_blank">销售人员公示</a></dt>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../wybk.htm" target="_blank">信用卡</a>
+<div>
+<div>
+<dl>
+<dt><a href="../wybk.htm" target="_blank">我要办卡</a></dt>
+<dd><a href="../wybk/ysfwjxyk.htm" target="_blank">云闪付无界信用卡</a></dd>
+<dd><a href="../wybk/xshwjxyk.htm" target="_blank">新生活无界信用卡</a></dd>
+<dd><a href="../wybk/bzxyk.htm" target="_blank">标准信用卡</a></dd>
+<dd><a href="dexffqxyk2.htm" target="_blank">大额消费分期信用卡</a></dd>
+</dl>
+<dl>
+<dt><a href="../yhly.htm" target="_blank">优惠礼遇</a></dt>
+</dl>
+<dl>
+<dt><a href="../fqyw.htm" target="_blank">分期业务</a></dt>
+<dd><a href="dexffqxyk2.htm" target="_blank">大额消费分期信用卡</a></dd>
+<dd><a href="lhxjfq.htm" target="_blank">灵活现金分期</a></dd>
+<dd><a href="zdfq.htm" target="_blank">账单分期</a></dd>
+<dd><a href="lhfq.htm" target="_blank">灵活分期</a></dd>
+<dd><a href="xjfq.htm" target="_blank">现金分期</a></dd>
+</dl>
+<dl>
+<dt><a href="../khfw.htm" target="_blank">客户服务</a></dt>
+<dd><a href="../khfw/zxgg.htm" target="_blank">最新公告</a></dd>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../../gsjr/qyck.htm" target="_blank">公司金融</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../gsjr/qyck.htm" target="_blank">企业存款</a></dt>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位活期存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位定期存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位协定存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位通知存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位大额存单</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">外汇存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">资金证明</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/xdcp.htm" target="_blank">信贷产品</a></dt>
+<dd><a href="../../info/3251/3241.htm" target="_blank">流动资金贷款</a></dd>
+<dd><a href="../../info/3261/3251.htm" target="_blank">固定资产贷款</a></dd>
+<dd><a href="../../info/3271/3261.htm" target="_blank">房地产开发贷款</a></dd>
+<dd><a href="../../info/3291/3281.htm" target="_blank">并购贷款</a></dd>
+<dd><a href="../../info/3301/3291.htm" target="_blank">经营性物业贷款</a></dd>
+<dd><a href="../../info/3311/3301.htm" target="_blank">产业园区建设贷款</a></dd>
+<dd><a href="../../info/3321/3311.htm" target="_blank">保障性租赁住房贷款</a></dd>
+<dd><a href="../../info/3331/3321.htm" target="_blank">保障性租赁住房开发贷款</a></dd>
+<dd><a href="../../info/3341/3331.htm" target="_blank">法人账户透支</a></dd>
+<dd><a href="../../info/3351/3341.htm" target="_blank">保函</a></dd>
+<dd><a href="../../info/3361/3351.htm" target="_blank">银行承兑汇票质押融资</a></dd>
+<dd><a href="../../info/3371/3361.htm" target="_blank">商票通</a></dd>
+<dd><a href="../../info/3381/3371.htm" target="_blank">长融·质量贷</a></dd>
+<dd><a href="../../info/3391/3381.htm" target="_blank">长融·助力贷</a></dd>
+<dd><a href="../../info/3401/3391.htm" target="_blank">绿金快贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/pjyw.htm" target="_blank">票据业务</a></dt>
+<dd><a href="../../info/3411/3401.htm" target="_blank">银行承兑汇票签发</a></dd>
+<dd><a href="../../info/3421/3411.htm" target="_blank">代理签发银行承兑汇票</a></dd>
+<dd><a href="../../info/3431/3421.htm" target="_blank">商业汇票贴现</a></dd>
+<dd><a href="../../info/3441/3431.htm" target="_blank">票据池业务</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/tzyx.htm" target="_blank">投资银行</a></dt>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">超短期融资券承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">短期融资券承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">中期票据承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">定向债务融资工具承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">资产支持票据承销</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/jgyw.htm" target="_blank">机构业务</a></dt>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">政府机构服务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">政府社保服务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">住宅专项维修资金业务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">代理国库集中支付业务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">非税收入代理业务</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/myjr/whjy.htm" target="_blank">贸易金融</a></dt>
+<dd><a href="../../gsjr/myjr/whjy.htm" target="_blank">外汇交易</a></dd>
+<dd><a href="../../gsjr/myjr/gjjs.htm" target="_blank">国际结算</a></dd>
+<dd><a href="../../gsjr/myjr/gjmyrz.htm" target="_blank">国际贸易融资</a></dd>
+<dd><a href="../../gsjr/myjr/gylrz.htm" target="_blank">供应链融资</a></dd>
+<dd><a href="../../gsjr/myjr/kjdb.htm" target="_blank">跨境担保</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/jrsc/ywgk.htm" target="_blank">金融市场</a></dt>
+<dd><a href="../../gsjr/jrsc/ywgk.htm" target="_blank">业务概况</a></dd>
+<dd><a href="../../gsjr/jrsc/zqtzjy.htm" target="_blank">债券投资交易</a></dd>
+<dd><a href="../../gsjr/jrsc/tyzjjy.htm" target="_blank">同业资金交易</a></dd>
+<dd><a href="../../gsjr/jrsc/dzsyhpztx.htm" target="_blank">电子商业汇票转贴现</a></dd>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../../cpyc/zpgg.htm" target="_blank">诚聘英才</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../cpyc/zpgg.htm" target="_blank">招聘公告</a></dt>
+<dd><a href="../../cpyc/zpgg/a2025qjzp.htm" target="_blank">2025秋季招聘</a></dd>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../../gywm/yxjs.htm" target="_blank">关于我们</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../gywm/yxjs.htm" target="_blank">银行介绍</a></dt>
+<dd><a href="../../gywm/yxjs/zzjg1.htm" target="_blank">组织架构</a></dd>
+<dd><a href="../../gywm/yxjs/ppjg.htm" target="_blank">品牌架构</a></dd>
+<dd><a href="../../gywm/yxjs/qywh.htm" target="_blank">企业文化</a></dd>
+<dd><a href="../../gywm/yxjs/VIbs.htm" target="_blank">VI标识</a></dd>
+<dd><a href="../../gywm/yxjs/IPxx.htm" target="_blank">IP形象</a></dd>
+<dd><a href="https://mp.weixin.qq.com/s/X2jTmimeQBTM71ayIFmP9w" target="_blank">新年致辞</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gywm/tzzgx/gsgg.htm" target="_blank">投资者关系</a></dt>
+<dd><a href="../../gywm/tzzgx/gsgg.htm" target="_blank">公司公告</a></dd>
+<dd><a href="../../gywm/tzzgx/xxpl.htm" target="_blank">信息披露</a></dd>
+<dd><a href="../../gywm/tzzgx/jgzb.htm" target="_blank">监管资本</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gywm/xfzqybh1/khtscllc.htm" target="_blank">消费者权益保护</a></dt>
+<dd><a href="../../gywm/xfzqybh1/khtscllc.htm" target="_blank">客户投诉处理流程</a></dd>
+<dd><a href="../../gywm/xfzqybh1/khzxyycllc.htm" target="_blank">客户征信异议处理流程</a></dd>
+<dd><a href="../../gywm/xfzqybh1/xxpl.htm" target="_blank">信息披露</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gywm/jrxkzgg.htm" target="_blank">金融许可证公告</a></dt>
+</dl>
+</div> </div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<!-- 移动端导航 -->
+<div class="m-top">
+<div class="wap wap-menu">
+<img alt="" class="menu" src="../../images/menu.png"/>
+<img alt="" class="close-menu" src="../../images/close.png"/>
+</div>
+</div>
+<div class="wap m-head">
+<div class="m-logo">
+<!-- 网站logo图片地址请在本组件"内容配置-网站logo"处填写 -->
+<a href="../../index.htm"><img alt="" src="../../images/logo.png"/></a></div>
+<div class="m-nav">
+<div class="m-tlink">
+<a href="javascript:;" onclick='_addDynClicks("wburl", 2080012826, 41674)' target="_blank">客服热线：（029）96669</a>
+<a href="../../index/jgwd.htm" onclick='_addDynClicks("wburl", 2080012826, 99110)' target="_blank">机构网点</a>
+<script src="../../rt/ccabchina.com/gtInit.js"></script>
+<a class="ghb" href="javascript:GtInit.elderly.open();"> <img alt="" src="../../images/head-ghb2.png"/>关怀版</a>
+<a class="ghb" href="javascript:void(0);" id="gt_btn"> <img alt="" src="../../images/head-ghb.png"/>无障碍浏览</a>
+</div>
+<div id="divu8"></div>
+<script id="htmlu8" type="text/html">
+    <div id="appu8">
+        <div v-if="!isError">
+         <div class="m-search">
+            <input type="text" placeholder="请输入检索关键词" autocomplete=off v-model=query.keyWord @keyup.enter="onSubmit">
+         
+            
+             <input type="image" src="../../images/fdj.png" v-on:click="onSubmit()">
+           </div>
+        </div>
+        <div v-if="isError" style="color: #b30216; font-size:18px;text-align: center;padding:20px;">
+            应用维护中！
+        </div>
+    </div>
+</script>
+<script>
+    $("#divu8").html($("#htmlu8").text());
+</script>
+<script>
+    var appOwner = "2080012826";
+    var token = gettoken(10);
+    var urlPrefix = "/aop_component/";
+
+    jQuery.support.cors = true;
+    $.ajaxSetup({
+        beforeSend: function (request, settings) {
+            request.setRequestHeader("Authorization", token);
+            request.setRequestHeader("owner", appOwner);
+        }
+    });
+
+    new Vue({
+        el: "#appu8",
+        data: function () {
+            return {
+                query: {
+                    keyWord: "",//搜索关键词
+                    owner: appOwner,
+                    token: token,
+                    urlPrefix: urlPrefix,
+                    lang:"i18n_zh_CN"
+                },
+                isError: false
+            }
+        },
+        mounted: function () {
+            var _this = this;
+            // _this.init();
+        },
+        methods: {
+            init: function(){
+                $.ajax({
+                    url: "/aop_component//webber/search/test",
+                    type: "get",
+                    success: function (response) {
+                        if (response.code == "0000") {
+                        } else if (response.code == "220") {
+                            _this.isError = true;
+                            console.log(response);
+                        } else if (!response.code) {
+                            _this.isError = true;
+                            console.log(response);
+                        }
+                    },
+                    error: function (response) {
+                        _this.isError = true;
+                    }
+                });
+            },
+            onSubmit: function (e) {
+                var url = "/views/search/modules/resultpc/soso.html";
+                if ("10" == "1" || "10" == "2") {
+                    url = "" + url;
+                }
+                var _this = this;
+                var query = _this.query;
+                if (url.indexOf("?") > -1) {
+                    url = url.split("?")[0];
+                }
+                if (query.keyWord) {
+                    var query = new Base64().encode(JSON.stringify(query));
+                    window.open(url + "?query=" + query);
+                } else {
+                    alert("请填写搜索内容")
+                }
+            },
+        }
+    })
+</script>
+<ul class="clearfix">
+<li>
+<a href="../../xwjr/zayEd.htm">小微金融</a>
+<span></span>
+<ul>
+<li>
+<a href="../../xwjr/zayEd.htm">长安优E贷</a>
+</li>
+<li>
+<a href="../../xwjr/zaVd.htm">长安V贷</a>
+</li>
+<li>
+<a href="../../xwjr/zakcd.htm">长安科创贷</a>
+</li>
+<li>
+<a href="../../xwjr/zaxnd.htm">长安兴农贷</a>
+</li>
+<li>
+<a href="../../xwjr/xwdt/xwzx.htm">小微动态</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../grjr/jjk.htm">个人金融</a>
+<span></span>
+<ul>
+<li>
+<a href="../../grjr/jjk.htm">借记卡</a>
+</li>
+<li>
+<a href="../../grjr/cxyw.htm">储蓄业务</a>
+</li>
+<li>
+<a href="../../grjr/grdk.htm">个人贷款</a>
+</li>
+<li>
+<a href="../../grjr/cfgl.htm">财富管理</a>
+</li>
+<li>
+<a href="../../grjr/sdyw1/aef.htm">收单业务</a>
+</li>
+<li>
+<a href="../../grjr/kqzc.htm">客群政策</a>
+</li>
+<li>
+<a href="https://ebank.ccabchina.com/mbank/wap/index.html#/Schema/Index/Index ">个人电子银行</a>
+</li>
+</ul>
+</li>
+<li style="display: none;">
+<a href="https://wm.ccabchina.com">金长安理财</a>
+<span></span>
+<ul>
+<li>
+<a href="https://wm.ccabchina.com/#/ProductPresentation">公募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/#/PrivatePlacement">私募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/#/Sell">信息披露</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/#/recommendation">客户服务</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/">金长安理财</a>
+<span></span>
+<ul>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/product/index?name=%E5%85%AC%E5%8B%9F%E7%90%86%E8%B4%A2">公募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/product/Placement?name=%E7%A7%81%E5%8B%9F%E7%90%86%E8%B4%A2">私募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/info/index?name=%E4%BF%A1%E6%81%AF%E6%8A%AB%E9%9C%B2">信息披露</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/service/index?name=%E5%AE%A2%E6%88%B7%E6%9C%8D%E5%8A%A1">客户服务</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E6%8A%95%E8%B5%84%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA">投资人员公示</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E9%94%80%E5%94%AE%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA">销售人员公示</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../wybk.htm">信用卡</a>
+<span></span>
+<ul>
+<li>
+<a href="../wybk.htm">我要办卡</a>
+</li>
+<li>
+<a href="../yhly.htm">优惠礼遇</a>
+</li>
+<li>
+<a href="../fqyw.htm">分期业务</a>
+</li>
+<li>
+<a href="../khfw.htm">客户服务</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../gsjr/qyck.htm">公司金融</a>
+<span></span>
+<ul>
+<li>
+<a href="../../gsjr/qyck.htm">企业存款</a>
+</li>
+<li>
+<a href="../../gsjr/xdcp.htm">信贷产品</a>
+</li>
+<li>
+<a href="../../gsjr/pjyw.htm">票据业务</a>
+</li>
+<li>
+<a href="../../gsjr/tzyx.htm">投资银行</a>
+</li>
+<li>
+<a href="../../gsjr/jgyw.htm">机构业务</a>
+</li>
+<li>
+<a href="../../gsjr/myjr/whjy.htm">贸易金融</a>
+</li>
+<li>
+<a href="../../gsjr/jrsc/ywgk.htm">金融市场</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../cpyc/zpgg.htm">诚聘英才</a>
+<span></span>
+<ul>
+<li>
+<a href="../../cpyc/zpgg.htm">招聘公告</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../gywm/yxjs.htm">关于我们</a>
+<span></span>
+<ul>
+<li>
+<a href="../../gywm/yxjs.htm">银行介绍</a>
+</li>
+<li>
+<a href="../../gywm/tzzgx/gsgg.htm">投资者关系</a>
+</li>
+<li>
+<a href="../../gywm/xfzqybh1/khtscllc.htm">消费者权益保护</a>
+</li>
+<li>
+<a href="../../gywm/jrxkzgg.htm">金融许可证公告</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="banner-box">
+<div class="banner">
+<ul class="ban-s">
+<li>
+<a href="" onclick='_addDynClicks("wbimage", 2080012826, 1016409)' target="_blank">
+<img src="../../images/xykbanner001.jpg"/>
+</a>
+</li>
+<li>
+<a href="" onclick='_addDynClicks("wbimage", 2080012826, 1016407)' target="_blank">
+<img src="../../images/xykbanner002.jpg"/>
+</a>
+</li>
+<li>
+<a href="" onclick='_addDynClicks("wbimage", 2080012826, 1016408)' target="_blank">
+<img src="../../images/xykbanner003.jpg"/>
+</a>
+</li>
+</ul>
+</div>
+<h3>新闻动态</h3>
+</div>
+<!-- 主体 -->
+<div class="nymain">
+<div class="leftNav-box">
+<div class="wp">
+<div class="leftNav">
+<div class="leftNav-tit">
+<h2 class="wow fadeInUp">信用卡 <span></span></h2>
+</div>
+<ul class="clearfix wow fadeInUp">
+<li>
+<a href="../wybk.htm">我要办卡</a>
+<span></span>
+<ul>
+<li> <a href="../wybk/ysfwjxyk.htm">云闪付无界信用卡</a></li>
+<li> <a href="../wybk/xshwjxyk.htm">新生活无界信用卡</a></li>
+<li> <a href="../wybk/bzxyk.htm">标准信用卡</a></li>
+<li> <a href="dexffqxyk2.htm">大额消费分期信用卡</a></li>
+</ul>
+</li>
+<li>
+<a href="../yhly.htm">优惠礼遇</a>
+</li>
+<li class="active on">
+<a href="../fqyw.htm">分期业务</a>
+<span></span>
+<ul>
+<li> <a href="dexffqxyk2.htm">大额消费分期信用卡</a></li>
+<li> <a href="lhxjfq.htm">灵活现金分期</a></li>
+<li> <a href="zdfq.htm">账单分期</a></li>
+<li> <a href="lhfq.htm">灵活分期</a></li>
+<li> <a href="xjfq.htm">现金分期</a></li>
+</ul>
+</li>
+<li>
+<a href="../khfw.htm">客户服务</a>
+<span></span>
+<ul>
+<li> <a href="../khfw/zxgg.htm">最新公告</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="ny-right">
+<div class="position wp wow fadeInUp">
+<div class="">
+<img alt="" src="../../images/weizhi.png"/>
+<a href="../../index.htm">首页</a>
+<span>/</span>
+<a href="../wybk.htm">信用卡</a>
+<span>/</span>
+<a href="../fqyw.htm">分期业务</a>
+<span>/</span>
+<a href="zdfq.htm">账单分期</a>
+</div>
+</div>
+<div id="more1" style="position: relative;top: -1.2rem;"></div>
+<div class="ny-rk wp">
+<div class="title"><dl class="flex nytab">
+<dt class="on">
+<a href="javascript:;"><h3 class="flex"><!--<img src="../../images/xw-i.png" alt="">-->账单分期业务介绍</h3></a>
+</dt>
+<dt>
+<a href="javascript:;"><h3 class="flex"><!--<img src="../../images/xw-i.png" alt="">-->账单分期业务细则</h3></a>
+</dt>
+</dl></div>
+<div class="art-main ywcon">
+<div class="tab">
+<div class="wybk">
+<div class="img">
+<img src="../../images/zdfq1223.png"/>
+</div>
+<div class="common wy1"> <ul>
+<li>
+<a href="javascript:;" onclick='_addDynClicks("wbimage", 2080012826, 1016449)' title="&lt;p&gt;单笔申请金额满...">
+<div class="ico"><img alt="" src="../../images/w-i81223.png"/></div>
+<h3>办理门槛低</h3>
+<p>单笔申请金额满<strong>500元</strong>即可办理以</p><p>申请渠道的实际展示为准</p>
+</a>
+</li>
+<li>
+<a href="javascript:;" onclick='_addDynClicks("wbimage", 2080012826, 1016447)' title="&lt;p&gt;最大可申请金额...">
+<div class="ico"><img alt="" src="../../images/w-i2.png"/></div>
+<h3>申请金额</h3>
+<p>最大可申请金额为已出账单和</p><p>未出账单合并的总金额</p>
+</a>
+</li>
+<li>
+<a href="javascript:;" onclick='_addDynClicks("wbimage", 2080012826, 1016448)' title="&lt;p&gt;多档期数自由选...">
+<div class="ico"><img alt="" src="../../images/w-i3.png"/></div>
+<h3>期数灵活</h3>
+<p>多档期数自由选择</p><p>最 高<strong>36</strong> 期办理</p>
+</a>
+</li>
+</ul>
+</div>
+<div class="common wy2" style="margin-bottom:0px">
+<script language="javascript" src="../../system/resource/js/ajax.js"></script><script language="javascript">_getBatchClickTimes('null',2080012826,'wbnews','u16')</script>
+<script>function seeContenta16(contentid,size,displayid){	document.getElementById(contentid).innerHTML = '[';	for(var i=0;i<=size;i++){		var allcontentid = contentid+(i+1);		if(allcontentid==displayid){			document.getElementById(contentid).innerHTML += " <span id='"+allcontentid+"' name='"+allcontentid+"'  >"+(i+1)+"</span> ";			document.getElementById(displayid).style.display = 'block';		}else{			document.getElementById(contentid).innerHTML += " <span style='cursor:pointer' id='"+allcontentid+"' name='"+allcontentid+"' onclick=seeContenta16('"+contentid+"','"+size+"','"+allcontentid+"')  >"+(i+1)+"</span> ";			document.getElementById(allcontentid).style.display = 'none';		}	}	document.getElementById(contentid).innerHTML += ']';}</script>
+<script language="javascript" src="../../system/resource/js/news/mp4video.js"></script>
+<script>_addDynClicks('wbnews',2080012826,64034)</script>
+<div id="vsb_content_64034_u161"><div id="vsb_content"><h3>一 、账单分期是什么</h3><p>账单分期是指我行根据持卡人申请，对符合条件的信用卡持卡人账户余额中符合条件的一定消费金额提供分期偿还服务的业务。 账单分期除了可以对已出账单进行分期外，还可将已出账单及未出账单合并进行分期还款，缓解资金压力。</p><h3>二 、办理渠道</h3><p>长安银行手机银行APP</p><p>长安银行信用卡微信公众号</p><p>长安银行信用卡客服电话40005-96669</p><p>(一)路径1</p><p>登录长安银行手机银行APP<strong> -【 信用卡专区】 - 【账单分期】 </strong>进行申请办理</p><p>(二)路径2</p><p>进入长安银行信用卡微信公众号<strong>-【分期 · 借钱】 -【我要分期】 -【账单分期】 </strong>进行申请办理</p><h3>三、还款渠道</h3><p>(一)路径1</p><p>长安银行信用卡微信公众号-【分期 · 借钱】 - 【查账 · 还款】即可进行还款</p><p>(二)路径2</p><p>登录长安银行手机银行APP-【  信用卡专区】 一点击“立即还款”</p><h3>四、温馨提示</h3><p>以上内容仅供参考，产品具体要素及规则已我行最新规定为准，具体详询我行营业网点或客服电话40005-96669。</p></div></div>
+<span id="vsb_content_64034_u16" name="vsb_content_64034_u16"></span><br/><br/>
+</div>
+</div>
+</div>
+<div class="tab" style="    background: #fff;">
+<script language="javascript" src="../../system/resource/js/ajax.js"></script><script language="javascript">_getBatchClickTimes('null',2080012826,'wbnews','u17')</script>
+<script>function seeContenta17(contentid,size,displayid){	document.getElementById(contentid).innerHTML = '[';	for(var i=0;i<=size;i++){		var allcontentid = contentid+(i+1);		if(allcontentid==displayid){			document.getElementById(contentid).innerHTML += " <span id='"+allcontentid+"' name='"+allcontentid+"'  >"+(i+1)+"</span> ";			document.getElementById(displayid).style.display = 'block';		}else{			document.getElementById(contentid).innerHTML += " <span style='cursor:pointer' id='"+allcontentid+"' name='"+allcontentid+"' onclick=seeContenta17('"+contentid+"','"+size+"','"+allcontentid+"')  >"+(i+1)+"</span> ";			document.getElementById(allcontentid).style.display = 'none';		}	}	document.getElementById(contentid).innerHTML += ']';}</script>
+<script>_addDynClicks('wbnews',2080012826,1182)</script>
+<div class="con">
+<div id="vsb_content_1182_u171"><div id="vsb_content"><h3>长安银行信用卡账单分期业务细则</h3>
+<p>长安银行股份有限公司（以下简称“本行”）信用卡持卡人（以下简称“持卡人”）应认真阅读本细则全文，尤其是带有加粗标记的条款，应对其内容及后果充分理解。如有疑议，请及时提请本行说明。如果持卡人不同意本条款细则的任何内容，或者无法准确理解相关条款的解释，请不要进行任何后续操作。若持卡人申请长安银行信用卡账单分期业务，即表示其已阅读、知晓、清楚并同意遵守账单分期业务细则。</p>
+<p>第一条声明事项</p>
+<p>1.长安银行信用卡账单分期业务（以下简称“账单分期”）是指本行根据持卡人的申请，对符合条件的信用卡个人卡主卡持卡人账户余额中符合条件的一定消费金额提供分期偿还服务的业务。</p>
+<p>2.账户余额主要包含本期账单金额、上期账单未还本金以及其他应收未收利息、手续费等，账单分期中可分期金额为本期账单金额以及未出账单金额中消费类交易。</p>
+<p>3.根据申请时间，分为已出账单分期、未出账单分期和汇总账单分期。如持卡人在最后还款日T日前申请，<strong>则持卡人的最高可分期金额为汇总账单分期</strong>（即已出账单加截至T-1日的未出账单金额）；如持卡人在最后还款日T日后申请，则持卡人的最高可分期金额为截至T日的未出账单金额。</p>
+<p><strong>4.持卡人通过本行柜面、个人网上银行、手机银行、微信银行、本行短信渠道、本行客服热线（40005-96669）等申请本行账单分期业务，则视同于持卡人自愿接受并认可本业务细则的所有条款。</strong></p>
+<p>5.持卡人申请本业务,根据监管相关要求，本行信用卡中心需要对持卡人的风险等级进行评估，并查询持卡人的个人资信信息（含个人信用信息），持卡人特此授权以下内容：</p>
+<p>持卡人同意并授权本行和本行信用卡中心在进行相应业务流程中（分期业务的资格审核、授信审批、风险管理、资料管理、额度管理、资产保全、异议核查、资产管理。），自行或通过有关单位（“有关单位”包括长安银行股份有限公司及分支机构、依法设立的资信评估机构或有关法律法规及监管机构许可的类似机构、行政机关、事业单位、司法机关、公安部全国公民身份证号码查询服务中心、中国银联股份有限公司、中国高等教育学生信息网、通信运营商、社会保障管理机构、住房公积金管理机构等符合征信管理要求的机构）查询、收集、存储、使用、加工、传输、提供持卡人的如下个人信息：</p>
+<p>(1)身份信息，包括姓名、证件号码、联系方式、个人生物识别信息、公安身份核验信息、学历学籍信息。</p>
+<p>(2)财产信息、社保信息、公积金信息、运营商信息、工商信息、司法信息。</p>
+<p>(3)其他合法存有持卡人信息的第三方所存的能够评估和反映持卡人信用和风险状况的信息。</p>
+<p>持卡人同意并授权本行和本行信用卡中心在办理上述业务时，向中国人民银行金融信用信息基础数据库、百行征信有限公司查询持卡人的信用信息，并对查询到的信用信息进行保存和使用。同时报送持卡人的个人身份信息（含敏感个人信息）、账户信息、个人信用信息（包括不良信息），如持卡人名下有多个账户，则报送多条账户信息。</p>
+<p>6.持卡人声明：本业务条款及细则内容不受持卡人所属国家或地区的排斥，否则，持卡人应立即终止申请或停止使用本业务。</p>
+<p>7.持卡人知晓并同意：本行非网络服务商，持卡人理解并同意账单分期业务提供过程中所需的合理时间。<strong>持卡人使用账单分期业务时，结果一律以本行系统记录结果为准。</strong></p>
+<p>8.持卡人承诺：持卡人在本业务办理成功后生效期间，实施的所有行为将遵守法律、法规和社会公共利益或公共道德等。持卡人利用本业务从事违法犯罪活动或不正当交易等产生的后果与责任由持卡人独立承担。持卡人在申请本业务时有稳定的收入来源。</p>
+<p>第二条申请</p>
+<p><strong>（一）申请时间</strong></p>
+<p>账单分期业务不限申请时间。</p>
+<p>如客户在本期账单日次日至还款日（含还款日当天）之间申请本业务，则可以将本期已出账单中消费金额和未出账单中已入账的消费金额合并申请，也可以单独针对未出账单中消费交易合并申请。</p>
+<p>如客户在还款日后申请账单分期业务，仅可针对申请时的未出账单中已入账的消费交易金额申请。</p>
+<p><strong>（二）申请起始金额</strong></p>
+<p>每个账户单笔账单分期交易申请最低金额为人民币500元。</p>
+<p><strong>（三）可申请金额</strong></p>
+<p>持卡人申请本业务的最低和最高可分期金额<strong>（不超过账户的固定额度）</strong>以申请渠道的实际展示为准。</p>
+<p><strong>（四）不可申请分期交易</strong></p>
+<p><strong>不能申请账单分期的交易有：预借现金交易、分期付款交易及各项费用（如年费、利息、违约金及其他信用卡收费）；已计入最低还款额的金额；以及本行规定的其他交易。</strong></p>
+<p><strong>（五）申请注意事项</strong></p>
+<p>1.持卡人账户卡片状态正常，且近12个月内账户累计逾期不超过3次，且当前无逾期，方可申请账单分期业务。</p>
+<p>2.账单分期只能于申请日当天撤销<strong>（且应于当天晚上8：00前提交申请）</strong></p>
+<p>3.当日撤销的账单分期业务可再次申请；持卡人申请账单分期一经审核通过，不能撤销，不能对分期期数进行更改；账单分期不支持展期。（展期是指借款人后期不能及时归还本息，通过延长，续借的方式延迟归还）</p>
+<p>4.已成功申请的账单分期不受还款、退货影响而自动取消。</p>
+<p>5.修改账单日在次月生效，当期账单仍在修改前账单日（还款日）还款。</p>
+<p>6.持卡人知晓持卡人名下所有信用卡均归属于个人信用卡账户，该账户下所有信用卡共享授信额度。每个账户每日仅可申请一次账单分期。</p>
+<p>7.本行信用卡中心对持卡人的还款，按照已出账单、未出账单的顺序偿还；逾期1～90天（含）的，按照先应收利息，再各项费用，后本金的顺序进行冲还；逾期91天（含）以上的，按照先本金，后应收利息或各项费用的顺序进行冲还。</p>
+<p>8.本业务的申请通过与否、分期的期数和金额，以本行最终评定结果为准。</p>
+<p>第三条使用、收费及还款</p>
+<p>1.本行为持卡人个性化提供最长36期的分期期数选择，每期为1个月。<strong>账单分期利息按月收取，于成功申请分期后的第一个账单日开始分摊</strong>，每期分期利息与分期本金同时入账，后于每个还款日进行还款，<strong>每期（月）标准分期利息费率</strong><strong>以申请界面展示为准</strong>，分期利息费率对应的近似折算年化利息费率，是根据借款人的借款本金、每期还款金额、贷款期数等要素，考虑复利后计算得出的年化内部收益率（IRR）。其公式为：</p>
+<p class="vsbcontent_img"><img class="img_vsb_content" height="71" orisrc="/__local/C/58/FE/45BFF983E65B56A0C9D4C01C5D6_691DBEF6_27DD.jpg" src="../../__local/C/58/FE/45BFF983E65B56A0C9D4C01C5D6_691DBEF6_27DD.jpg" vheight="71" vsbhref="vurl" vurl="/_vsl/C58FE45BFF983E65B56A0C9D4C01C5D6/691DBEF6/27DD" vwidth="334" width="334"/></p>
+<p>其中，n为一个自然年内还款频率（例如，每月还款一次为12），T为还款年数，由此计算得出的IRR即为年化利率。如持卡人未依约还款则不适用申请界面展示的近似折算年化利息费率，本行有权按照细则第四条违约责任约定要求持卡人承担相应责任。</p>
+<p>2.账单分期利息=分期本金总额×对应期数的期利息费率，分期利息在账单分期申请成功后与当期应还本金一并计入持卡人信用卡账户。分期利息收取方式为：不同期数分期利息均分摊至每期收取。全额提前还款未分摊分期利息按天计收；部分提前还款未分摊分期利息不免除。（“按天计收”为账单日至还款期的实际天数/30*每期摊销分期利息，此部分分期利息在下一账单计收，后续账期再无分期利息。）</p>
+<p>3.账单分期的每期应还本金=分期本金总额÷分期期数，每期应还本金（精确到分）逐月计入持卡人信用卡账户，余数计入最后一期。</p>
+<p>4.账单分期案例</p>
+<p><strong>（最高可分期金额为已出账单中消费交易金额的9</strong><strong>5</strong><strong>%以及未出账单中消费交易金额的全部金额，且不超过账户固定额度。）</strong></p>
+<p><strong>（以下案例以每期费率0.6%进行测算，实际申请时，以申请界面展示为准）</strong></p>
+<p><strong>案例一分期金额包含已出账单</strong></p>
+<p><strong>①仅分期已出账单</strong>：</p>
+<p><strong>小李是我行信用卡客户，账单日为2</strong><strong>0</strong><strong>日。</strong><strong>11月21日小</strong><strong>李信用卡出账单后，账单金额为1</strong><strong>0000</strong><strong>元（账单均为消费交易）。</strong><strong>考虑到最近一段时间资金压力较大，小</strong><strong>李</strong><strong>于11月30日通过我行</strong><strong>手机银行</strong><strong>成功对该笔交易进行了</strong><strong>账单</strong><strong>分期，选择分期期数为12期。12期</strong><strong>账单</strong><strong>分期，总</strong><strong>分期</strong><strong>费率为7.2%，则小</strong><strong>李</strong><strong>每期应还本金为</strong><strong>750</strong><strong>元，</strong><strong>总分期利息为9</strong><strong>5</strong><strong>00×</strong><strong>7.2%=</strong><strong>6</strong><strong>84</strong><strong>元，每期应还分期利息为6</strong><strong>84</strong><strong>÷</strong><strong>12=</strong><strong>57</strong><strong>元。（案例计息仅为参考，实际以系统下账为准）</strong></p>
+<p><strong>②分期已出账单+未出账单</strong></p>
+<p><strong>小李是我行信用卡客户，账单日为2</strong><strong>0</strong><strong>日。</strong><strong>11月21日小</strong><strong>李信用卡出账单后，账单金额为</strong><strong>8000</strong><strong>元（账单均为消费交易）</strong><strong>11月25日再次消费2000元。考虑到最近一段时间资金压力较大，小</strong><strong>李</strong><strong>于11月30日通过我行</strong><strong>手机银行</strong><strong>成功对该笔交易进行了</strong><strong>账单</strong><strong>分期，选择分期期数为12期。12期</strong><strong>账单</strong><strong>分期，总</strong><strong>分期</strong><strong>费率为7.2%，则小</strong><strong>李</strong><strong>每期应还本金为</strong><strong>766.67</strong><strong>元，</strong><strong>总分期利息为9</strong><strong>6</strong><strong>00×</strong><strong>7.2%=</strong><strong>691.2</strong><strong>0元（8000×9</strong><strong>5</strong><strong>%+2000=9</strong><strong>6</strong><strong>00），每期应还分期利息为6</strong><strong>91.2</strong><strong>÷</strong><strong>12=</strong><strong>5</strong><strong>7.6</strong><strong>0元。（案例计息仅为参考，实际以系统下账为准）</strong></p>
+<p><strong>案例二分期金额不包含已出账单</strong></p>
+<p><strong>小李是我行信用卡客户，账单日为30日。</strong><strong>11月21日小</strong><strong>李信用卡尚未出账单，消费金额为1</strong><strong>0000</strong><strong>元（账单均为消费交易）。</strong><strong>考虑到最近一段时间资金压力较大，小</strong><strong>李</strong><strong>于11月</strong><strong>25</strong><strong>日通过我行</strong><strong>手机银行</strong><strong>成功对该笔交易进行了</strong><strong>账单</strong><strong>分期，选择分期期数为12期。12期</strong><strong>账单</strong><strong>分期，总</strong><strong>分期</strong><strong>费率为7.2%，则小</strong><strong>李</strong><strong>每期应还本金为</strong><strong>833.33</strong><strong>元，</strong><strong>总分期利息为10000×</strong><strong>7.2%=</strong><strong>720元，每期应还分期利息为720÷</strong><strong>12=</strong><strong>60元。（案例计息仅为参考，实际以系统下账为准）</strong></p>
+<p>5.本行有权根据成本核算、营销活动等需要随时调整分期期数及利息收费标准（<strong>调整之前办理的分期业务，按办理时约定的期数及利息执行</strong>），调整后的分期期数及利息收费标准将以申请界面展示为准。</p>
+<p>6.持卡人在成功申请账单分期后，当期只需在到期还款日前偿还已办理账单分期金额以外的剩余当期账单金额（账单金额的5%）。如申请成功后持卡人未按时全部偿还当期剩余账单金额，将视为未全额还款，则当期账单包含分期账单在内的全部金额不享受免息还款期待遇。</p>
+<p><strong>7.持卡人申请账单分期成功后，不会立即恢复全部信用额度，被占用的信用额度将根据持卡人每月的实际还款金额逐期恢复，直至最后一期或提前清偿所有分期余额。</strong></p>
+<p>8.已成功办理账单分期业务的持卡人，若按期偿还信用卡当期应还账款后仍有多余款项，该款项不会提前清偿下期账单分期应还本金。</p>
+<p><strong>9.办理分期付款的信用卡挂失换卡后，将通过新卡扣款并通过新卡办理分期付款的查询和调整业务。若持卡人需注销信用卡，须一次性清偿已成功办理的账单分期业务中尚未偿还的分期余额。若持卡人卡片即将到期，持卡人有未清偿的欠款时，我行视同持卡人认可自动续卡。</strong></p>
+<p>10.分期本金及利息亦属于信用卡透支金额，持卡人于分期付款期间逾期还款的，本行将依照《长安银行股份有限公司信用卡章程》与相关领用合约对逾期金额进行相应的账务处理，并有权通过包括但不限于催收、诉讼、报案等方式维护其债权。</p>
+<p>11.若持卡人要提前清偿已成功办理的账单分期业务，须向本行申请，申请通过后须一次性还清未偿还的分期款项，已收取的分期利息不予退还。</p>
+<p>12.持卡人对账单中的消费交易进行退货处理时，已办理成功的账单分期业务不受影响，持卡人应继续履行还款义务。</p>
+<p>第四条违约责任</p>
+<p>如发生以下情形之一，本行认定持卡人的账户不再适合进行账单分期业务时，持卡人的未付剩余分期金额及其他相应费用全部视为到期，持卡人应当一次性偿还全部剩余欠款，包括但不限于<strong>分期本金、分期利息、其他利息</strong>等全部应还款项，已收取的分期利息不予退还。</p>
+<p>1.持卡人在分期申请及还款期间有舞弊、欺诈或非真实交易的情形；</p>
+<p>2.信用卡由于被取消、管制、终止、已经过期并不被续期等原因变为不正常状态；</p>
+<p>3.持卡人缴款延滞，信用卡账户连续逾期3期或以上；</p>
+<p>4.持卡人丧失或部分丧失民事行为能力、死亡、宣告死亡、宣告失踪或破产；本行根据相关风险政策认定持卡人资信状况发生恶化，出现不能履行债务、严重逾期、欺诈或我行认定的其他高风险情况；持卡人涉嫌从事洗钱、欺诈、恐怖融资活动等违反法律法规、监管规定的行为；账户被洗钱、欺诈、恐怖融资等违法违规行为利用；本行从公安机关、其他司法机关、持卡人本人、亲属、交易监测或其他渠道获悉持卡人出现身份证件被盗用、预留联系方式失效、资信状况恶化、有非正常用卡行为等风险信息；</p>
+<p>5.持卡人违反了本行信用卡领用合约、信用卡章程、本条款及细则中的任何规定或本行信用卡业务相关规定等。</p>
+<p>第五条其他</p>
+<p>1.为了确保资金安全，持卡人须妥善保管好其信用卡卡号、有效期、密码等卡片信息和个人信息。因持卡人原因导致其个人及卡片信息泄露造成的风险和损失由持卡人承担。</p>
+<p>2.本条款与细则自持卡人采用在电子渠道在线确认时，通过电话形式确认时（以长安银行系统录音为准）或通过长安银行信用卡中心中预留的手机号码短信回复指定命令办理分期签约时，即视为持卡人本人已签署本条款与细则并生效，并接受其约束。</p>
+<p><strong>3</strong><strong>.</strong><strong>持卡人声明已详尽阅读并完全知晓和承诺遵守本条款及细则</strong><strong>，对本条款与细则中有关免除</strong><strong>本行</strong><strong>责任的条款、</strong><strong>本</strong><strong>行单方面享有权利的条款、增加持卡人责任或限制持卡人权利的条款，</strong><strong>本</strong><strong>行已采取合理的方式提请持卡人注意并已经按照持卡人的要求对相关条款进行了说明。</strong><strong>本条款及细则为本行信用卡领用合约的附加条款。</strong></p>
+<p>4.本业务条款及细则适用中华人民共和国大陆地区法律。本业务条款及细则未尽事项依据《长安银行股份有限公司信用卡章程》《长安银行信用卡领用合约》、银行业务规定及金融惯例有关规定处理。</p>
+<p class="vsbcontent_end">5.本行有权依据法律、法规、规章或业务需要对分期业务服务的内容、操作流程、业务条款或收费标准等进行调整，保留延迟或提前终止本业务的权利，并在通过网站、对账单、短信等方式向持卡人公告。修改自公告中载明的日期开始生效，持卡人有权在生效日期前选择是否同意该修改。如持卡人不同意相关修改，持卡人有权申请一次性清偿剩余分期债务，否则视为持卡人同意该等修改，修改后的内容对持卡人具有法律约束力。</p></div></div>
+<span id="vsb_content_1182_u17" name="vsb_content_1182_u17"></span><br/><br/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="wp">
+<div class="foot-t">
+<div class="foot-tl">
+<div class="lxwm">
+<h3>联系我们</h3>
+<hr/>
+<p>客服电话：（029）96669</p>
+<p>信用卡客服电话: 40005-96669</p>
+<p>邮政编码: 710075</p>
+<p>地址: 西安高新技术产业开发区高新四路13号朗臣大厦</p></div>
+<div class="gywm"><h3>关于我们</h3>
+<hr/>
+<p><a href="../../gywm/tzzgx/gsgg.htm" onclick='_addDynClicks("wburl", 2080012826, 105355)'>投资者关系</a></p>
+<p><a href="../../yyzzxx.htm" onclick='_addDynClicks("wburl", 2080012826, 105356)'>营业执照信息</a></p>
+<p><a href="../../gywm/xfzqybh1/khtscllc.htm" onclick='_addDynClicks("wburl", 2080012826, 105426)'>消费者权益保护</a></p>
+</div>
+<div class="gywm" style="    display: none;">
+<h3>网站安全</h3>
+<hr/>
+<p><a href="../../wzaq/aqsm.htm">安全说明</a></p>
+<p><a href="../../wzaq/wzsm.htm">网站声明</a></p>
+<p><a href="../../wzaq/ysbmtk.htm">隐私保密条款</a></p>
+</div>
+<div class="gywm"> <h3>投诉建议</h3>
+<hr/>
+<p><a href="../../tsjy/khtsdh__029_96669.htm">客户投诉电话：（029）96669</a></p>
+<p><a href="../../gywm/xfzqybh1/khtscllc.htm">客户投诉处理流程</a></p>
+</div>
+</div>
+<div class="foot-tr">
+<div class="link">
+<div><p>友情链接</p>
+<div>
+<a href="http://www.pbc.gov.cn/" onclick='_addDynClicks("wburl", 2080012826, 41677)' target="_blank">中国人民银行</a>
+<a href="https://www.cbirc.gov.cn/cn/view/pages/index/index.html" onclick='_addDynClicks("wburl", 2080012826, 105430)' target="_blank">国家金融监督管理总局</a>
+<a href="http://www.shaanxi.gov.cn/" onclick='_addDynClicks("wburl", 2080012826, 105357)' target="_blank">陕西省人民政府</a>
+<a href="https://www.szse.cn/index/index.html" onclick='_addDynClicks("wburl", 2080012826, 105432)' target="_blank">深圳证券交易所</a>
+<a href="https://www.sse.com.cn/" onclick='_addDynClicks("wburl", 2080012826, 105433)' target="_blank">上海证券交易所</a>
+<a href="https://www.sxycpc.com/" onclick='_addDynClicks("wburl", 2080012826, 105434)' target="_blank">陕西延长石油（集团）有限责任公司</a>
+<a href="https://www.shxcoal.com/" onclick='_addDynClicks("wburl", 2080012826, 105435)' target="_blank">陕西煤业股份有限公司</a>
+<a href="https://www.yousergroup.com/" onclick='_addDynClicks("wburl", 2080012826, 105436)' target="_blank">陕西有色金属控股集团有限责任公司</a>
+<a href="http://theory.people.com.cn/GB/40557/359404/index.html" onclick='_addDynClicks("wburl", 2080012826, 105437)' target="_blank">凝聚中国力量 实现中国梦--理论--人民网、群众路线网--人民网</a>
+</div>
+</div>
+</div>
+<div class="foot-ewm"> <ul>
+<li>
+<img onclick='_addDynClicks("wbimage", 2080012826, 1011244)' src="../../images/wx1.png"/>
+<p>手机银行</p>
+</li>
+<li>
+<img onclick='_addDynClicks("wbimage", 2080012826, 1011245)' src="../../images/wx2.png"/>
+<p>微信银行</p>
+</li>
+<li>
+<img onclick='_addDynClicks("wbimage", 2080012826, 1011246)' src="../../images/wx3.png"/>
+<p>长乐贷</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="foot-d">
+<div class="foot-dlj"> <a href="../../index/wzdh.htm" onclick='_addDynClicks("wburl", 2080012826, 105358)' target="_blank">网站导航</a> | 
+   <a href="../../index/flsm.htm" onclick='_addDynClicks("wburl", 2080012826, 105421)' target="_blank">法律声明</a> | 
+   <a href="../../lyb.jsp" onclick='_addDynClicks("wburl", 2080012826, 105422)' target="_blank">廉政信箱</a> | 
+   <a href="../../cpyc/zpgg/a2025qjzp.htm" onclick='_addDynClicks("wburl", 2080012826, 105423)' target="_blank">人才招聘</a>
+</div>
+<div class="foot-bq">
+<p><!-- 版权内容请在本组件"内容配置-版权"处填写 -->
+<p>长安银行版权所有Copyright©2009 All Rights Reserved.<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_self">陕ICP备11007555号    本网站已在信息产业部备案管理系统备案 </a>   <img src="../../__local/7/D4/17/0C12175DF21A043B89039363039_506E4263_1237.png"/><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=61019002002554" target="_self" textvalue="陕公网安备 61019002002554号">陕公网安备 61019002002554号</a>    本网站已支持IPV6访问</p></p>
+</div>
+</div>
+</div>
+</div>
+<script src="../../js/jquery.js"></script>
+<script src="../../js/slick.js"></script>
+<script src="../../js/public.js"></script>
+<script src="../../js/wow.min.js" type="text/javascript"></script>
+<script>
+        $(function () {
+            var docWidth = $(document).width();
+            if (docWidth > 1024) {
+                // new WOW().init();
+            }
+        })
+        $('.ban-s').slick({
+            autoplay: true,
+            dots: false,
+            arrows: false,
+        });
+        $(".title dt").click(function () {
+            var i = $(this).index();
+            $(this).addClass('on').siblings().removeClass('on');
+            $(".ywcon .tab").eq(i).stop().fadeIn().siblings().hide();
+            // $(this).parents(".h3").next(".more").find("a").eq(i).stop().addClass("on").siblings().removeClass("on");
+        })
+    </script>
+</body>
+</html>

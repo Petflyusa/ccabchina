@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业网上银行登录 - 长安银行</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+  background: #f8f8f8;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ---- Header ---- */
+.header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  height: 90px;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.header-logo img {
+  height: 48px;
+}
+.header-logo-text {
+  font-size: 18px;
+  color: #C6151D;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.header Hotline {
+  font-size: 14px;
+  color: #666;
+}
+.header Hotline span {
+  color: #C6151D;
+  font-weight: bold;
+}
+
+/* ---- Banner ---- */
+.banner {
+  background: linear-gradient(135deg, #C6151D 0%, #8B0010 100%);
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.banner::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.banner-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Left copy ---- */
+.banner-left {
+  flex: 1;
+  color: #fff;
+  padding-right: 60px;
+}
+.banner-left h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  letter-spacing: 3px;
+}
+.banner-left p {
+  font-size: 16px;
+  line-height: 1.8;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+.banner-left .features {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.banner-left .feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  opacity: 0.9;
+}
+.banner-left .feature-item .icon {
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ---- Login Card ---- */
+.login-card {
+  width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.card-tabs {
+  display: flex;
+  background: #f8f8f8;
+}
+.card-tab {
+  flex: 1;
+  padding: 18px 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.card-tab.active {
+  background: #fff;
+  color: #C6151D;
+  border-bottom-color: #C6151D;
+}
+.card-tab:hover:not(.active) {
+  color: #C6151D;
+}
+
+.card-body {
+  padding: 36px 32px 32px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2B2B2B;
+  text-align: center;
+  margin-bottom: 28px;
+}
+.card-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: #C6151D;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* ---- Form ---- */
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+.form-label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.form-input-wrap {
+  position: relative;
+}
+.form-input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-size: 15px;
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+  background: #fafafa;
+}
+.form-input:focus {
+  border-color: #C6151D;
+  box-shadow: 0 0 0 3px rgba(198,21,29,0.1);
+  background: #fff;
+}
+.form-input::placeholder {
+  color: #bbb;
+}
+.form-input-wrap .input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #999;
+}
+
+/* ---- SMS row ---- */
+.sms-row {
+  display: flex;
+  gap: 10px;
+}
+.sms-row .form-input {
+  flex: 1;
+}
+.sms-btn {
+  height: 48px;
+  padding: 0 16px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #C6151D;
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 600;
+  transition: all 0.3s;
+  min-width: 120px;
+}
+.sms-btn:hover {
+  background: #C6151D;
+  color: #fff;
+  border-color: #C6151D;
+}
+.sms-btn:disabled {
+  background: #eee;
+  color: #999;
+  border-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* ---- Password toggle ---- */
+.pwd-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 16px;
+  user-select: none;
+}
+.pwd-toggle:hover { color: #C6151D; }
+
+/* ---- Remember / Forgot ---- */
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  cursor: pointer;
+  user-select: none;
+}
+.remember-me input[type="checkbox"] {
+  accent-color: #C6151D;
+  width: 15px;
+  height: 15px;
+}
+.forgot-link {
+  color: #C6151D;
+  text-decoration: none;
+}
+.forgot-link:hover { text-decoration: underline; }
+
+/* ---- Login Button ---- */
+.btn-login {
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(135deg, #C6151D 0%, #A00018 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(198,21,29,0.35);
+}
+.btn-login:hover {
+  background: linear-gradient(135deg, #D4001F 0%, #B0001A 100%);
+  box-shadow: 0 6px 24px rgba(198,21,29,0.5);
+  transform: translateY(-1px);
+}
+.btn-login:active {
+  transform: translateY(0);
+}
+
+/* ---- Secure tip ---- */
+.secure-tip {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #999;
+}
+.secure-tip .lock-icon {
+  color: #4CAF50;
+}
+
+/* ---- Card footer ---- */
+.card-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+}
+.card-footer a {
+  color: #666;
+  text-decoration: none;
+  margin: 0 6px;
+}
+.card-footer a:hover { color: #C6151D; }
+
+/* ---- Alert ---- */
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  display: none;
+  align-items: flex-start;
+  gap: 10px;
+}
+.alert-error {
+  background: #FFF3F3;
+  border: 1px solid #FFCCCC;
+  color: #C6151D;
+}
+.alert-success {
+  background: #F0FFF0;
+  border: 1px solid #CCFFCC;
+  color: #2E8B57;
+}
+.alert.show { display: flex; }
+
+/* ---- SMS verify panel ---- */
+.sms-panel {
+  display: none;
+}
+.sms-panel.active { display: block; }
+
+/* ---- Loading overlay ---- */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+.loading-overlay.show { display: flex; }
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f0f0f0;
+  border-top-color: #C6151D;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text {
+  font-size: 14px;
+  color: #666;
+  letter-spacing: 2px;
+}
+
+/* ---- Success page ---- */
+.success-panel {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+}
+.success-panel.show { display: block; }
+.success-icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 36px;
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(76,175,80,0.4);
+}
+.success-panel h2 {
+  font-size: 24px;
+  color: #2B2B2B;
+  margin-bottom: 10px;
+}
+.success-panel p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 6px;
+}
+.success-panel .user-info {
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: left;
+}
+.success-panel .user-info .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+.success-panel .user-info .row:last-child { border-bottom: none; }
+.success-panel .user-info .label { color: #999; }
+.success-panel .user-info .value { color: #333; font-weight: 600; }
+.btn-logout {
+  margin-top: 20px;
+  width: 100%;
+  height: 48px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-logout:hover {
+  background: #C6151D;
+  color: #fff;
+  border-color: #C6151D;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .banner-inner { flex-direction: column; gap: 40px; }
+  .banner-left { padding-right: 0; text-align: center; }
+  .banner-left .features { align-items: center; }
+  .login-card { width: 100%; max-width: 480px; }
+  .header-logo-text { display: none; }
+}
+@media (max-width: 480px) {
+  .card-body { padding: 28px 20px 24px; }
+  .sms-row { flex-direction: column; }
+  .sms-btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">登录验证中...</div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <a href="/index.html" class="header-logo">
+      <img src="/images/logo.png" alt="长安银行" onerror="this.style.display='none'">
+      <span class="header-logo-text">长安银行</span>
+    </a>
+    <div class="header-hotline">
+      客服热线：<span>（029）96669</span>
+    </div>
+  </div>
+</div>
+
+<!-- Banner -->
+<div class="banner">
+  <div class="banner-inner">
+    <div class="banner-left">
+      <h1>企业网上银行</h1>
+      <p>安全、便捷、高效的一站式企业金融服务</p>
+      <div class="features">
+        <div class="feature-item">
+          <div class="icon">&#10003;</div>
+          <span>企业账户管理 / 转账汇款 / 资金归集</span>
+        </div>
+        <div class="feature-item">
+          <div class="icon">&#10003;</div>
+          <span>银企对账 / 电子票据 /供应链金融</span>
+        </div>
+        <div class="feature-item">
+          <div class="icon">&#10003;</div>
+          <span>多级授权审批 / 交易限额灵活配置</span>
+        </div>
+        <div class="feature-item">
+          <div class="icon">&#10003;</div>
+          <span>SSL加密传输 / 短信通知 / U盾认证</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <div class="card-tabs">
+        <div class="card-tab active" id="tabPwd">密码登录</div>
+        <div class="card-tab" id="tabSms">短信登录</div>
+      </div>
+
+      <div class="card-body">
+        <!-- Success Panel (shown after login) -->
+        <div class="success-panel" id="successPanel">
+          <div class="success-icon">&#10003;</div>
+          <h2>登录成功</h2>
+          <p>欢迎回来，<strong id="displayUsername">syaviation</strong></p>
+          <div class="user-info">
+            <div class="row">
+              <span class="label">登录账号</span>
+              <span class="value" id="displayAccount">syaviation</span>
+            </div>
+            <div class="row">
+              <span class="label">认证方式</span>
+              <span class="value" id="displayAuth">密码 + 短信验证码</span>
+            </div>
+            <div class="row">
+              <span class="label">登录时间</span>
+              <span class="value" id="displayTime"></span>
+            </div>
+            <div class="row">
+              <span class="label">安全等级</span>
+              <span class="value" style="color:#4CAF50">高</span>
+            </div>
+          </div>
+          <button class="btn-logout" id="btnLogout">安全退出</button>
+        </div>
+
+        <!-- Login Forms -->
+        <div id="loginForms">
+
+          <div class="card-title">企业网银登录</div>
+
+          <!-- Alert -->
+          <div class="alert alert-error" id="alertError">
+            <span>&#9888;</span>
+            <span id="alertErrorText">用户名或密码错误</span>
+          </div>
+
+          <!-- SMS Alert -->
+          <div class="alert alert-success" id="alertSmsSuccess">
+            <span>&#10003;</span>
+            <span>验证码已发送至注册手机，请查收</span>
+          </div>
+
+          <!-- ========== Password Login ========== -->
+          <div id="pwdPanel">
+            <div class="form-group">
+              <label class="form-label">用 户 名</label>
+              <input type="text" class="form-input" id="username" placeholder="请输入企业网银用户名" autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label class="form-label">登录密码</label>
+              <div class="form-input-wrap">
+                <input type="password" class="form-input" id="password" placeholder="请输入登录密码" autocomplete="off">
+                <span class="pwd-toggle" id="pwdToggle" onclick="togglePwd()">&#128065;</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">短信验证码</label>
+              <div class="sms-row">
+                <input type="text" class="form-input" id="smsCodePwd" placeholder="请输入短信验证码" maxlength="6" autocomplete="off">
+                <button class="sms-btn" id="smsBtnPwd" onclick="sendSms('pwd')">获取验证码</button>
+              </div>
+            </div>
+            <div class="form-options">
+              <label class="remember-me">
+                <input type="checkbox" id="rememberMe" checked>
+                记住用户名
+              </label>
+              <a href="#" class="forgot-link">忘记密码？</a>
+            </div>
+            <button class="btn-login" onclick="doLogin('pwd')">登 录</button>
+          </div>
+
+          <!-- ========== SMS Login ========== -->
+          <div class="sms-panel" id="smsPanel">
+            <div class="form-group">
+              <label class="form-label">企业用户名</label>
+              <input type="text" class="form-input" id="usernameSms" placeholder="请输入企业网银用户名" autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label class="form-label">短信验证码</label>
+              <div class="sms-row">
+                <input type="text" class="form-input" id="smsCodeSms" placeholder="请输入短信验证码" maxlength="6" autocomplete="off">
+                <button class="sms-btn" id="smsBtnSms" onclick="sendSms('sms')">获取验证码</button>
+              </div>
+            </div>
+            <div class="form-options">
+              <label class="remember-me">
+                <input type="checkbox" id="rememberMeSms" checked>
+                记住用户名
+              </label>
+            </div>
+            <button class="btn-login" onclick="doLogin('sms')">登 录</button>
+          </div>
+
+        </div><!-- /loginForms -->
+
+        <div class="secure-tip">
+          <span class="lock-icon">&#128274;</span>
+          您的连接已加密，请放心使用
+        </div>
+
+        <div class="card-footer">
+          <a href="#">安全指引</a> |
+          <a href="#">帮助中心</a> |
+          <a href="#">在线客服</a>
+        </div>
+      </div>
+    </div><!-- /login-card -->
+
+  </div><!-- /banner-inner -->
+</div><!-- /banner -->
+
+<script>
+// ---- Config ----
+const VALID_USERNAME = 'syaviation';
+const VALID_PASSWORD = 'Jz10191019@';
+const VALID_SMS      = '137098';
+const SMS_COOLDOWN   = 60;
+
+// ---- State ----
+let smsCountdownPwd = 0;
+let smsCountdownSms = 0;
+
+// ---- Tab switching ----
+document.getElementById('tabPwd').addEventListener('click', () => {
+  document.getElementById('tabPwd').classList.add('active');
+  document.getElementById('tabSms').classList.remove('active');
+  document.getElementById('pwdPanel').style.display = 'block';
+  document.getElementById('smsPanel').classList.remove('active');
+  hideAlert();
+});
+document.getElementById('tabSms').addEventListener('click', () => {
+  document.getElementById('tabSms').classList.add('active');
+  document.getElementById('tabPwd').classList.remove('active');
+  document.getElementById('pwdPanel').style.display = 'none';
+  document.getElementById('smsPanel').classList.add('active');
+  hideAlert();
+});
+
+// ---- Password toggle ----
+function togglePwd() {
+  const inp = document.getElementById('password');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}
+
+// ---- Alert helpers ----
+function showError(msg) {
+  const el = document.getElementById('alertError');
+  document.getElementById('alertErrorText').textContent = msg;
+  el.classList.add('show', 'alert-error');
+}
+function hideAlert() {
+  document.getElementById('alertError').classList.remove('show');
+  document.getElementById('alertSmsSuccess').classList.remove('show');
+}
+
+// ---- SMS send ----
+function sendSms(panel) {
+  const btnId  = panel === 'pwd' ? 'smsBtnPwd' : 'smsBtnSms';
+  const btn    = document.getElementById(btnId);
+  const countKey = panel === 'pwd' ? 'smsCountdownPwd' : 'smsCountdownSms';
+
+  // Get username for this panel
+  const username = panel === 'pwd'
+    ? document.getElementById('username').value.trim()
+    : document.getElementById('usernameSms').value.trim();
+
+  if (!username) {
+    showError('请先输入用户名');
+    return;
+  }
+  if (username !== VALID_USERNAME) {
+    showError('用户名不存在');
+    return;
+  }
+
+  // Show success
+  document.getElementById('alertSmsSuccess').classList.add('show');
+  setTimeout(() => document.getElementById('alertSmsSuccess').classList.remove('show'), 3000);
+
+  // Countdown
+  btn.disabled = true;
+  let secs = SMS_COOLDOWN;
+  btn.textContent = secs + '秒后重试';
+  let timer = setInterval(() => {
+    secs--;
+    btn.textContent = secs + '秒后重试';
+    if (secs <= 0) {
+      clearInterval(timer);
+      btn.disabled = false;
+      btn.textContent = '获取验证码';
+    }
+  }, 1000);
+}
+
+// ---- Login ----
+function doLogin(panel) {
+  hideAlert();
+
+  let username, password, sms;
+  if (panel === 'pwd') {
+    username = document.getElementById('username').value.trim();
+    password = document.getElementById('password').value;
+    sms      = document.getElementById('smsCodePwd').value.trim();
+  } else {
+    username = document.getElementById('usernameSms').value.trim();
+    password = '';
+    sms      = document.getElementById('smsCodeSms').value.trim();
+  }
+
+  // Validate
+  if (!username) {
+    showError('请输入用户名');
+    return;
+  }
+  if (panel === 'pwd' && !password) {
+    showError('请输入登录密码');
+    return;
+  }
+  if (!sms) {
+    showError('请输入短信验证码');
+    return;
+  }
+  if (sms !== VALID_SMS) {
+    showError('短信验证码错误，请核对后重新输入');
+    return;
+  }
+  if (panel === 'pwd' && (username !== VALID_USERNAME || password !== VALID_PASSWORD)) {
+    showError('用户名或密码错误');
+    return;
+  }
+  if (panel === 'sms' && username !== VALID_USERNAME) {
+    showError('用户名不存在');
+    return;
+  }
+
+  // Show loading
+  document.getElementById('loadingOverlay').classList.add('show');
+
+  // Simulate verification delay then redirect to dashboard
+  setTimeout(() => {
+    window.location.href = 'dashboard.html';
+  }, 1500);
+}
+
+function showSuccess(username) {
+  document.getElementById('loginForms').style.display = 'none';
+  document.getElementById('successPanel').classList.add('show');
+  document.getElementById('displayUsername').textContent = username;
+  document.getElementById('displayAccount').textContent = username;
+
+  // Auth type
+  const authType = document.getElementById('smsCodePwd').value.trim() ||
+                   document.getElementById('smsCodeSms').value.trim();
+  document.getElementById('displayAuth').textContent =
+    authType ? '密码 + 短信验证码' : '短信验证码';
+
+  // Time
+  const now = new Date();
+  document.getElementById('displayTime').textContent =
+    now.getFullYear() + '-' +
+    String(now.getMonth()+1).padStart(2,'0') + '-' +
+    String(now.getDate()).padStart(2,'0') + ' ' +
+    String(now.getHours()).padStart(2,'0') + ':' +
+    String(now.getMinutes()).padStart(2,'0') + ':' +
+    String(now.getSeconds()).padStart(2,'0');
+}
+
+// ---- Logout ----
+document.getElementById('btnLogout').addEventListener('click', () => {
+  document.getElementById('successPanel').classList.remove('show');
+  document.getElementById('loginForms').style.display = 'block';
+  // Clear form
+  document.getElementById('password').value = 'Jz10191019@';
+  document.getElementById('smsCodePwd').value = '';
+  document.getElementById('smsCodeSms').value = '';
+  hideAlert();
+});
+</script>
+
+</body>
+</html>

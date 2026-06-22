@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>园区贷-长安银行</title><meta content="3" name="pageType"/>
+<meta content="园区贷" name="pageTitle"/>
+<meta content="长安银行,长安V贷,贷,园区" name="keywords"/>
+<meta content="以园区为单位制定整体的融资方案，简化资料，批量操作，集中审批，快捷高效" name="description"/>
+<link href="../../style/animate.min.css" rel="stylesheet"/>
+<link href="../../style/slick.css" rel="stylesheet"/>
+<link href="../../style/slick-theme.css" rel="stylesheet"/>
+<link href="../../style/public.css" rel="stylesheet"/>
+<link href="../../style/ny.css" rel="stylesheet"/>
+<link href="../../images/icon.ico" rel="Shortcut Icon"/>
+<!--Announced by Visual SiteBuilder 9-->
+<link href="../../_sitegray/_sitegray_d.css" rel="stylesheet" type="text/css"/>
+<script language="javascript" src="../../_sitegray/_sitegray.js"></script>
+<!-- CustomerNO:776562626572323069754754525a5742000400014753 -->
+<link href="../../xwcpxq.vsb.css" rel="stylesheet" type="text/css"/>
+<script src="../../system/resource/js/counter.js" type="text/javascript"></script>
+<script type="text/javascript">_jsq_(1038,'/xwcpxq.jsp',1021,2080012826)</script>
+</head>
+<body>
+<!-- pc导航 -->
+<div class="pc show">
+<div class="head wp flex">
+<div class="logo">
+<!-- 网站logo图片地址请在本组件"内容配置-网站logo"处填写 -->
+<a href="../../index.htm"><img alt="" src="../../images/logo.png"/></a></div>
+<div class="head-r">
+<div class="head-t">
+<span><script language="javascript" src="../../system/resource/js/dynclicks.js"></script><script language="javascript" src="../../system/resource/js/openlink.js"></script><a href="javascript:;" onclick='_addDynClicks("wburl", 2080012826, 41674)' target="_blank">客服热线：（029）96669</a>| 
+                        
+<a href="../../index/jgwd.htm" onclick='_addDynClicks("wburl", 2080012826, 99110)' target="_blank">机构网点</a>
+</span>
+<script src="../../rt/ccabchina.com/gtInit.js"></script>
+<a class="ghb" href="javascript:GtInit.elderly.open();"> <img alt="" src="../../images/head-ghb2.png"/>关怀版</a>
+<a class="ghb wza" href="javascript:void(0);" id="gt_btn"> <img alt="" src="../../images/head-ghb.png"/>无障碍浏览</a>
+<script language="javascript" src="../../system/resource/js/base64.js"></script><script language="javascript" src="../../system/resource/js/jquery/jquery-latest.min.js"></script><script language="javascript" src="../../system/resource/vue/vue.js"></script><script language="javascript" src="../../system/resource/vue/bluebird.min.js"></script><script language="javascript" src="../../system/resource/vue/axios.js"></script><script language="javascript" src="../../system/resource/vue/polyfill.js"></script><script language="javascript" src="../../system/resource/vue/token.js"></script><link href="../../system/resource/vue/static/element/index.css" rel="stylesheet" type="text/css"/><script language="javascript" src="../../system/resource/vue/static/element/index.js"></script><script language="javascript" src="../../system/resource/vue/static/public.js"></script><div id="divu3"></div>
+<script id="htmlu3" type="text/html">
+    <div id="appu3">
+        <div v-if="!isError">
+        <div class="search">
+            <input type="text" placeholder="请输入检索关键词" class="text"autocomplete=off v-model=query.keyWord @keyup.enter="onSubmit">
+            <input  class="button"  name="submit_button" type="button" value="" v-on:click="onSubmit()"/>
+        </div>  </div>
+        <div v-if="isError" style="color: #b30216; font-size:18px;text-align: center;padding:20px;">
+            应用维护中！
+        </div>
+    </div>
+</script>
+<script>
+    $("#divu3").html($("#htmlu3").text());
+</script>
+<script>
+    var appOwner = "2080012826";
+    var token = gettoken(10);
+    var urlPrefix = "/aop_component/";
+
+    jQuery.support.cors = true;
+    $.ajaxSetup({
+        beforeSend: function (request, settings) {
+            request.setRequestHeader("Authorization", token);
+            request.setRequestHeader("owner", appOwner);
+        }
+    });
+
+    new Vue({
+        el: "#appu3",
+        data: function () {
+            return {
+                query: {
+                    keyWord: "",//搜索关键词
+                    owner: appOwner,
+                    token: token,
+                    urlPrefix: urlPrefix,
+                    lang:"i18n_zh_CN"
+                },
+                isError: false
+            }
+        },
+        mounted: function () {
+            var _this = this;
+            // _this.init();
+        },
+        methods: {
+            init: function(){
+                $.ajax({
+                    url: "/aop_component//webber/search/test",
+                    type: "get",
+                    success: function (response) {
+                        if (response.code == "0000") {
+                        } else if (response.code == "220") {
+                            _this.isError = true;
+                            console.log(response);
+                        } else if (!response.code) {
+                            _this.isError = true;
+                            console.log(response);
+                        }
+                    },
+                    error: function (response) {
+                        _this.isError = true;
+                    }
+                });
+            },
+            onSubmit: function (e) {
+                var url = "/views/search/modules/resultpc/soso.html";
+                if ("10" == "1" || "10" == "2") {
+                    url = "" + url;
+                }
+                var _this = this;
+                var query = _this.query;
+                if (url.indexOf("?") > -1) {
+                    url = url.split("?")[0];
+                }
+                if (query.keyWord) {
+                    var query = new Base64().encode(JSON.stringify(query));
+                    window.open(url + "?query=" + query);
+                } else {
+                    alert("请填写搜索内容")
+                }
+            },
+        }
+    })
+</script>
+</div>
+<div class="nav"><ul class="flex">
+<li>
+<a href="../../xwjr/zayEd.htm" target="_blank">小微金融</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../xwjr/zayEd.htm" target="_blank">长安优E贷</a></dt>
+<dd><a href="../1022/1165.htm" target="_blank">优税e贷</a></dd>
+<dd><a href="../1022/1164.htm" target="_blank">优房e贷</a></dd>
+<dd><a href="../1022/1163.htm" target="_blank">优农e贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xwjr/zaVd.htm" target="_blank">长安V贷</a></dt>
+<div>
+<dd><a href="1082.htm" target="_blank">固定资产贷款</a></dd>
+<dd><a href="1083.htm" target="_blank">流动资金贷款</a></dd>
+<dd><a href="1084.htm" target="_blank">个人经营贷款</a></dd>
+<dd><a href="1081.htm" target="_blank">存续贷</a></dd>
+<dd><a href="1077.htm" target="_blank">快速贷</a></dd>
+<dd><a href="1078.htm" target="_blank">循环贷</a></dd>
+<dd><a href="1079.htm" target="_blank">商票通</a></dd>
+<dd><a href="1080.htm" target="_blank">银票通</a></dd>
+<dd><a href="1021.htm" target="_blank">园区贷</a></dd>
+<dd><a href="1026.htm" target="_blank">市场贷</a></dd>
+<dd><a href="1030.htm" target="_blank">政采贷</a></dd>
+<dd><a href="1025.htm" target="_blank">医保贷</a></dd>
+<dd><a href="1024.htm" target="_blank">药供贷</a></dd>
+<dd><a href="1135.htm" target="_blank">烟商贷</a></dd>
+<dd><a href="1020.htm" target="_blank">物业贷</a></dd>
+<dd><a href="1022.htm" target="_blank">厂房购置贷</a></dd>
+<dd><a href="1023.htm" target="_blank">核心供应链贷</a></dd>
+<dd><a href="1029.htm" target="_blank">创业担保贷</a></dd>
+<dd><a href="1028.htm" target="_blank">秦青优惠贷</a></dd>
+</div>
+</dl>
+<dl>
+<dt><a href="../../xwjr/zakcd.htm" target="_blank">长安科创贷</a></dt>
+<dd><a href="../1020/1037.htm" target="_blank">秦创贷</a></dd>
+<dd><a href="../1020/1036.htm" target="_blank">秦科贷</a></dd>
+<dd><a href="../1020/1035.htm" target="_blank">工信贷</a></dd>
+<dd><a href="../1020/1034.htm" target="_blank">专精特新企业贷</a></dd>
+<dd><a href="../1020/1033.htm" target="_blank">知识产权质押贷</a></dd>
+<dd><a href="../1020/1032.htm" target="_blank">军民融合贷</a></dd>
+<dd><a href="../1020/1031.htm" target="_blank">瞪羚企业贷</a></dd>
+<dd><a href="../1020/1136.htm" target="_blank">积分贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xwjr/zaxnd.htm" target="_blank">长安兴农贷</a></dt>
+<dd><a href="../1021/1040.htm" target="_blank">集体经济组织贷款</a></dd>
+<dd><a href="../1021/1038.htm" target="_blank">农户生产经营贷款</a></dd>
+<dd><a href="../1021/1039.htm" target="_blank">农民专业合作社贷款</a></dd>
+<dd><a href="../1021/1045.htm" target="_blank">富硒产业贷</a></dd>
+<dd><a href="../1021/1044.htm" target="_blank">苹果产业贷</a></dd>
+<dd><a href="../1021/1043.htm" target="_blank">食用菌产业贷</a></dd>
+<dd><a href="../1021/1042.htm" target="_blank">地域特色农业贷</a></dd>
+<dd><a href="../1021/1041.htm" target="_blank">美丽乡村贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xwjr/xwdt/xwzx.htm" target="_blank">小微动态</a></dt>
+<dd><a href="../../xwjr/xwdt/xwzx.htm" target="_blank">小微资讯</a></dd>
+<dd><a href="../../xwjr/xwdt/xwsp.htm" target="_blank">小微视频</a></dd>
+</dl>
+</div>
+</div>
+</li>
+<li>
+<a href="../../grjr/jjk.htm" target="_blank">个人金融</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../grjr/jjk.htm" target="_blank">借记卡</a></dt>
+<dd><a href="../../grjr/jjk/pk.htm" target="_blank">普卡</a></dd>
+<dd><a href="../../grjr/jjk/jk.htm" target="_blank">金卡</a></dd>
+<dd><a href="../../grjr/jjk/bjk.htm" target="_blank">白金卡</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/cxyw.htm" target="_blank">储蓄业务</a></dt>
+<dd><a href="../../grjr/cxyw/ckdjz.htm" target="_blank">存款大家族</a></dd>
+<dd><a href="../../grjr/cxyw/hqcxck.htm" target="_blank">活期储蓄存款</a></dd>
+<dd><a href="../../grjr/cxyw/dhlbck.htm" target="_blank">定活两便存款</a></dd>
+<dd><a href="../../grjr/cxyw/zczqdqck.htm" target="_blank">整存整取定期存款</a></dd>
+<dd><a href="../../grjr/cxyw/lczqdqck.htm" target="_blank">零存整取定期存款</a></dd>
+<dd><a href="../../grjr/cxyw/grtzck.htm" target="_blank">个人通知存款</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/grdk.htm" target="_blank">个人贷款</a></dt>
+<dd><a href="../../grjr/grdk/grzfdk.htm" target="_blank">个人住房贷款</a></dd>
+<dd><a href="../../grjr/grdk/grzhxfdk.htm" target="_blank">个人综合消费贷款</a></dd>
+<dd><a href="../3241/3231.htm" target="_blank">长乐贷</a></dd>
+<dd><a href="../../grjr/grdk/grsyfdk.htm" target="_blank">个人商用房贷款</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/cfgl.htm" target="_blank">财富管理</a></dt>
+<dd><a href="../../grjr/cfgl/jjdxyw.htm" target="_blank">基金代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/axbyw.htm" target="_blank">安鑫宝业务</a></dd>
+<dd><a href="../../grjr/cfgl/dlbxyw.htm" target="_blank">代理保险业务</a></dd>
+<dd><a href="../../grjr/cfgl/dlswgjsyw.htm" target="_blank">代理实物贵金属业务</a></dd>
+<dd><a href="../../grjr/cfgl/xtdxyw.htm" target="_blank">信托代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/lcdxyw.htm" target="_blank">理财代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/zcgljhdxyw.htm" target="_blank">资产管理计划代销业务</a></dd>
+<dd><a href="../../grjr/cfgl/sfcg.htm" target="_blank">三方存管</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/sdyw1/aef.htm" target="_blank">收单业务</a></dt>
+<dd><a href="../../grjr/sdyw1/aef.htm" target="_blank">安e付</a></dd>
+</dl>
+<dl>
+<dt><a href="../../grjr/kqzc.htm" target="_blank">客群政策</a></dt>
+<dd><a href="../../grjr/kqzc/kqdy.htm" target="_blank">客群定义</a></dd>
+<dd><a href="../../grjr/kqzc/gjzc.htm" target="_blank">国家政策</a></dd>
+</dl>
+<dl>
+<dt><a href="https://ebank.ccabchina.com/mbank/wap/index.html#/Schema/Index/Index " target="_blank">个人电子银行</a></dt>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="https://wm.ccabchina.com" target="_blank">金长安理财</a>
+<div>
+<div>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/ProductPresentation" target="_blank">公募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/PrivatePlacement" target="_blank">私募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/Sell" target="_blank">信息披露</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/#/recommendation" target="_blank">客户服务</a></dt>
+</dl>
+</div> </div>
+</li>
+<li style="display: none;">
+<a href="https://wm.ccabchina.com/phone/" target="_blank">金长安理财</a>
+<div>
+<div>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/product/index?name=%E5%85%AC%E5%8B%9F%E7%90%86%E8%B4%A2" target="_blank">公募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/product/Placement?name=%E7%A7%81%E5%8B%9F%E7%90%86%E8%B4%A2" target="_blank">私募理财</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/info/index?name=%E4%BF%A1%E6%81%AF%E6%8A%AB%E9%9C%B2" target="_blank">信息披露</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/service/index?name=%E5%AE%A2%E6%88%B7%E6%9C%8D%E5%8A%A1" target="_blank">客户服务</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E6%8A%95%E8%B5%84%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA" target="_blank">投资人员公示</a></dt>
+</dl>
+<dl>
+<dt><a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E9%94%80%E5%94%AE%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA" target="_blank">销售人员公示</a></dt>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../../xyk/wybk.htm" target="_blank">信用卡</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../xyk/wybk.htm" target="_blank">我要办卡</a></dt>
+<dd><a href="../../xyk/wybk/ysfwjxyk.htm" target="_blank">云闪付无界信用卡</a></dd>
+<dd><a href="../../xyk/wybk/xshwjxyk.htm" target="_blank">新生活无界信用卡</a></dd>
+<dd><a href="../../xyk/wybk/bzxyk.htm" target="_blank">标准信用卡</a></dd>
+<dd><a href="../../xyk/fqyw/dexffqxyk2.htm" target="_blank">大额消费分期信用卡</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xyk/yhly.htm" target="_blank">优惠礼遇</a></dt>
+</dl>
+<dl>
+<dt><a href="../../xyk/fqyw.htm" target="_blank">分期业务</a></dt>
+<dd><a href="../../xyk/fqyw/dexffqxyk2.htm" target="_blank">大额消费分期信用卡</a></dd>
+<dd><a href="../../xyk/fqyw/lhxjfq.htm" target="_blank">灵活现金分期</a></dd>
+<dd><a href="../../xyk/fqyw/zdfq.htm" target="_blank">账单分期</a></dd>
+<dd><a href="../../xyk/fqyw/lhfq.htm" target="_blank">灵活分期</a></dd>
+<dd><a href="../../xyk/fqyw/xjfq.htm" target="_blank">现金分期</a></dd>
+</dl>
+<dl>
+<dt><a href="../../xyk/khfw.htm" target="_blank">客户服务</a></dt>
+<dd><a href="../../xyk/khfw/zxgg.htm" target="_blank">最新公告</a></dd>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../../gsjr/qyck.htm" target="_blank">公司金融</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../gsjr/qyck.htm" target="_blank">企业存款</a></dt>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位活期存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位定期存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位协定存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位通知存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">单位大额存单</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">外汇存款</a></dd>
+<dd><a href="../../gsjr/qyck.htm" target="_blank">资金证明</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/xdcp.htm" target="_blank">信贷产品</a></dt>
+<dd><a href="../3251/3241.htm" target="_blank">流动资金贷款</a></dd>
+<dd><a href="../3261/3251.htm" target="_blank">固定资产贷款</a></dd>
+<dd><a href="../3271/3261.htm" target="_blank">房地产开发贷款</a></dd>
+<dd><a href="../3291/3281.htm" target="_blank">并购贷款</a></dd>
+<dd><a href="../3301/3291.htm" target="_blank">经营性物业贷款</a></dd>
+<dd><a href="../3311/3301.htm" target="_blank">产业园区建设贷款</a></dd>
+<dd><a href="../3321/3311.htm" target="_blank">保障性租赁住房贷款</a></dd>
+<dd><a href="../3331/3321.htm" target="_blank">保障性租赁住房开发贷款</a></dd>
+<dd><a href="../3341/3331.htm" target="_blank">法人账户透支</a></dd>
+<dd><a href="../3351/3341.htm" target="_blank">保函</a></dd>
+<dd><a href="../3361/3351.htm" target="_blank">银行承兑汇票质押融资</a></dd>
+<dd><a href="../3371/3361.htm" target="_blank">商票通</a></dd>
+<dd><a href="../3381/3371.htm" target="_blank">长融·质量贷</a></dd>
+<dd><a href="../3391/3381.htm" target="_blank">长融·助力贷</a></dd>
+<dd><a href="../3401/3391.htm" target="_blank">绿金快贷</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/pjyw.htm" target="_blank">票据业务</a></dt>
+<dd><a href="../3411/3401.htm" target="_blank">银行承兑汇票签发</a></dd>
+<dd><a href="../3421/3411.htm" target="_blank">代理签发银行承兑汇票</a></dd>
+<dd><a href="../3431/3421.htm" target="_blank">商业汇票贴现</a></dd>
+<dd><a href="../3441/3431.htm" target="_blank">票据池业务</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/tzyx.htm" target="_blank">投资银行</a></dt>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">超短期融资券承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">短期融资券承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">中期票据承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">定向债务融资工具承销</a></dd>
+<dd><a href="../../gsjr/tzyx.htm" target="_blank">资产支持票据承销</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/jgyw.htm" target="_blank">机构业务</a></dt>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">政府机构服务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">政府社保服务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">住宅专项维修资金业务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">代理国库集中支付业务</a></dd>
+<dd><a href="../../gsjr/jgyw.htm" target="_blank">非税收入代理业务</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/myjr/whjy.htm" target="_blank">贸易金融</a></dt>
+<dd><a href="../../gsjr/myjr/whjy.htm" target="_blank">外汇交易</a></dd>
+<dd><a href="../../gsjr/myjr/gjjs.htm" target="_blank">国际结算</a></dd>
+<dd><a href="../../gsjr/myjr/gjmyrz.htm" target="_blank">国际贸易融资</a></dd>
+<dd><a href="../../gsjr/myjr/gylrz.htm" target="_blank">供应链融资</a></dd>
+<dd><a href="../../gsjr/myjr/kjdb.htm" target="_blank">跨境担保</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gsjr/jrsc/ywgk.htm" target="_blank">金融市场</a></dt>
+<dd><a href="../../gsjr/jrsc/ywgk.htm" target="_blank">业务概况</a></dd>
+<dd><a href="../../gsjr/jrsc/zqtzjy.htm" target="_blank">债券投资交易</a></dd>
+<dd><a href="../../gsjr/jrsc/tyzjjy.htm" target="_blank">同业资金交易</a></dd>
+<dd><a href="../../gsjr/jrsc/dzsyhpztx.htm" target="_blank">电子商业汇票转贴现</a></dd>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../../cpyc/zpgg.htm" target="_blank">诚聘英才</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../cpyc/zpgg.htm" target="_blank">招聘公告</a></dt>
+<dd><a href="../../cpyc/zpgg/a2025qjzp.htm" target="_blank">2025秋季招聘</a></dd>
+</dl>
+</div> </div>
+</li>
+<li>
+<a href="../../gywm/yxjs.htm" target="_blank">关于我们</a>
+<div>
+<div>
+<dl>
+<dt><a href="../../gywm/yxjs.htm" target="_blank">银行介绍</a></dt>
+<dd><a href="../../gywm/yxjs/zzjg1.htm" target="_blank">组织架构</a></dd>
+<dd><a href="../../gywm/yxjs/ppjg.htm" target="_blank">品牌架构</a></dd>
+<dd><a href="../../gywm/yxjs/qywh.htm" target="_blank">企业文化</a></dd>
+<dd><a href="../../gywm/yxjs/VIbs.htm" target="_blank">VI标识</a></dd>
+<dd><a href="../../gywm/yxjs/IPxx.htm" target="_blank">IP形象</a></dd>
+<dd><a href="https://mp.weixin.qq.com/s/X2jTmimeQBTM71ayIFmP9w" target="_blank">新年致辞</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gywm/tzzgx/gsgg.htm" target="_blank">投资者关系</a></dt>
+<dd><a href="../../gywm/tzzgx/gsgg.htm" target="_blank">公司公告</a></dd>
+<dd><a href="../../gywm/tzzgx/xxpl.htm" target="_blank">信息披露</a></dd>
+<dd><a href="../../gywm/tzzgx/jgzb.htm" target="_blank">监管资本</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gywm/xfzqybh1/khtscllc.htm" target="_blank">消费者权益保护</a></dt>
+<dd><a href="../../gywm/xfzqybh1/khtscllc.htm" target="_blank">客户投诉处理流程</a></dd>
+<dd><a href="../../gywm/xfzqybh1/khzxyycllc.htm" target="_blank">客户征信异议处理流程</a></dd>
+<dd><a href="../../gywm/xfzqybh1/xxpl.htm" target="_blank">信息披露</a></dd>
+</dl>
+<dl>
+<dt><a href="../../gywm/jrxkzgg.htm" target="_blank">金融许可证公告</a></dt>
+</dl>
+</div> </div>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<!-- 移动端导航 -->
+<div class="m-top">
+<div class="wap wap-menu">
+<img alt="" class="menu" src="../../images/menu.png"/>
+<img alt="" class="close-menu" src="../../images/close.png"/>
+</div>
+</div>
+<div class="wap m-head">
+<div class="m-logo">
+<!-- 网站logo图片地址请在本组件"内容配置-网站logo"处填写 -->
+<a href="../../index.htm"><img alt="" src="../../images/logo.png"/></a></div>
+<div class="m-nav">
+<div class="m-tlink">
+<a href="javascript:;" onclick='_addDynClicks("wburl", 2080012826, 41674)' target="_blank">客服热线：（029）96669</a>
+<a href="../../index/jgwd.htm" onclick='_addDynClicks("wburl", 2080012826, 99110)' target="_blank">机构网点</a>
+<script src="../../rt/ccabchina.com/gtInit.js"></script>
+<a class="ghb" href="javascript:GtInit.elderly.open();"> <img alt="" src="../../images/head-ghb2.png"/>关怀版</a>
+<a class="ghb" href="javascript:void(0);" id="gt_btn"> <img alt="" src="../../images/head-ghb.png"/>无障碍浏览</a>
+</div>
+<div id="divu8"></div>
+<script id="htmlu8" type="text/html">
+    <div id="appu8">
+        <div v-if="!isError">
+         <div class="m-search">
+            <input type="text" placeholder="请输入检索关键词" autocomplete=off v-model=query.keyWord @keyup.enter="onSubmit">
+         
+            
+             <input type="image" src="../../images/fdj.png" v-on:click="onSubmit()">
+           </div>
+        </div>
+        <div v-if="isError" style="color: #b30216; font-size:18px;text-align: center;padding:20px;">
+            应用维护中！
+        </div>
+    </div>
+</script>
+<script>
+    $("#divu8").html($("#htmlu8").text());
+</script>
+<script>
+    var appOwner = "2080012826";
+    var token = gettoken(10);
+    var urlPrefix = "/aop_component/";
+
+    jQuery.support.cors = true;
+    $.ajaxSetup({
+        beforeSend: function (request, settings) {
+            request.setRequestHeader("Authorization", token);
+            request.setRequestHeader("owner", appOwner);
+        }
+    });
+
+    new Vue({
+        el: "#appu8",
+        data: function () {
+            return {
+                query: {
+                    keyWord: "",//搜索关键词
+                    owner: appOwner,
+                    token: token,
+                    urlPrefix: urlPrefix,
+                    lang:"i18n_zh_CN"
+                },
+                isError: false
+            }
+        },
+        mounted: function () {
+            var _this = this;
+            // _this.init();
+        },
+        methods: {
+            init: function(){
+                $.ajax({
+                    url: "/aop_component//webber/search/test",
+                    type: "get",
+                    success: function (response) {
+                        if (response.code == "0000") {
+                        } else if (response.code == "220") {
+                            _this.isError = true;
+                            console.log(response);
+                        } else if (!response.code) {
+                            _this.isError = true;
+                            console.log(response);
+                        }
+                    },
+                    error: function (response) {
+                        _this.isError = true;
+                    }
+                });
+            },
+            onSubmit: function (e) {
+                var url = "/views/search/modules/resultpc/soso.html";
+                if ("10" == "1" || "10" == "2") {
+                    url = "" + url;
+                }
+                var _this = this;
+                var query = _this.query;
+                if (url.indexOf("?") > -1) {
+                    url = url.split("?")[0];
+                }
+                if (query.keyWord) {
+                    var query = new Base64().encode(JSON.stringify(query));
+                    window.open(url + "?query=" + query);
+                } else {
+                    alert("请填写搜索内容")
+                }
+            },
+        }
+    })
+</script>
+<ul class="clearfix">
+<li>
+<a href="../../xwjr/zayEd.htm">小微金融</a>
+<span></span>
+<ul>
+<li>
+<a href="../../xwjr/zayEd.htm">长安优E贷</a>
+</li>
+<li>
+<a href="../../xwjr/zaVd.htm">长安V贷</a>
+</li>
+<li>
+<a href="../../xwjr/zakcd.htm">长安科创贷</a>
+</li>
+<li>
+<a href="../../xwjr/zaxnd.htm">长安兴农贷</a>
+</li>
+<li>
+<a href="../../xwjr/xwdt/xwzx.htm">小微动态</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../grjr/jjk.htm">个人金融</a>
+<span></span>
+<ul>
+<li>
+<a href="../../grjr/jjk.htm">借记卡</a>
+</li>
+<li>
+<a href="../../grjr/cxyw.htm">储蓄业务</a>
+</li>
+<li>
+<a href="../../grjr/grdk.htm">个人贷款</a>
+</li>
+<li>
+<a href="../../grjr/cfgl.htm">财富管理</a>
+</li>
+<li>
+<a href="../../grjr/sdyw1/aef.htm">收单业务</a>
+</li>
+<li>
+<a href="../../grjr/kqzc.htm">客群政策</a>
+</li>
+<li>
+<a href="https://ebank.ccabchina.com/mbank/wap/index.html#/Schema/Index/Index ">个人电子银行</a>
+</li>
+</ul>
+</li>
+<li style="display: none;">
+<a href="https://wm.ccabchina.com">金长安理财</a>
+<span></span>
+<ul>
+<li>
+<a href="https://wm.ccabchina.com/#/ProductPresentation">公募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/#/PrivatePlacement">私募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/#/Sell">信息披露</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/#/recommendation">客户服务</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/">金长安理财</a>
+<span></span>
+<ul>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/product/index?name=%E5%85%AC%E5%8B%9F%E7%90%86%E8%B4%A2">公募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/product/Placement?name=%E7%A7%81%E5%8B%9F%E7%90%86%E8%B4%A2">私募理财</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/info/index?name=%E4%BF%A1%E6%81%AF%E6%8A%AB%E9%9C%B2">信息披露</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/service/index?name=%E5%AE%A2%E6%88%B7%E6%9C%8D%E5%8A%A1">客户服务</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E6%8A%95%E8%B5%84%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA">投资人员公示</a>
+</li>
+<li>
+<a href="https://wm.ccabchina.com/phone/#/pages/service/menber?name=%E9%94%80%E5%94%AE%E4%BA%BA%E5%91%98%E5%85%AC%E7%A4%BA">销售人员公示</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../xyk/wybk.htm">信用卡</a>
+<span></span>
+<ul>
+<li>
+<a href="../../xyk/wybk.htm">我要办卡</a>
+</li>
+<li>
+<a href="../../xyk/yhly.htm">优惠礼遇</a>
+</li>
+<li>
+<a href="../../xyk/fqyw.htm">分期业务</a>
+</li>
+<li>
+<a href="../../xyk/khfw.htm">客户服务</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../gsjr/qyck.htm">公司金融</a>
+<span></span>
+<ul>
+<li>
+<a href="../../gsjr/qyck.htm">企业存款</a>
+</li>
+<li>
+<a href="../../gsjr/xdcp.htm">信贷产品</a>
+</li>
+<li>
+<a href="../../gsjr/pjyw.htm">票据业务</a>
+</li>
+<li>
+<a href="../../gsjr/tzyx.htm">投资银行</a>
+</li>
+<li>
+<a href="../../gsjr/jgyw.htm">机构业务</a>
+</li>
+<li>
+<a href="../../gsjr/myjr/whjy.htm">贸易金融</a>
+</li>
+<li>
+<a href="../../gsjr/jrsc/ywgk.htm">金融市场</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../cpyc/zpgg.htm">诚聘英才</a>
+<span></span>
+<ul>
+<li>
+<a href="../../cpyc/zpgg.htm">招聘公告</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="../../gywm/yxjs.htm">关于我们</a>
+<span></span>
+<ul>
+<li>
+<a href="../../gywm/yxjs.htm">银行介绍</a>
+</li>
+<li>
+<a href="../../gywm/tzzgx/gsgg.htm">投资者关系</a>
+</li>
+<li>
+<a href="../../gywm/xfzqybh1/khtscllc.htm">消费者权益保护</a>
+</li>
+<li>
+<a href="../../gywm/jrxkzgg.htm">金融许可证公告</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="banner-box">
+<div class="banner"><img src="../../images/ban1.jpg"/></div>
+<h3>
+长安V贷</h3>
+</div>
+<!-- 主体 -->
+<div class="nymain">
+<div class="leftNav-box">
+<div class="wp">
+<div class="leftNav">
+<div class="leftNav-tit">
+<h2 class="wow fadeInUp">小微金融 <span></span></h2>
+</div>
+<ul class="clearfix wow fadeInUp">
+<li>
+<a href="../../xwjr/zayEd.htm">长安优E贷</a>
+<span></span>
+<ul>
+<li> <a href="../1022/1165.htm">优税e贷</a></li>
+<li> <a href="../1022/1164.htm">优房e贷</a></li>
+<li> <a href="../1022/1163.htm">优农e贷</a></li>
+</ul>
+</li>
+<li class="active on">
+<a href="../../xwjr/zaVd.htm">长安V贷</a>
+<span></span>
+<ul>
+<li> <a href="1082.htm">固定资产贷款</a></li>
+<li> <a href="1083.htm">流动资金贷款</a></li>
+<li> <a href="1084.htm">个人经营贷款</a></li>
+<li> <a href="1081.htm">存续贷</a></li>
+<li> <a href="1077.htm">快速贷</a></li>
+<li> <a href="1078.htm">循环贷</a></li>
+<li> <a href="1079.htm">商票通</a></li>
+<li> <a href="1080.htm">银票通</a></li>
+<li> <a href="1021.htm">园区贷</a></li>
+<li> <a href="1026.htm">市场贷</a></li>
+<li> <a href="1030.htm">政采贷</a></li>
+<li> <a href="1025.htm">医保贷</a></li>
+<li> <a href="1024.htm">药供贷</a></li>
+<li> <a href="1135.htm">烟商贷</a></li>
+<li> <a href="1020.htm">物业贷</a></li>
+<li> <a href="1022.htm">厂房购置贷</a></li>
+<li> <a href="1023.htm">核心供应链贷</a></li>
+<li> <a href="1029.htm">创业担保贷</a></li>
+<li> <a href="1028.htm">秦青优惠贷</a></li>
+</ul>
+</li>
+<li>
+<a href="../../xwjr/zakcd.htm">长安科创贷</a>
+<span></span>
+<ul>
+<li> <a href="../1020/1037.htm">秦创贷</a></li>
+<li> <a href="../1020/1036.htm">秦科贷</a></li>
+<li> <a href="../1020/1035.htm">工信贷</a></li>
+<li> <a href="../1020/1034.htm">专精特新企业贷</a></li>
+<li> <a href="../1020/1033.htm">知识产权质押贷</a></li>
+<li> <a href="../1020/1032.htm">军民融合贷</a></li>
+<li> <a href="../1020/1031.htm">瞪羚企业贷</a></li>
+<li> <a href="../1020/1136.htm">积分贷</a></li>
+</ul>
+</li>
+<li>
+<a href="../../xwjr/zaxnd.htm">长安兴农贷</a>
+<span></span>
+<ul>
+<li> <a href="../1021/1040.htm">集体经济组织贷款</a></li>
+<li> <a href="../1021/1038.htm">农户生产经营贷款</a></li>
+<li> <a href="../1021/1039.htm">农民专业合作社贷款</a></li>
+<li> <a href="../1021/1045.htm">富硒产业贷</a></li>
+<li> <a href="../1021/1044.htm">苹果产业贷</a></li>
+<li> <a href="../1021/1043.htm">食用菌产业贷</a></li>
+<li> <a href="../1021/1042.htm">地域特色农业贷</a></li>
+<li> <a href="../1021/1041.htm">美丽乡村贷</a></li>
+</ul>
+</li>
+<li>
+<a href="../../xwjr/xwdt/xwzx.htm">小微动态</a>
+<span></span>
+<ul>
+<li> <a href="../../xwjr/xwdt/xwzx.htm">小微资讯</a></li>
+<li> <a href="../../xwjr/xwdt/xwsp.htm">小微视频</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="ny-right">
+<div class="position wp wow fadeInUp">
+<div class="">
+<img alt="" src="../../images/weizhi.png"/>
+<a href="../../index.htm">首页</a>
+<span>/</span>
+<a href="../../xwjr/zayEd.htm">小微金融</a>
+<span>/</span>
+<a href="../../xwjr/zaVd.htm">长安V贷</a>
+<span>/</span>
+<a class="position-dq">  正文</a>
+</div>
+</div>
+<div class="ny-rk wp">
+<div class="jtxq hchk">
+<script language="javascript" src="../../_dwr/interface/NewsvoteDWR.js"></script><script language="javascript" src="../../_dwr/engine.js"></script><script language="javascript" src="../../system/resource/js/news/newscontent.js"></script><script language="javascript" src="../../system/resource/js/ajax.js"></script><form name="_newscontent_fromname"><input name="CSRF_TOKENKEY_CUSTOM" type="hidden" value="0V8sYucGns9M3Bi7G6YcqRIjFIbFgcuT"/>
+<div class="fl01 flex">
+<div class="left">
+<h3>园区贷</h3>
+<p style="text-indent: 0.4rem;"></p>
+<p style="text-indent: 0.4rem;">园区贷是指向经长安银行准入的园区内小微企业发放，用于日常生产经营的流动资金贷款。</p>
+</div>
+<div class="right">
+<img alt="" src="../../__local/A/0C/7B/66D1B87D5DE5C2314D39DEBFF81_7C9C2E8B_2E6BA.jpg"/>
+</div>
+</div>
+<div class="fl02">
+<ul class="wl" id="vsb_content">
+<li class="wl"><h3>特点</h3><div><p class="vsbcontent_start">以园区为单位制定整体的融资方案，简化资料，批量操作，集中审批，快捷高效。</p></div></li><li class="wl"><h3>申请条件</h3><div><p class="vsbcontent_start">（一）所在园区属于地级市及以上政府或相关部门认定的工业园区和科技园区等，设立时间3年以上；</p><p>（二）借款人正常经营2年以上，法定代表人或实际控制人从业年限原则上不少于3年；</p><p>（三）信用状况良好，无恶意违约记录；</p><p class="vsbcontent_end">（四）符合长安银行规定的其他条件。</p></div></li><li class="wl"><h3>贷款额度</h3><div><p class="vsbcontent_start">最高不超过1000万元。</p></div></li><li class="wl"><h3>担保方式</h3><div><p class="vsbcontent_start">土地出让金质押+园区管理方保证，或其他符合长安银行规定的担保方式。</p></div></li><li class="wl"><h3>贷款期限</h3><div><p class="vsbcontent_start">最长不超过1年。</p></div></li>
+</ul>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<div class="foot">
+<div class="wp">
+<div class="foot-t">
+<div class="foot-tl">
+<div class="lxwm"><script language="javascript" src="../../system/resource/js/news/mp4video.js"></script>
+<h3>联系我们</h3>
+<hr/>
+<p>客服电话：（029）96669</p>
+<p>信用卡客服电话: 40005-96669</p>
+<p>邮政编码: 710075</p>
+<p>地址: 西安高新技术产业开发区高新四路13号朗臣大厦</p></div>
+<div class="gywm"><h3>关于我们</h3>
+<hr/>
+<p><a href="../../gywm/tzzgx/gsgg.htm" onclick='_addDynClicks("wburl", 2080012826, 105355)'>投资者关系</a></p>
+<p><a href="../../yyzzxx.htm" onclick='_addDynClicks("wburl", 2080012826, 105356)'>营业执照信息</a></p>
+<p><a href="../../gywm/xfzqybh1/khtscllc.htm" onclick='_addDynClicks("wburl", 2080012826, 105426)'>消费者权益保护</a></p>
+</div>
+<div class="gywm" style="    display: none;">
+<h3>网站安全</h3>
+<hr/>
+<p><a href="../../wzaq/aqsm.htm">安全说明</a></p>
+<p><a href="../../wzaq/wzsm.htm">网站声明</a></p>
+<p><a href="../../wzaq/ysbmtk.htm">隐私保密条款</a></p>
+</div>
+<div class="gywm"> <h3>投诉建议</h3>
+<hr/>
+<p><a href="../../tsjy/khtsdh__029_96669.htm">客户投诉电话：（029）96669</a></p>
+<p><a href="../../gywm/xfzqybh1/khtscllc.htm">客户投诉处理流程</a></p>
+</div>
+</div>
+<div class="foot-tr">
+<div class="link">
+<div><p>友情链接</p>
+<div>
+<a href="http://www.pbc.gov.cn/" onclick='_addDynClicks("wburl", 2080012826, 41677)' target="_blank">中国人民银行</a>
+<a href="https://www.cbirc.gov.cn/cn/view/pages/index/index.html" onclick='_addDynClicks("wburl", 2080012826, 105430)' target="_blank">国家金融监督管理总局</a>
+<a href="http://www.shaanxi.gov.cn/" onclick='_addDynClicks("wburl", 2080012826, 105357)' target="_blank">陕西省人民政府</a>
+<a href="https://www.szse.cn/index/index.html" onclick='_addDynClicks("wburl", 2080012826, 105432)' target="_blank">深圳证券交易所</a>
+<a href="https://www.sse.com.cn/" onclick='_addDynClicks("wburl", 2080012826, 105433)' target="_blank">上海证券交易所</a>
+<a href="https://www.sxycpc.com/" onclick='_addDynClicks("wburl", 2080012826, 105434)' target="_blank">陕西延长石油（集团）有限责任公司</a>
+<a href="https://www.shxcoal.com/" onclick='_addDynClicks("wburl", 2080012826, 105435)' target="_blank">陕西煤业股份有限公司</a>
+<a href="https://www.yousergroup.com/" onclick='_addDynClicks("wburl", 2080012826, 105436)' target="_blank">陕西有色金属控股集团有限责任公司</a>
+<a href="http://theory.people.com.cn/GB/40557/359404/index.html" onclick='_addDynClicks("wburl", 2080012826, 105437)' target="_blank">凝聚中国力量 实现中国梦--理论--人民网、群众路线网--人民网</a>
+</div>
+</div>
+</div>
+<div class="foot-ewm"> <ul>
+<li>
+<img onclick='_addDynClicks("wbimage", 2080012826, 1011244)' src="../../images/wx1.png"/>
+<p>手机银行</p>
+</li>
+<li>
+<img onclick='_addDynClicks("wbimage", 2080012826, 1011245)' src="../../images/wx2.png"/>
+<p>微信银行</p>
+</li>
+<li>
+<img onclick='_addDynClicks("wbimage", 2080012826, 1011246)' src="../../images/wx3.png"/>
+<p>长乐贷</p>
+</li>
+<li>
+<img onclick='_addDynClicks("wbimage", 2080012826, 1016508)' src="../../images/guanfangdouyinhao.jpg"/>
+<p>官方抖音号</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="foot-d">
+<div class="foot-dlj"> <a href="../../index/wzdh.htm" onclick='_addDynClicks("wburl", 2080012826, 105358)' target="_blank">网站导航</a> | 
+   <a href="../../index/flsm.htm" onclick='_addDynClicks("wburl", 2080012826, 105421)' target="_blank">法律声明</a> | 
+   <a href="../../lyb.jsp" onclick='_addDynClicks("wburl", 2080012826, 105422)' target="_blank">廉政信箱</a> | 
+   <a href="../../cpyc/zpgg/a2025qjzp.htm" onclick='_addDynClicks("wburl", 2080012826, 105423)' target="_blank">人才招聘</a>
+</div>
+<div class="foot-bq">
+<p><!-- 版权内容请在本组件"内容配置-版权"处填写 -->
+<p>长安银行版权所有Copyright©2009 All Rights Reserved.<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_self">陕ICP备11007555号    本网站已在信息产业部备案管理系统备案 </a>   <img src="../../__local/7/D4/17/0C12175DF21A043B89039363039_506E4263_1237.png"/><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=61019002002554" target="_self" textvalue="陕公网安备 61019002002554号">陕公网安备 61019002002554号</a>    本网站已支持IPV6访问</p></p>
+</div>
+</div>
+</div>
+</div>
+<script src="../../js/jquery.js"></script>
+<script src="../../js/slick.js"></script>
+<script src="../../js/public.js"></script>
+<script src="../../js/wow.min.js" type="text/javascript"></script>
+<script>
+        $(function () {
+            var docWidth = $(document).width();
+            if (docWidth > 1024) {
+                // new WOW().init();
+            }
+        })
+    </script>
+</body>
+</html>
