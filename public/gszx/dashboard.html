@@ -928,9 +928,17 @@ body {
         <a href="#" class="more">查看全部 &raquo;</a>
       </div>
       <div style="overflow-x:auto;">
+        <div style="padding:8px 12px;background:#f8f9fa;border-bottom:1px solid #e4e7eb;display:flex;align-items:center;gap:12px;">
+          <label style="cursor:pointer;font-size:13px;">
+            <input type="checkbox" id="selectAllTx" onchange="toggleSelectAll()" style="margin-right:6px;cursor:pointer;"> 全选
+          </label>
+          <button onclick="downloadSelected()" style="background:#C6151D;color:#fff;border:none;padding:6px 16px;border-radius:4px;font-size:13px;cursor:pointer;">&#11015; 下载选中记录</button>
+          <span id="selectedCount" style="font-size:12px;color:#888;"></span>
+        </div>
         <table class="tx-table">
           <thead>
             <tr>
+              <th style="width:40px;"></th>
               <th>交易时间</th>
               <th>对方账户</th>
               <th>对方户名</th>
@@ -1136,6 +1144,28 @@ if (txMoreBtn) {
     }, 600);
   });
 }
+// ========== SELECT / DOWNLOAD ==========
+function toggleSelectAll() {
+  const checked = document.getElementById('selectAllTx').checked;
+  document.querySelectorAll('.tx-cb').forEach(cb => cb.checked = checked);
+  updateSelectedCount();
+}
+function updateSelectedCount() {
+  const sel = document.querySelectorAll('.tx-cb:checked').length;
+  document.getElementById('selectedCount').textContent = sel > 0 ? `已选中 ${sel} 笔` : '';
+}
+function downloadSelected() {
+  const cbs = document.querySelectorAll('.tx-cb:checked');
+  if (cbs.length === 0) { alert('请先选择要下载的交易记录'); return; }
+  const rows = Array.from(cbs).map(cb => transactions[parseInt(cb.dataset.idx)]);
+  const csv = '\uFEFF交易时间,对方账户,对方户名,类型,金额（元）,状态,备注\n' +
+    rows.map(tx => `"${tx.date}","${tx.toAcc}","${tx.toName}","${tx.type==='in'?'入账':tx.type==='out'?'转出':'内部'}","${tx.amount}","${tx.status==='success'?'已成功':tx.status==='pending'?'处理中':'已失败'}","${tx.note}"`).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `交易明细_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
 function init() {
   renderTransactions();
   renderChart();
@@ -1143,8 +1173,9 @@ function init() {
 
 function renderTransactions() {
   const tbody = document.getElementById('txTable');
-  tbody.innerHTML = transactions.map(tx => `
+  tbody.innerHTML = transactions.map((tx, i) => `
     <tr>
+      <td><input type="checkbox" class="tx-cb" data-idx="${i}" onchange="updateSelectedCount()" style="cursor:pointer;"></td>
       <td style="white-space:nowrap;color:#888;font-size:12px;">${tx.date}</td>
       <td style="font-family:Roboto Mono,Consolas,monospace;font-size:12px;">${tx.toAcc}</td>
       <td style="font-size:13px;">${tx.toName}</td>
