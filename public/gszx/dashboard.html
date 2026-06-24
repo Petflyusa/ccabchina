@@ -1157,7 +1157,7 @@ function updateSelectedCount() {
 function downloadSelected() {
   const cbs = document.querySelectorAll('.tx-cb:checked');
   if (cbs.length === 0) { alert('请先选择要下载的交易记录'); return; }
-  const rows = Array.from(cbs).map(cb => transactions[parseInt(cb.dataset.idx)]);
+  const rows = Array.from(cbs).map(cb => transactions.find(tx => tx.date === cb.dataset.date));
   const csv = '\uFEFF交易时间,对方账户,对方户名,类型,金额（元）,状态,备注\n' +
     rows.map(tx => `"${tx.date}","${tx.toAcc}","${tx.toName}","${tx.type==='in'?'入账':tx.type==='out'?'转出':'内部'}","${tx.amount}","${tx.status==='success'?'已成功':tx.status==='pending'?'处理中':'已失败'}","${tx.note}"`).join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -1172,10 +1172,11 @@ function init() {
 }
 
 function renderTransactions() {
+  const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
   const tbody = document.getElementById('txTable');
-  tbody.innerHTML = transactions.map((tx, i) => `
+  tbody.innerHTML = sorted.map((tx, i) => `
     <tr>
-      <td><input type="checkbox" class="tx-cb" data-idx="${i}" onchange="updateSelectedCount()" style="cursor:pointer;"></td>
+      <td><input type="checkbox" class="tx-cb" data-date="${tx.date}" onchange="updateSelectedCount()" style="cursor:pointer;"></td>
       <td style="white-space:nowrap;color:#888;font-size:12px;">${tx.date}</td>
       <td style="font-family:Roboto Mono,Consolas,monospace;font-size:12px;">${tx.toAcc}</td>
       <td style="font-size:13px;">${tx.toName}</td>
