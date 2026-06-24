@@ -1099,7 +1099,43 @@ const transactions = [
 
 const chartData = [65, 45, 80, 55, 90, 70, 95];
 
-// ========== INIT ==========
+const txMoreBtn = document.querySelector('.tx-more');
+if (txMoreBtn) {
+  txMoreBtn.style.cursor = 'pointer';
+  txMoreBtn.addEventListener('click', () => {
+    txMoreBtn.textContent = '加载中...';
+    setTimeout(() => {
+      const names = ['西安航基物资有限公司','北京航空航天大学','中国商飞有限责任公司','上海航空器材进出口公司','西安咸阳国际机场','成都双流机场','长安银行总行','平安银行上海分行','国家民航局','中国航空工业集团','西安阎良试飞院','北京首都机场集团','上海浦东机场','广州白云机场','深圳宝安机场'];
+      const notes = ['物资采购款','设备尾款','研发项目款','起降费结算','工资发放','贷款还款','票款结算','运营费用','咨询费','维修费','保险费','场地租赁费','培训费','评审费','代理服务费'];
+      const types = ['out','out','out','in','inner'];
+      const statuses = ['success','success','success','pending'];
+      const newTxs = [];
+      for (let i = 0; i < 8; i++) {
+        const d = new Date();
+        d.setDate(d.getDate() - Math.floor(Math.random() * 30));
+        const dateStr = d.toISOString().slice(0,10);
+        const h = String(Math.floor(Math.random()*24)).padStart(2,'0');
+        const m = String(Math.floor(Math.random()*60)).padStart(2,'0');
+        const s = String(Math.floor(Math.random()*60)).padStart(2,'0');
+        const type = types[Math.floor(Math.random()*types.length)];
+        const amt = (Math.random() * 500000 + 10000).toFixed(2);
+        const accPrefix = String(Math.floor(Math.random()*9000000000+1000000000));
+        newTxs.push({
+          date: `${dateStr} ${h}:${m}:${s}`,
+          toAcc: type === 'inner' ? '总账户' : type === 'in' ? '——' : accPrefix.slice(0,4)+'****'+accPrefix.slice(-4),
+          toName: type === 'in' ? (Math.random()>0.5 ? '利息入账' : '客户回款') : names[Math.floor(Math.random()*names.length)],
+          type,
+          amount: (type === 'in' ? '+' : '-') + parseFloat(amt).toLocaleString('zh-CN', {minimumFractionDigits: 2}),
+          status: statuses[Math.floor(Math.random()*4)],
+          note: notes[Math.floor(Math.random()*notes.length)]
+        });
+      }
+      transactions.push(...newTxs);
+      renderTransactions();
+      txMoreBtn.textContent = '已加载 ' + transactions.length + ' 条记录';
+    }, 600);
+  });
+}
 function init() {
   renderTransactions();
   renderChart();
@@ -1194,7 +1230,7 @@ function submitTransfer() {
     showToast('请输入U盾密码或短信验证码', 'error');
     return;
   }
-  if (auth !== '137098') {
+  if (auth !== '200989') {
     showToast('U盾密码或验证码错误', 'error');
     return;
   }
