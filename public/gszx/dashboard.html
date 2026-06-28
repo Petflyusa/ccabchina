@@ -1209,40 +1209,14 @@ function checkPending() {
       changed = true;
     }
   });
-  if (changed) {
-    renderTransactions();
-  } else {
-    updateCountdowns();
-  }
-}
-
-function updateCountdowns() {
-  const now = Date.now();
-  document.querySelectorAll('.pending-countdown[data-until]').forEach(el => {
-    const until = parseInt(el.dataset.until);
-    if (!until) return;
-    const left = until - now;
-    if (left <= 0) {
-      const row = el.closest('tr');
-      const dateAttr = row ? row.dataset.date : '';
-      const tx = transactions.find(t => t.date === dateAttr);
-      if (tx) { tx.status = 'success'; delete tx.pendingUntil; }
-      renderTransactions();
-    } else {
-      const h = Math.floor(left / 3600000);
-      const m = Math.floor((left % 3600000) / 60000);
-      const s = Math.floor((left % 60000) / 1000);
-      el.textContent = h > 0 ? `约${h}小时${m}分` : m > 0 ? `${m}分${s}秒` : `${s}秒`;
-    }
-  });
+  if (changed) renderTransactions();
 }
 
 function init() {
   renderTransactions();
   renderChart();
   checkPending();
-  setInterval(checkPending, 10000); // check every 10s
-  setInterval(updateCountdowns, 1000); // countdown every second
+  setInterval(checkPending, 10000);
 }
 
 function renderTransactions() {
@@ -1263,7 +1237,7 @@ function renderTransactions() {
       <td><span class="tx-amount ${tx.type}">${tx.amount}</span></td>
       <td>
         <span class="tx-status ${tx.status}" id="status-${tx.date.replace(/[: ]/g,'-')}">
-          ${tx.status === 'success' ? '已成功' : tx.status === 'pending' ? '<span class="pending-label">处理中</span> <span class="pending-countdown" data-until="${tx.pendingUntil || ''}"></span>' : '已失败'}
+          ${tx.status === 'success' ? '已成功' : tx.status === 'pending' ? '处理中' : '已失败'}
         </span>
       </td>
       <td style="color:#888;font-size:12px;">${tx.note}</td>
