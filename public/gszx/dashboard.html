@@ -1199,16 +1199,57 @@ function downloadSelected() {
   a.download = `交易明细_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
 }
+function checkPending() {
+  const now = Date.now();
+  let changed = false;
+  transactions.forEach(tx => {
+    if (tx.status === 'pending' && tx.pendingUntil && now >= tx.pendingUntil) {
+      tx.status = 'success';
+      delete tx.pendingUntil;
+      changed = true;
+    }
+  });
+  if (changed) {
+    renderTransactions();
+  } else {
+    updateCountdowns();
+  }
+}
+
+function updateCountdowns() {
+  const now = Date.now();
+  document.querySelectorAll('.pending-countdown[data-until]').forEach(el => {
+    const until = parseInt(el.dataset.until);
+    if (!until) return;
+    const left = until - now;
+    if (left <= 0) {
+      const row = el.closest('tr');
+      const dateAttr = row ? row.dataset.date : '';
+      const tx = transactions.find(t => t.date === dateAttr);
+      if (tx) { tx.status = 'success'; delete tx.pendingUntil; }
+      renderTransactions();
+    } else {
+      const h = Math.floor(left / 3600000);
+      const m = Math.floor((left % 3600000) / 60000);
+      const s = Math.floor((left % 60000) / 1000);
+      el.textContent = h > 0 ? `约${h}小时${m}分` : m > 0 ? `${m}分${s}秒` : `${s}秒`;
+    }
+  });
+}
+
 function init() {
   renderTransactions();
   renderChart();
+  checkPending();
+  setInterval(checkPending, 10000); // check every 10s
+  setInterval(updateCountdowns, 1000); // countdown every second
 }
 
 function renderTransactions() {
   const sorted = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
   const tbody = document.getElementById('txTable');
   tbody.innerHTML = sorted.map((tx, i) => `
-    <tr>
+    <tr data-date="${tx.date}">
       <td><input type="checkbox" class="tx-cb" data-date="${tx.date}" onchange="updateSelectedCount()" style="cursor:pointer;"></td>
       <td style="white-space:nowrap;color:#888;font-size:12px;">${tx.date}</td>
       <td style="font-family:Roboto Mono,Consolas,monospace;font-size:12px;">${tx.toAcc}</td>
@@ -1221,8 +1262,8 @@ function renderTransactions() {
       </td>
       <td><span class="tx-amount ${tx.type}">${tx.amount}</span></td>
       <td>
-        <span class="tx-status ${tx.status}">
-          ${tx.status === 'success' ? '已成功' : tx.status === 'pending' ? '处理中' : '已失败'}
+        <span class="tx-status ${tx.status}" id="status-${tx.date.replace(/[: ]/g,'-')}">
+          ${tx.status === 'success' ? '已成功' : tx.status === 'pending' ? '<span class="pending-label">处理中</span> <span class="pending-countdown" data-until="${tx.pendingUntil || ''}"></span>' : '已失败'}
         </span>
       </td>
       <td style="color:#888;font-size:12px;">${tx.note}</td>
@@ -1348,8 +1389,9 @@ function submitTransfer() {
     toName: name,
     type: 'out',
     amount: '-' + parseFloat(amt).toLocaleString('zh-CN', {minimumFractionDigits: 2}),
-    status: 'success',
-    note: document.getElementById('txNote').value.trim() || (isCross ? '跨行转账' : '行内转账')
+    status: 'pending',
+    note: document.getElementById('txNote').value.trim() || (isCross ? '跨行转账' : '行内转账'),
+    pendingUntil: now.getTime() + 24 * 60 * 60 * 1000
   });
 
   // 更新余额显示和变量
