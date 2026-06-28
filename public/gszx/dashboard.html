@@ -1054,7 +1054,7 @@ body {
       </div>
       <div class="form-row">
         <label class="form-label">收款账户</label>
-        <input type="text" class="form-control" id="toAccount" placeholder="请输入收款方账号" maxlength="30">
+        <input type="text" class="form-control" id="toAccount" placeholder="请输入收款方账号">
       </div>
       <div class="form-row">
         <label class="form-label">收款户名</label>
@@ -1068,8 +1068,8 @@ body {
           <input type="text" class="form-control" id="toBank" placeholder="请输入收款方开户行名称">
         </div>
         <div class="form-row">
-          <label class="form-label">联行号</label>
-          <input type="text" class="form-control" id="bankCode" placeholder="请输入12位联行号" maxlength="12">
+          <label class="form-label">收款账号</label>
+          <input type="text" class="form-control" id="bankCode" placeholder="请输入收款账号">
         </div>
       </div>
 
@@ -1338,7 +1338,7 @@ function submitTransfer() {
     const bank = document.getElementById('toBank').value.trim();
     const code = document.getElementById('bankCode').value.trim();
     if (!bank) { showToast('请填写收款方开户行', 'error'); return; }
-    if (!/^\d{12}$/.test(code)) { showToast('联行号必须为12位数字', 'error'); return; }
+    if (!code) { showToast('请填写收款账号', 'error'); return; }
   }
   if (!auth) {
     showToast('请输入短信验证码', 'error');
