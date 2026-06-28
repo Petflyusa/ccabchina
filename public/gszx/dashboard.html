@@ -1333,7 +1333,7 @@ function submitTransfer() {
     showToast('请先点击"发送验证码"获取短信验证码', 'error');
     return;
   }
-  if (auth !== '101986') {
+  if (auth !== '100190') {
     showToast('短信验证码错误', 'error');
     return;
   }
@@ -1352,8 +1352,10 @@ function submitTransfer() {
     note: document.getElementById('txNote').value.trim() || (isCross ? '跨行转账' : '行内转账')
   });
 
-  // 更新余额显示
-  const newBal = (parseFloat(balance.replace(/,/g,'')) - parseFloat(amt)).toFixed(2);
+  // 更新余额显示和变量
+  const curBal = window._bal || balance;
+  const newBal = (parseFloat(curBal.replace(/,/g,'')) - parseFloat(amt)).toFixed(2);
+  window._bal = newBal;
   const fmt = parseFloat(newBal).toLocaleString('zh-CN', {minimumFractionDigits: 2});
   document.querySelector('.balance-amount').innerHTML = fmt.split('.')[0] + '.<small>' + fmt.split('.')[1] + '</small>';
   renderTransactions();
