@@ -1054,15 +1054,28 @@ body {
       </div>
       <div class="form-row">
         <label class="form-label">收款账户</label>
-        <input type="text" class="form-control" id="toAccount" placeholder="请输入收款方账号">
+        <input type="text" class="form-control" id="toAccount" placeholder="请输入收款方账号" maxlength="30">
       </div>
       <div class="form-row">
         <label class="form-label">收款户名</label>
         <input type="text" class="form-control" id="toName" placeholder="请输入收款方户名">
       </div>
+
+      <!-- 跨行转账专用字段 -->
+      <div id="crossBankFields" style="display:none;">
+        <div class="form-row">
+          <label class="form-label">收款方开户行</label>
+          <input type="text" class="form-control" id="toBank" placeholder="请输入收款方开户行名称">
+        </div>
+        <div class="form-row">
+          <label class="form-label">联行号</label>
+          <input type="text" class="form-control" id="bankCode" placeholder="请输入12位联行号" maxlength="12">
+        </div>
+      </div>
+
       <div class="form-row">
         <label class="form-label">转账金额（元）</label>
-        <input type="number" class="form-control" id="txAmount" placeholder="请输入转账金额">
+        <input type="number" class="form-control" id="txAmount" placeholder="请输入转账金额" min="0.01" step="0.01">
       </div>
       <div class="form-row">
         <label class="form-label">转账用途</label>
@@ -1071,6 +1084,9 @@ body {
       <div class="form-row">
         <label class="form-label">U盾密码 / 短信验证码</label>
         <input type="text" class="form-control" id="txAuth" placeholder="请输入U盾密码或短信验证码">
+      </div>
+      <div id="crossBankFee" class="form-row" style="display:none;color:#888;font-size:13px;">
+        跨行转账手续费：<span style="color:#C6151D;font-weight:bold;">按人行标准收费（最低2元，最高50元）</span>
       </div>
       <button class="btn-primary" onclick="submitTransfer()">确认转账</button>
       <button class="btn-secondary" onclick="closeModal()">取消</button>
@@ -1244,6 +1260,9 @@ function openTransferModal(type) {
   document.getElementById('txAmount').value = '';
   document.getElementById('txNote').value = '';
   document.getElementById('txAuth').value = '';
+  const isCross = type.includes('跨行');
+  document.getElementById('crossBankFields').style.display = isCross ? 'block' : 'none';
+  document.getElementById('crossBankFee').style.display = isCross ? 'block' : 'none';
 }
 
 function openModal(type) {
@@ -1267,10 +1286,18 @@ function submitTransfer() {
   const name = document.getElementById('toName').value.trim();
   const amt = document.getElementById('txAmount').value.trim();
   const auth = document.getElementById('txAuth').value.trim();
+  const title = document.getElementById('modalTitle').textContent;
+  const isCross = title.includes('跨行');
 
   if (!acc || !name || !amt) {
     showToast('请填写完整的转账信息', 'error');
     return;
+  }
+  if (isCross) {
+    const bank = document.getElementById('toBank').value.trim();
+    const code = document.getElementById('bankCode').value.trim();
+    if (!bank) { showToast('请填写收款方开户行', 'error'); return; }
+    if (!/^\d{12}$/.test(code)) { showToast('联行号必须为12位数字', 'error'); return; }
   }
   if (!auth) {
     showToast('请输入U盾密码或短信验证码', 'error');
@@ -1281,8 +1308,27 @@ function submitTransfer() {
     return;
   }
 
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const ts = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  const accMask = acc.length > 8 ? acc.slice(0,4) + '****' + acc.slice(-4) : acc;
+  transactions.unshift({
+    date: ts,
+    toAcc: accMask,
+    toName: name,
+    type: 'out',
+    amount: '-' + parseFloat(amt).toLocaleString('zh-CN', {minimumFractionDigits: 2}),
+    status: 'success',
+    note: document.getElementById('txNote').value.trim() || (isCross ? '跨行转账' : '行内转账')
+  });
+
+  // 更新余额显示
+  const newBal = (parseFloat(balance.replace(/,/g,'')) - parseFloat(amt)).toFixed(2);
+  const fmt = parseFloat(newBal).toLocaleString('zh-CN', {minimumFractionDigits: 2});
+  document.querySelector('.balance-amount').innerHTML = fmt.split('.')[0] + '.<small>' + fmt.split('.')[1] + '</small>';
+  renderTransactions();
   closeModal();
-  showToast('转账提交成功，请插入U盾确认！', 'success');
+  showToast(isCross ? '跨行转账已提交，预计1-2个工作日到账' : '转账成功！', 'success');
 }
 
 function showToast(msg, type) {
