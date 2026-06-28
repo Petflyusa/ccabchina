@@ -1083,7 +1083,10 @@ body {
       </div>
       <div class="form-row">
         <label class="form-label">U盾密码 / 短信验证码</label>
-        <input type="text" class="form-control" id="txAuth" placeholder="请输入U盾密码或短信验证码">
+        <div style="display:flex;gap:8px;">
+          <input type="text" class="form-control" id="txAuth" placeholder="请输入短信验证码" style="flex:1;">
+          <button type="button" id="sendSmsBtn" onclick="sendTransferSms()" style="white-space:nowrap;padding:0 12px;background:#C6151D;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;">发送验证码</button>
+        </div>
       </div>
       <div id="crossBankFee" class="form-row" style="display:none;color:#888;font-size:13px;">
         跨行转账手续费：<span style="color:#C6151D;font-weight:bold;">按人行标准收费（最低2元，最高50元）</span>
@@ -1263,6 +1266,9 @@ function openTransferModal(type) {
   const isCross = type.includes('跨行');
   document.getElementById('crossBankFields').style.display = isCross ? 'block' : 'none';
   document.getElementById('crossBankFee').style.display = isCross ? 'block' : 'none';
+  window._smsSentForTransfer = false;
+  const btn = document.getElementById('sendSmsBtn');
+  if (btn) { btn.textContent = '发送验证码'; btn.disabled = false; }
 }
 
 function openModal(type) {
@@ -1276,6 +1282,26 @@ function openModal(type) {
 
 function closeModal() {
   document.getElementById('transferModal').classList.remove('show');
+}
+function sendTransferSms() {
+  const btn = document.getElementById('sendSmsBtn');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = '59秒后可重发';
+  window._smsSentForTransfer = false;
+  let sec = 59;
+  const tick = setInterval(() => {
+    sec--;
+    if (sec <= 0) {
+      clearInterval(tick);
+      btn.textContent = '发送验证码';
+      btn.disabled = false;
+    } else {
+      btn.textContent = sec + '秒后可重发';
+    }
+  }, 1000);
+  showToast('验证码已发送至绑定手机：138****7621', 'success');
+  window._smsSentForTransfer = true;
 }
 document.getElementById('transferModal').addEventListener('click', (e) => {
   if (e.target === document.getElementById('transferModal')) closeModal();
@@ -1300,11 +1326,15 @@ function submitTransfer() {
     if (!/^\d{12}$/.test(code)) { showToast('联行号必须为12位数字', 'error'); return; }
   }
   if (!auth) {
-    showToast('请输入U盾密码或短信验证码', 'error');
+    showToast('请输入短信验证码', 'error');
     return;
   }
-  if (auth !== '009880') {
-    showToast('U盾密码或验证码错误', 'error');
+  if (!window._smsSentForTransfer) {
+    showToast('请先点击"发送验证码"获取短信验证码', 'error');
+    return;
+  }
+  if (auth !== '101986') {
+    showToast('短信验证码错误', 'error');
     return;
   }
 
