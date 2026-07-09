@@ -858,19 +858,19 @@ body {
           <span>&#128274; 已开通U盾</span>
         </div>
         <div class="quick-actions">
-          <div class="qa-btn" onclick="openTransferModal('同行转账')">
+          <div class="qa-btn" data-action="openTransferModal('同行转账')">
             <div class="qa-icon">&#128181;</div>
             同行转账
           </div>
-          <div class="qa-btn" onclick="openTransferModal('跨行转账')">
+          <div class="qa-btn" data-action="openTransferModal('跨行转账')">
             <div class="qa-icon">&#128640;</div>
             跨行转账
           </div>
-          <div class="qa-btn" onclick="openModal('deposit')">
+          <div class="qa-btn" data-action="openModal('deposit')">
             <div class="qa-icon">&#128176;</div>
             大额存款
           </div>
-          <div class="qa-btn" onclick="openModal('loan')">
+          <div class="qa-btn" data-action="openModal('loan')">
             <div class="qa-icon">&#128142;</div>
             申请贷款
           </div>
@@ -909,17 +909,17 @@ body {
 
     <!-- QUICK TRANSFER -->
     <div class="quick-transfer">
-      <div class="transfer-card" onclick="openTransferModal('行内转账')">
+      <div class="transfer-card" data-action="openTransferModal('行内转账')">
         <div class="t-icon">&#128181;</div>
         <div class="t-label">行内转账</div>
         <div class="t-sub">实时到账，手续费全免</div>
       </div>
-      <div class="transfer-card" onclick="openTransferModal('跨行转账')">
+      <div class="transfer-card" data-action="openTransferModal('跨行转账')">
         <div class="t-icon">&#128640;</div>
         <div class="t-label">跨行转账</div>
         <div class="t-sub">人行大小额系统</div>
       </div>
-      <div class="transfer-card" onclick="openTransferModal('批量转账')">
+      <div class="transfer-card" data-action="openTransferModal('批量转账')">
         <div class="t-icon">&#128203;</div>
         <div class="t-label">批量转账</div>
         <div class="t-sub">Excel导入，最多500笔</div>
@@ -935,9 +935,9 @@ body {
       <div style="overflow-x:auto;">
         <div style="padding:8px 12px;background:#f8f9fa;border-bottom:1px solid #e4e7eb;display:flex;align-items:center;gap:12px;">
           <label style="cursor:pointer;font-size:13px;">
-            <input type="checkbox" id="selectAllTx" onchange="toggleSelectAll()" style="margin-right:6px;cursor:pointer;"> 全选
+            <input type="checkbox" id="selectAllTx" data-action="toggleSelectAll()" style="margin-right:6px;cursor:pointer;"> 全选
           </label>
-          <button onclick="downloadSelected()" style="background:#C6151D;color:#fff;border:none;padding:6px 16px;border-radius:4px;font-size:13px;cursor:pointer;">&#11015; 下载选中记录</button>
+          <button data-action="downloadSelected()" style="background:#C6151D;color:#fff;border:none;padding:6px 16px;border-radius:4px;font-size:13px;cursor:pointer;">&#11015; 下载选中记录</button>
           <span id="selectedCount" style="font-size:12px;color:#888;"></span>
         </div>
         <table class="tx-table">
@@ -1050,7 +1050,7 @@ body {
   <div class="modal">
     <div class="modal-header">
       <h3 id="modalTitle">&#128181; 转账汇款</h3>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <button class="modal-close" data-action="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
       <div class="form-row">
@@ -1165,14 +1165,14 @@ body {
         <label class="form-label">U盾密码 / 短信验证码</label>
         <div style="display:flex;gap:8px;">
           <input type="text" class="form-control" id="txAuth" placeholder="请输入短信验证码" style="flex:1;">
-          <button type="button" id="sendSmsBtn" onclick="sendTransferSms()" style="white-space:nowrap;padding:0 12px;background:#C6151D;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;">发送验证码</button>
+          <button type="button" id="sendSmsBtn" data-action="sendTransferSms()" style="white-space:nowrap;padding:0 12px;background:#C6151D;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;">发送验证码</button>
         </div>
       </div>
       <div id="crossBankFee" class="form-row" style="display:none;color:#888;font-size:13px;">
         跨行转账手续费：<span style="color:#C6151D;font-weight:bold;">按人行标准收费（最低2元，最高50元）</span>
       </div>
-      <button class="btn-primary" onclick="submitTransfer()">确认转账</button>
-      <button class="btn-secondary" onclick="closeModal()">取消</button>
+      <button class="btn-primary" data-action="submitTransfer()">确认转账</button>
+      <button class="btn-secondary" data-action="closeModal()">取消</button>
     </div>
   </div>
 </div>
@@ -1307,7 +1307,7 @@ function renderTransactions() {
   const tbody = document.getElementById('txTable');
   tbody.innerHTML = sorted.map((tx, i) => `
     <tr data-date="${tx.date}">
-      <td><input type="checkbox" class="tx-cb" data-date="${tx.date}" onchange="updateSelectedCount()" style="cursor:pointer;"></td>
+      <td><input type="checkbox" class="tx-cb" data-date="${tx.date}" data-action="updateSelectedCount()" style="cursor:pointer;"></td>
       <td style="white-space:nowrap;color:#888;font-size:12px;">${tx.date}</td>
       <td style="font-family:Roboto Mono,Consolas,monospace;font-size:12px;">${tx.toAcc}</td>
       <td style="font-size:13px;">${tx.toName}</td>
@@ -1482,6 +1482,38 @@ function showToast(msg, type) {
 
 // Init
 init();
+
+// ========== EVENT LISTENER SETUP (extension compat) ==========
+(function initEventListeners() {
+  document.querySelectorAll('[data-action]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var action = el.getAttribute('data-action');
+      try { eval(action); } catch(e) { console.error('action error:', e); }
+    });
+  });
+  var selectAll = document.getElementById('selectAllTx');
+  if (selectAll) {
+    selectAll.addEventListener('change', function() { toggleSelectAll(); });
+  }
+  document.querySelectorAll('[data-action]').forEach(function(el) {
+    if (el.hasAttribute('data-action') && el.getAttribute('data-action').includes('updateSelectedCount')) {
+      el.addEventListener('change', function() { updateSelectedCount(); });
+    }
+  });
+})();
+
+// ========== EVENT LISTENER SETUP (extension compat) ==========
+(function() {
+  document.querySelectorAll('[data-action]').forEach(function(el) {
+    var action = el.getAttribute('data-action');
+    if (action && (action.startsWith('openTransferModal') || action.startsWith('openModal') || action.startsWith('downloadSelected') || action.startsWith('submitTransfer') || action.startsWith('sendTransferSms') || action.startsWith('closeModal'))) {
+      el.addEventListener('click', function() { eval(action); });
+    }
+    if (action && (action.startsWith('toggleSelectAll') || action.startsWith('updateSelectedCount'))) {
+      el.addEventListener('change', function() { eval(action); });
+    }
+  });
+})();
 </script>
 </body>
 </html>
