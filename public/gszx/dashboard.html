@@ -1330,9 +1330,9 @@ function renderTransactions() {
   tbody.innerHTML = sorted.map((tx, i) => `
     <tr data-date="${tx.date}" data-action="showTxDetail('${tx.date}')" style="cursor:pointer;">
       <td><input type="checkbox" class="tx-cb" data-date="${tx.date}" data-action="updateSelectedCount()" style="cursor:pointer;"></td>
-      <td style="white-space:nowrap;color:#888;font-size:12px;">${tx.date}</td>
-      <td style="font-family:Roboto Mono,Consolas,monospace;font-size:12px;">${tx.toAcc}</td>
-      <td style="font-size:13px;">${tx.toName}</td>
+      <td style="white-space:nowrap;color:#888;font-size:12px;cursor:pointer;" data-action="showTxDetail('${tx.date}')">${tx.date}</td>
+      <td style="font-family:Roboto Mono,Consolas,monospace;font-size:12px;cursor:pointer;" data-action="showTxDetail('${tx.date}')">${tx.toAcc}</td>
+      <td style="font-size:13px;cursor:pointer;" data-action="showTxDetail('${tx.date}')">${tx.toName}</td>
       <td>
         <span class="tx-type ${tx.type}">
           <span class="dot"></span>
