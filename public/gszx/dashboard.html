@@ -1603,7 +1603,6 @@ function toChineseCurrency(num) {
   var fraction = ['角', '分'];
   var digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
   var unit = [['元', '万', '亿'], ['', '拾', '佰', '仟']];
-  var s = n < 0 ? '负' : '';
   n = Math.abs(n);
   var res = '';
   for (var i = 0; i < fraction.length && n * Math.pow(10, fraction.length - i) % 10 >= 1; i++) {
@@ -1618,7 +1617,7 @@ function toChineseCurrency(num) {
     }
     res = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + res;
   }
-  return s + res.replace(/(零.)+/g, '零').replace(/^元$/, '零元') + '整';
+  return res.replace(/(零.)+/g, '零').replace(/^元$/, '零元') + '整';
 }
 
 function sendTransferSms() {
