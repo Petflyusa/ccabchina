@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>企业网上银行 - 长安银行</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -730,6 +732,30 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #CCC; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #AAA; }
+
+/* ===== STAMP MODAL ===== */
+.stamp-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 500;
+  display: none; align-items: center; justify-content: center;
+}
+.stamp-overlay.show { display: flex; }
+.stamp-modal {
+  background: #fff; border-radius: 12px; width: 700px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.stamp-modal-hd {
+  padding: 16px 24px; border-bottom: 1px solid #eee;
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 700; font-size: 15px;
+}
+.stamp-modal-hd .close-btn {
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: #f5f5f5; cursor: pointer; font-size: 18px; color: #888;
+  display: flex; align-items: center; justify-content: center;
+}
+.stamp-modal-hd .close-btn:hover { background: #eee; color: #333; }
+.stamp-modal-body { padding: 24px; }
 </style>
 </head>
 <body>
@@ -974,7 +1000,7 @@ body {
           <label style="cursor:pointer;font-size:13px;">
             <input type="checkbox" id="selectAllTx" data-action="toggleSelectAll()" style="margin-right:6px;cursor:pointer;"> 全选
           </label>
-          <button data-action="downloadSelected()" style="background:#C6151D;color:#fff;border:none;padding:6px 16px;border-radius:4px;font-size:13px;cursor:pointer;">&#11015; 下载选中记录</button>
+          <button data-action="downloadSelected()" style="background:#C6151D;color:#fff;border:none;padding:6px 16px;border-radius:4px;font-size:13px;cursor:pointer;">&#11015; 下载PDF</button>
           <span id="selectedCount" style="font-size:12px;color:#888;"></span>
         </div>
         <table class="tx-table">
@@ -1333,16 +1359,7 @@ function updateSelectedCount() {
   document.getElementById('selectedCount').textContent = sel > 0 ? `已选中 ${sel} 笔` : '';
 }
 function downloadSelected() {
-  const cbs = document.querySelectorAll('.tx-cb:checked');
-  if (cbs.length === 0) { alert('请先选择要下载的交易记录'); return; }
-  const rows = Array.from(cbs).map(cb => transactions.find(tx => tx.date === cb.dataset.date));
-  const csv = '\uFEFF交易时间,对方账户,对方户名,类型,金额（元）,状态,备注\n' +
-    rows.map(tx => `"${tx.date}","${tx.toAcc}","${tx.toName}","${tx.type==='in'?'入账':tx.type==='out'?'转出':'内部'}","${tx.amount}","${tx.status==='success'?'已成功':tx.status==='pending'?'处理中':'已失败'}","${tx.note}"`).join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `交易明细_${new Date().toISOString().slice(0,10)}.csv`;
-  a.click();
+  openStampModal();
 }
 function checkPending() {
   const now = Date.now();
@@ -1793,7 +1810,7 @@ init();
     if (action && (action.startsWith('openTransferModal') || action.startsWith('openModal') ||
       action.startsWith('showTxDetail') || action.startsWith('showReceipt') ||
       action.startsWith('closeReceipt') || action.startsWith('closeTxDetail') ||
-      action.startsWith('closeModal'))) {
+      action.startsWith('closeModal') || action.startsWith('openStampModal') || action.startsWith('confirmDownload'))) {
       eval(action);
     }
   });
@@ -1813,7 +1830,307 @@ init();
   document.getElementById('receiptModal').addEventListener('click', function(e) {
     if (e.target === document.getElementById('receiptModal')) closeReceipt();
   });
+
+  // Stamp modal overlay click
+  document.getElementById('stampOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeStampModal();
+  });
 })();
+
+// ===== STAMP PDF MODAL =====
+function openStampModal() {
+  document.getElementById('stampOverlay').classList.add('show');
+  renderStampPreview();
+}
+function closeStampModal() {
+  document.getElementById('stampOverlay').classList.remove('show');
+}
+function renderStampPreview() {
+  const container = document.getElementById('pdfPreview');
+  container.innerHTML = '<div style="color:#888;font-size:14px;padding:40px;">正在生成预览...</div>';
+  const el = buildPdfContent();
+  html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false })
+    .then(canvas => {
+      container.innerHTML = '<img src="' + canvas.toDataURL('image/png') + '" style="max-width:100%;border:1px solid #ddd;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" />';
+    })
+    .catch(() => { container.innerHTML = '<div style="color:#888;font-size:13px;padding:20px;">预览生成失败，可直接下载PDF</div>'; });
+}
+
+function buildPdfContent() {
+  const now = new Date();
+  const fmtDate = d => d.toLocaleDateString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit'});
+  const fmtTime = d => d.toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'font-family:SimSun,serif;width:620px;padding:24px;background:#fff;font-size:12px;color:#333;';
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.style.cssText = 'text-align:center;border-bottom:2px solid #C6151D;padding-bottom:12px;margin-bottom:16px;';
+  hdr.innerHTML = '<div style="font-size:20px;font-weight:bold;color:#C6151D;letter-spacing:4px;">长安银行  企业网上银行</div>' +
+    '<div style="font-size:13px;color:#666;margin-top:6px;">交易明细清单  |  打印时间：' + fmtDate(now) + ' ' + fmtTime(now) + '</div>';
+  wrap.appendChild(hdr);
+
+  // Info row
+  const info = document.createElement('div');
+  info.style.cssText = 'display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:14px;';
+  info.innerHTML = '<span>企业名称：西安天翼航空科技有限公司</span><span>操作员：张明远</span>';
+  wrap.appendChild(info);
+
+  // Stats row
+  const stats = document.createElement('div');
+  stats.style.cssText = 'display:flex;gap:10px;margin-bottom:16px;';
+  const totalTx = transactions.length;
+  const totalIn = transactions.filter(t=>t.type==='in').reduce((s,t)=>s+parseFloat(t.amount.replace(/,/g,'')),0);
+  const totalOut = transactions.filter(t=>t.type==='out').reduce((s,t)=>s+parseFloat(t.amount.replace(/,/g,'')),0);
+  const fmtY = v => '¥' + v.toLocaleString('zh-CN',{minimumFractionDigits:2});
+  stats.innerHTML =
+    '<div style="flex:1;background:#F1F8E9;border:1px solid #C8E6C9;border-radius:6px;padding:8px 12px;text-align:center;"><div style="font-size:16px;font-weight:bold;color:#2E7D32;">' + totalTx + '</div><div style="font-size:10px;color:#888;">总笔数</div></div>' +
+    '<div style="flex:1;background:#FFF5F5;border:1px solid #FFCDD2;border-radius:6px;padding:8px 12px;text-align:center;"><div style="font-size:16px;font-weight:bold;color:#C6151D;">' + fmtY(totalIn) + '</div><div style="font-size:10px;color:#888;">入账合计</div></div>' +
+    '<div style="flex:1;background:#FFF3E0;border:1px solid #FFE0B2;border-radius:6px;padding:8px 12px;text-align:center;"><div style="font-size:16px;font-weight:bold;color:#E65100;">' + fmtY(totalOut) + '</div><div style="font-size:10px;color:#888;">转出合计</div></div>';
+  wrap.appendChild(stats);
+
+  // Table
+  const tbl = document.createElement('table');
+  tbl.style.cssText = 'width:100%;border-collapse:collapse;font-size:11px;';
+  const thStyle = 'background:#C6151D;color:#fff;padding:7px 8px;font-weight:normal;text-align:left;';
+  const tdStyle = 'padding:6px 8px;border-bottom:1px solid #F0F0F0;text-align:left;';
+  let tblHtml = '<tr><th style="' + thStyle + '">交易时间</th><th style="' + thStyle + '">对方账户</th><th style="' + thStyle + '">对方户名</th><th style="' + thStyle + '">类型</th><th style="' + thStyle + '">金额</th><th style="' + thStyle + '">状态</th><th style="' + thStyle + '">备注</th></tr>';
+  transactions.forEach(tx => {
+    const statusText = tx.status === 'success' ? '已成功' : tx.status === 'pending' ? '处理中' : '已失败';
+    const typeText = tx.type === 'in' ? '入账' : tx.type === 'out' ? '转出' : '内部';
+    const amtColor = tx.type === 'in' ? '#2E7D32' : tx.type === 'out' ? '#C6151D' : '#888';
+    const statusColor = tx.status === 'success' ? '#2E7D32' : tx.status === 'pending' ? '#E65100' : '#888';
+    tblHtml += '<tr>' +
+      '<td style="' + tdStyle + '">' + tx.date + '</td>' +
+      '<td style="' + tdStyle + '">' + tx.toAcc + '</td>' +
+      '<td style="' + tdStyle + '">' + tx.toName + '</td>' +
+      '<td style="' + tdStyle + '">' + typeText + '</td>' +
+      '<td style="' + tdStyle + 'color:' + amtColor + ';font-weight:bold;">' + tx.amount + '</td>' +
+      '<td style="' + tdStyle + 'color:' + statusColor + ';font-weight:bold;">' + statusText + '</td>' +
+      '<td style="' + tdStyle + '">' + (tx.note || '-') + '</td></tr>';
+  });
+  tbl.innerHTML = tblHtml;
+  wrap.appendChild(tbl);
+
+  // Footer
+  const footer = document.createElement('div');
+  footer.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;padding-top:14px;border-top:1px solid #eee;';
+  footer.innerHTML = '<div style="font-size:10px;color:#bbb;"><div>本清单由长安银行企业网银系统自动生成</div><div>如有疑问请联系开户网点或拨打客服热线 029-XXXX1234</div></div>' +
+    '<div style="text-align:right;"><canvas id="pdfStampCanvas" width="100" height="100" style="display:block;"></canvas>' +
+    '<div style="font-size:10px;color:#888;margin-top:2px;">长安银行股份有限公司</div><div style="font-size:10px;color:#888;">' + fmtDate(now) + '</div></div>';
+  wrap.appendChild(footer);
+
+  // Draw stamp on canvas
+  setTimeout(() => {
+    const cv = document.getElementById('pdfStampCanvas');
+    if (cv) { const ctx = cv.getContext('2d'); drawBankStamp(ctx, 100, 100); }
+  }, 50);
+
+  return wrap;
+}
+
+function confirmDownloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  const pw = doc.internal.pageSize.getWidth();
+  const ph = doc.internal.pageSize.getHeight();
+  const ml = 12, mr = 12, mt = 10;
+  const cw = pw - ml - mr;
+  let y = mt;
+
+  const now = new Date();
+  const fmtDate = d => d.toLocaleDateString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit'});
+  const fmtTime = d => d.toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // Red header bar
+  doc.setFillColor(198, 21, 29);
+  doc.rect(0, 0, pw, 16, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('长安银行  企业网上银行  交易明细清单', pw / 2, 10, { align: 'center' });
+
+  // Subtitle
+  y = 20;
+  doc.setTextColor(100, 100, 100);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text('打印时间：' + fmtDate(now) + ' ' + fmtTime(now), pw / 2, y, { align: 'center' });
+
+  // Red divider
+  y += 3;
+  doc.setDrawColor(198, 21, 29);
+  doc.setLineWidth(0.4);
+  doc.line(ml, y, pw - mr, y);
+
+  // Company info
+  y += 6;
+  doc.setFontSize(7.5);
+  doc.setTextColor(120, 120, 120);
+  doc.text('企业名称：西安天翼航空科技有限公司', ml, y);
+  doc.text('操作员：张明远', pw - mr, y, { align: 'right' });
+
+  // Stats 3 boxes
+  y += 7;
+  const sw = (cw - 6) / 3;
+  const statsData = [
+    { label: '总笔数', value: transactions.length, color: [46, 125, 50], bg: [241, 248, 233] },
+    { label: '入账合计', value: '¥' + transactions.filter(t=>t.type==='in').reduce((s,t)=>s+parseFloat(t.amount.replace(/,/g,'')),0).toLocaleString('zh-CN',{minimumFractionDigits:2}), color: [198, 21, 29], bg: [255, 245, 245] },
+    { label: '转出合计', value: '¥' + transactions.filter(t=>t.type==='out').reduce((s,t)=>s+parseFloat(t.amount.replace(/,/g,'')),0).toLocaleString('zh-CN',{minimumFractionDigits:2}), color: [230, 81, 0], bg: [255, 243, 224] },
+  ];
+  statsData.forEach((s, i) => {
+    const sx = ml + i * (sw + 3);
+    doc.setFillColor(...s.bg);
+    doc.roundedRect(sx, y, sw, 12, 2, 2, 'F');
+    doc.setDrawColor(...s.color);
+    doc.setLineWidth(0.25);
+    doc.roundedRect(sx, y, sw, 12, 2, 2, 'S');
+    doc.setTextColor(...s.color);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(s.value), sx + sw / 2, y + 7.5, { align: 'center' });
+    doc.setFontSize(7);
+    doc.setTextColor(130, 130, 130);
+    doc.text(s.label, sx + sw / 2, y + 11, { align: 'center' });
+  });
+
+  // Table
+  y += 17;
+  const colX = [ml+1, ml+28, ml+58, ml+88, ml+112, ml+148, ml+178];
+  const colW = [26, 29, 29, 23, 35, 29, 55];
+  const headers = ['交易时间', '对方账户', '对方户名', '类型', '金额', '状态', '备注'];
+  const rowH = 7;
+
+  doc.setFillColor(198, 21, 29);
+  doc.rect(ml, y, cw, 7, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(7.5);
+  doc.setFont('helvetica', 'bold');
+  headers.forEach((h, i) => doc.text(h, colX[i], y + 4.5));
+
+  y += 7;
+  doc.setDrawColor(220, 220, 220);
+  doc.setLineWidth(0.08);
+
+  transactions.forEach((tx, idx) => {
+    if (y + rowH > ph - 30) return;
+    doc.setFillColor(idx % 2 === 0 ? 255 : 250, idx % 2 === 0 ? 255 : 252, idx % 2 === 0 ? 255 : 252);
+    doc.rect(ml, y, cw, rowH, 'FD');
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica', 'normal');
+    const statusText = tx.status === 'success' ? '已成功' : tx.status === 'pending' ? '处理中' : '已失败';
+    const typeText = tx.type === 'in' ? '入账' : tx.type === 'out' ? '转出' : '内部';
+    const vals = [tx.date, tx.toAcc, tx.toName, typeText, tx.amount, statusText, tx.note || '-'];
+    vals.forEach((v, i) => {
+      let color = [60, 60, 60];
+      if (i === 4) color = tx.type === 'in' ? [46, 125, 50] : tx.type === 'out' ? [198, 21, 29] : [120, 120, 120];
+      if (i === 5) color = tx.status === 'success' ? [46, 125, 50] : tx.status === 'pending' ? [230, 81, 0] : [150, 150, 150];
+      doc.setTextColor(...color);
+      if (i === 4 || i === 5) doc.setFont('helvetica', 'bold');
+      else doc.setFont('helvetica', 'normal');
+      doc.text(String(v).substring(0, 28), colX[i], y + 4.5);
+    });
+    y += rowH;
+  });
+
+  // Footer
+  y += 4;
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.3);
+  doc.line(ml, y, pw - mr, y);
+  y += 4;
+  doc.setFontSize(6.5);
+  doc.setTextColor(170, 170, 170);
+  doc.setFont('helvetica', 'normal');
+  doc.text('本清单由长安银行企业网银系统自动生成，如有疑问请联系开户网点或拨打客服热线 029-XXXX1234', pw / 2, y, { align: 'center' });
+
+  // Stamp
+  const sc = document.createElement('canvas');
+  sc.width = 200; sc.height = 200;
+  drawBankStamp(sc.getContext('2d'), 200, 200);
+  doc.addImage(sc.toDataURL('image/png'), 'PNG', pw - mr - 36, ph - 44, 36, 36);
+
+  doc.save('长安银行_交易明细_' + fmtDate(now).replace(/\//g, '') + '.pdf');
+  closeStampModal();
+  showToast('交易明细PDF已下载');
+}
+
+// ===== DRAW BANK STAMP =====
+function drawBankStamp(ctx, W, H) {
+  const cx = W/2, cy = H/2, R = W*0.44, starR = W*0.13, fs = W*0.075;
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+  ctx.strokeStyle='rgba(198,21,29,0.93)'; ctx.lineWidth=3; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,R*0.82,0,Math.PI*2);
+  ctx.lineWidth=1.5; ctx.stroke();
+  for (let i=0;i<36;i++) {
+    const a=(i/36)*Math.PI*2, isL=i%3===0;
+    ctx.beginPath();
+    ctx.moveTo(cx+Math.cos(a)*(R+1), cy+Math.sin(a)*(R+1));
+    ctx.lineTo(cx+Math.cos(a)*(R+(isL?5:3)), cy+Math.sin(a)*(R+(isL?5:3)));
+    ctx.strokeStyle='rgba(198,21,29,0.93)'; ctx.lineWidth=isL?1.5:1; ctx.stroke();
+  }
+  ctx.translate(cx,cy);
+  const words=['长','安','银','行','股','份','有','限','公','司'];
+  ctx.font=`bold ${fs}px "SimSun","STSong","FangSong",serif`;
+  ctx.fillStyle='rgba(198,21,29,0.93)';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  words.forEach((ch,i)=>{
+    const a=(i/words.length)*Math.PI*2-Math.PI/2, r=R*0.62;
+    ctx.save(); ctx.rotate(a+Math.PI/2+Math.sin(i*1.3)*0.03); ctx.fillText(ch,0,-r); ctx.restore();
+  });
+  // 5-star
+  const pts=5, or=[], ir=[];
+  for(let i=0;i<pts*2;i++){
+    const a=(i/(pts*2))*Math.PI*2-Math.PI/2, r=i%2===0?starR:starR*0.4;
+    if(i%2===0) or.push({x:Math.cos(a)*r,y:Math.sin(a)*r});
+    else ir.push({x:Math.cos(a)*r,y:Math.sin(a)*r});
+  }
+  const star=[];
+  for(let i=0;i<pts;i++){ star.push(or[i]); star.push(ir[i]); }
+  ctx.beginPath(); ctx.moveTo(star[0].x,star[0].y);
+  for(let i=1;i<star.length;i++) ctx.lineTo(star[i].x,star[i].y);
+  ctx.closePath(); ctx.fillStyle='rgba(198,21,29,0.90)'; ctx.fill();
+  ctx.strokeStyle='rgba(198,21,29,0.95)'; ctx.lineWidth=1; ctx.stroke();
+  // Inner text
+  ctx.font=`bold ${fs*0.65}px "SimSun","STSong","FangSong",serif`;
+  ctx.fillStyle='rgba(198,21,29,0.88)';
+  ctx.fillText('业',0,-fs*0.05);
+  ctx.fillText('务',0,fs*0.7);
+  ctx.fillText('专',-fs*0.8,fs*0.28);
+  ctx.fillText('用',fs*0.8,fs*0.28);
+  ctx.fillText('章',-fs*0.55,-fs*0.55);
+  ctx.fillText('程',fs*0.55,-fs*0.55);
+  ctx.restore();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.querySelector('.toast-text').textContent = msg;
+  t.querySelector('.toast-icon').innerHTML = '&#10004;';
+  t.className = 'toast success show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 </script>
+
+<!-- STAMP PDF MODAL -->
+<div class="stamp-overlay" id="stampOverlay">
+  <div class="stamp-modal">
+    <div class="stamp-modal-hd">
+      <span>&#128196; 交易明细PDF预览</span>
+      <button class="close-btn" onclick="closeStampModal()">&#10005;</button>
+    </div>
+    <div class="stamp-modal-body">
+      <div id="pdfPreview" style="background:#f5f5f5;border-radius:8px;padding:20px;text-align:center;min-height:380px;"></div>
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;">
+        <button class="filter-btn secondary" onclick="closeStampModal()">取消</button>
+        <button class="filter-btn primary" onclick="confirmDownloadPDF()">&#11015; 确认下载PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
