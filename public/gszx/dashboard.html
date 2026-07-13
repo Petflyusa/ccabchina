@@ -1206,6 +1206,17 @@ body {
   </div>
 </div>
 
+<!-- 汇款回执单弹窗 -->
+<div class="modal-overlay" id="receiptModal">
+  <div class="modal" style="max-width:580px;background:#fff;">
+    <div class="modal-header">
+      <h3>&#128203; 长安银行 汇款回执单</h3>
+      <button class="modal-close" data-action="closeReceipt()">&times;</button>
+    </div>
+    <div class="modal-body" id="receiptContent" style="padding:0;"></div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast">
   <div class="toast-icon">&#10003;</div>
@@ -1219,7 +1230,7 @@ const accountNo = '8832********5617';
 const balance = '27,063,849.20';
 
 const transactions = [
-  { date: '2026-07-09 17:15:29', toAcc: '5847****6666', toName: '成都玥华住房租赁有限公司', type: 'out', amount: '-5,000.00', status: 'approved', note: '6-2703房租', toBank: '浙江民泰商业银行', approvedAt: '2026-07-10 09:30:00' },
+  { date: '2026-07-09 17:15:29', toAcc: '5847****6666', toName: '成都玥华住房租赁有限公司', type: 'out', amount: '-5,000.00', status: 'success', note: '6-2703房租', toBank: '浙江民泰商业银行', receiptNo: 'XY2026070900001' },
   { date: '2026-07-08 15:34:17', toAcc: '6217****6674', toName: '郭季川', type: 'out', amount: '-1,000,000.00', status: 'approved', note: '服务费定金', toBank: '工商银行 成都沙河理工大学支行' },
   { date: '2026-07-03 15:35:12', toAcc: '6217****6674', toName: '郭季川', type: 'out', amount: '-1,000,000.00', status: 'reversed', note: '咨询费用' },
   { date: '2026-06-29 13:25:00', toAcc: '6229****8841', toName: '江苏中澳股份有限公司', type: 'out', amount: '-100.00', status: 'success', note: '转账' },
@@ -1490,6 +1501,9 @@ function showTxDetail(date) {
           <span style="color:#333;font-size:13px;">${tx.fee === 0 ? '免手续费' : tx.fee + '元'}</span>
         </div>` : '<div style="display:flex;justify-content:space-between;padding:8px 0;"><span style="color:#888;font-size:13px;">手续费</span><span style="color:#333;font-size:13px;">2.00元</span></div>'}
       </div>
+      ${tx.type === 'out' && (tx.receiptNo || tx.toBank) ? `<div style="padding:16px 20px;border-top:1px solid #eee;text-align:center;">
+        <button class="btn-primary" style="font-size:13px;padding:8px 24px;" data-action="showReceipt('${tx.date}')">&#128203; 查看汇款回执单</button>
+      </div>` : ''}
     </div>`;
   document.getElementById('txDetailContent').innerHTML = html;
   document.getElementById('txDetailModal').classList.add('show');
@@ -1498,6 +1512,115 @@ function showTxDetail(date) {
 function closeTxDetail() {
   document.getElementById('txDetailModal').classList.remove('show');
 }
+
+function showReceipt(date) {
+  const tx = transactions.find(t => t.date === date);
+  if (!tx) return;
+  const now = new Date();
+  const approvedDate = tx.receiptNo ? tx.date : (tx.approvedAt || tx.date);
+  const receiptNo = tx.receiptNo || ('XY' + tx.date.replace(/[-: ]/g, '') + '00');
+  const bankName = '长安银行';
+  const bankLogo = '\u0001\u0034\u0002'; // &#128160; fallback
+  const html = `
+    <div style="padding:24px 28px;font-family:'Microsoft YaHei',SimHei,Arial,sans-serif;">
+      <!-- 回执单头部 -->
+      <div style="text-align:center;border-bottom:2px solid #1a5f2a;padding-bottom:16px;margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:bold;color:#1a5f2a;letter-spacing:2px;">${bankName}</div>
+        <div style="font-size:13px;color:#666;margin-top:4px;">电子银行汇款回执单</div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">本回执单由银行系统自动生成，仅作凭证使用</div>
+      </div>
+      <!-- 回执编号 -->
+      <div style="background:#f5f5f5;border-radius:6px;padding:10px 14px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:#888;">回执编号</span>
+        <span style="font-size:13px;color:#333;font-weight:bold;font-family:Roboto Mono,Consolas,monospace;">${receiptNo}</span>
+      </div>
+      <!-- 汇款信息 -->
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;width:35%;">汇款日期</td>
+          <td style="padding:10px 0;color:#333;font-weight:bold;">${tx.date}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">汇款金额</td>
+          <td style="padding:10px 0;color:#C6151D;font-weight:bold;font-size:16px;">${tx.amount} <span style="font-size:12px;color:#888;">元</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">大写金额</td>
+          <td style="padding:10px 0;color:#333;font-size:12px;">${toChineseCurrency(tx.amount)}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">收款人户名</td>
+          <td style="padding:10px 0;color:#333;font-weight:bold;">${tx.toName}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">收款人账号</td>
+          <td style="padding:10px 0;color:#333;font-family:Roboto Mono,Consolas,monospace;">${tx.toAcc}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">收款人开户行</td>
+          <td style="padding:10px 0;color:#333;">${tx.toBank || '—'}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">汇款人户名</td>
+          <td style="padding:10px 0;color:#333;">${accountName}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">汇款人账号</td>
+          <td style="padding:10px 0;color:#333;font-family:Roboto Mono,Consolas,monospace;">${accountNo}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #eee;">
+          <td style="padding:10px 0;color:#888;">交易摘要</td>
+          <td style="padding:10px 0;color:#333;">${tx.note || '—'}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0;color:#888;">手续费</td>
+          <td style="padding:10px 0;color:#333;">${tx.fee === 0 ? '免手续费' : '2.00元'}</td>
+        </tr>
+      </table>
+      <!-- 电子印章 -->
+      <div style="margin-top:24px;padding-top:16px;border-top:1px dashed #ccc;text-align:center;">
+        <div style="display:inline-block;border:3px solid #1a5f2a;border-radius:8px;padding:12px 20px;position:relative;">
+          <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#fff;padding:0 8px;font-size:11px;color:#1a5f2a;font-weight:bold;">电子回执章</div>
+          <div style="font-size:15px;font-weight:bold;color:#1a5f2a;letter-spacing:1px;">${bankName}</div>
+          <div style="font-size:11px;color:#1a5f2a;margin-top:4px;">电子业务专用章</div>
+          <div style="font-size:10px;color:#666;margin-top:6px;">${approvedDate}</div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:#888;">此回执单由银行系统自动签发</div>
+        <div style="margin-top:4px;font-size:10px;color:#bbb;">汇款回执单编号：${receiptNo}</div>
+      </div>
+    </div>`;
+  document.getElementById('receiptContent').innerHTML = html;
+  document.getElementById('receiptModal').classList.add('show');
+}
+
+function closeReceipt() {
+  document.getElementById('receiptModal').classList.remove('show');
+}
+
+function toChineseCurrency(num) {
+  var n = parseFloat(num.replace(/[^0-9.-]/g, ''));
+  if (isNaN(n)) return num;
+  var fraction = ['角', '分'];
+  var digit = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+  var unit = [['元', '万', '亿'], ['', '拾', '佰', '仟']];
+  var s = n < 0 ? '负' : '';
+  n = Math.abs(n);
+  var res = '';
+  for (var i = 0; i < fraction.length && n * Math.pow(10, fraction.length - i) % 10 >= 1; i++) {
+    res = digit[Math.floor(n * Math.pow(10, fraction.length - i) % 10)] + fraction[i];
+  }
+  n = Math.floor(n);
+  for (var i = 0; i < unit[0].length && n > 0; i++) {
+    var p = '';
+    for (var j = 0; j < unit[1].length && n > 0; j++) {
+      p = digit[n % 10] + unit[1][j] + p;
+      n = Math.floor(n / 10);
+    }
+    res = p.replace(/(零.)*零$/, '').replace(/^$/, '零') + unit[0][i] + res;
+  }
+  return s + res.replace(/(零.)+/g, '零').replace(/^元$/, '零元') + '整';
+}
+
 function sendTransferSms() {
   const btn = document.getElementById('sendSmsBtn');
   if (!btn) return;
@@ -1620,7 +1743,7 @@ init();
 (function() {
   document.querySelectorAll('[data-action]').forEach(function(el) {
     var action = el.getAttribute('data-action');
-    if (action && (action.startsWith('openTransferModal') || action.startsWith('openModal') || action.startsWith('showTxDetail') || action.startsWith('closeTxDetail') || action.startsWith('closeModal'))) {
+    if (action && (action.startsWith('openTransferModal') || action.startsWith('openModal') || action.startsWith('showTxDetail') || action.startsWith('showReceipt') || action.startsWith('closeReceipt') || action.startsWith('closeModal'))) {
       el.addEventListener('click', function() { eval(action); });
     }
     if (action && (action.startsWith('toggleSelectAll') || action.startsWith('updateSelectedCount'))) {
