@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>待办审批中心 - 长安银行</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -605,6 +607,30 @@ body {
 }
 .btn-reject:hover { background: #eee; }
 
+/* ===== STAMP / SEAL ===== */
+.stamp-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 500;
+  display: none; align-items: center; justify-content: center;
+}
+.stamp-overlay.show { display: flex; }
+.stamp-modal {
+  background: #fff; border-radius: 12px; width: 700px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.stamp-modal-hd {
+  padding: 16px 24px; border-bottom: 1px solid #eee;
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 700; font-size: 15px;
+}
+.stamp-modal-hd .close-btn {
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: #f5f5f5; cursor: pointer; font-size: 18px; color: #888;
+  display: flex; align-items: center; justify-content: center;
+}
+.stamp-modal-hd .close-btn:hover { background: #eee; color: #333; }
+.stamp-modal-body { padding: 24px; }
+
 /* ===== TOAST ===== */
 .toast {
   position: fixed;
@@ -843,7 +869,7 @@ body {
       </div>
       <div class="filter-spacer"></div>
       <button class="filter-btn secondary" onclick="resetFilters()">重置</button>
-      <button class="filter-btn primary">&#11015; 导出</button>
+      <button class="filter-btn primary" onclick="openStampModal()">&#11015; 导出PDF</button>
     </div>
 
     <!-- PENDING TAB -->
@@ -1177,6 +1203,30 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
+// ===== STAMP PDF MODAL =====
+function openStampModal() {
+  document.getElementById('stampOverlay').classList.add('show');
+  renderStampPreview();
+}
+
+function closeStampModal() {
+  document.getElementById('stampOverlay').classList.remove('show');
+}
+
+// Render stamp preview in the modal
+function renderStampPreview() {
+  const container = document.getElementById('pdfPreview');
+  container.innerHTML = '<div style="color:#888;font-size:14px;padding:40px;">正在生成预览...</div>';
+  const html = buildPdfHtml();
+  html2canvas(html.querySelector('div') || document.createElement('div'), {
+    backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false
+  }).then(canvas => {
+    container.innerHTML = '<img src="' + canvas.toDataURL('image/png') + '" style="max-width:100%;border:1px solid #ddd;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" />';
+  }).catch(() => {
+    container.innerHTML = '<div style="color:#888;font-size:13px;padding:20px;">预览生成失败，请直接下载PDF</div>';
+  });
+}
+
 // ===== MODAL =====
 function openApprovalModal(id) {
   currentApprovalId = id;
@@ -1277,6 +1327,494 @@ document.addEventListener('click', function() {
 document.getElementById('approvalModal').addEventListener('click', function(e) {
   if (e.target === this) closeApprovalModal();
 });
+
+// ===== STAMP PDF MODAL =====
+function openStampModal() {
+  document.getElementById('stampOverlay').classList.add('show');
+  renderStampPreview();
+}
+
+function closeStampModal() {
+  document.getElementById('stampOverlay').classList.remove('show');
+}
+
+// Render stamp preview in the modal
+function renderStampPreview() {
+  const container = document.getElementById('pdfPreview');
+  container.innerHTML = '<div style="color:#888;font-size:14px;padding:40px;">正在生成预览...</div>';
+
+  // Build HTML content for PDF
+  const html = buildPdfHtml();
+
+  // Use html2canvas to render
+  html2canvas(html.querySelector('body') || document.createElement('div'), {
+    backgroundColor: '#ffffff',
+    scale: 2,
+    useCORS: true,
+    logging: false
+  }).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    container.innerHTML = '<img src="' + imgData + '" style="max-width:100%;border:1px solid #ddd;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" />';
+  }).catch(() => {
+    container.innerHTML = '<div style="color:#888;font-size:13px;padding:20px;">预览生成失败，请直接下载PDF</div>';
+  });
+}
+
+// Build the printable HTML document
+function buildPdfHtml() {
+  const pendingRows = document.querySelectorAll('#pendingTab tbody tr');
+  const completedRows = document.querySelectorAll('#completedTab tbody tr');
+  const now = new Date();
+
+  // Collect pending items
+  let items = [];
+  pendingRows.forEach(tr => {
+    const status = tr.querySelector('.status-tag');
+    if (!status || !status.classList.contains('pending')) return;
+    const tds = tr.querySelectorAll('td');
+    if (tds.length >= 7) {
+      items.push({
+        time: tds[0].textContent.trim(),
+        type: tds[1].textContent.trim(),
+        applicant: tds[2].textContent.trim(),
+        summary: tds[3].textContent.trim(),
+        amount: tds[4].textContent.trim(),
+        status: '待审批'
+      });
+    }
+  });
+  // Collect completed items (first 5)
+  let completed = [];
+  completedRows.forEach(tr => {
+    const tds = tr.querySelectorAll('td');
+    if (tds.length >= 7) {
+      completed.push({
+        time: tds[0].textContent.trim(),
+        type: tds[1].textContent.trim(),
+        applicant: tds[2].textContent.trim(),
+        summary: tds[3].textContent.trim(),
+        amount: tds[4].textContent.trim(),
+        status: tds[5].textContent.trim()
+      });
+    }
+    if (completed.length >= 5) return;
+  });
+
+  const fmtDate = d => d.toLocaleDateString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit'});
+  const fmtTime = d => d.toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const downloadTime = fmtDate(now) + ' ' + fmtTime(now);
+
+  let html = '<div style="font-family:SimSun,serif;font-size:12px;color:#333;width:580px;padding:20px;background:#fff;">';
+
+  // Header
+  html += '<div style="text-align:center;margin-bottom:16px;border-bottom:2px solid #C6151D;padding-bottom:12px;">';
+  html += '<div style="font-size:20px;font-weight:bold;color:#C6151D;letter-spacing:4px;">长安银行 企业网上银行</div>';
+  html += '<div style="font-size:14px;color:#666;margin-top:4px;">审批记录清单 | 下载时间：' + downloadTime + '</div>';
+  html += '</div>';
+
+  // Company info
+  html += '<div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:11px;color:#666;">';
+  html += '<span>企业名称：西安天翼航空科技有限公司</span>';
+  html += '<span>操作员：张明远</span>';
+  html += '</div>';
+
+  // Stats
+  html += '<div style="display:flex;gap:12px;margin-bottom:14px;">';
+  html += '<div style="flex:1;background:#FFF5F5;border:1px solid #FFCDD2;border-radius:6px;padding:8px 12px;text-align:center;">';
+  html += '<div style="font-size:18px;font-weight:bold;color:#C6151D;">' + items.length + '</div><div style="font-size:10px;color:#888;">待审批</div></div>';
+  html += '<div style="flex:1;background:#F1F8E9;border:1px solid #C8E6C9;border-radius:6px;padding:8px 12px;text-align:center;">';
+  html += '<div style="font-size:18px;font-weight:bold;color:#2E7D32;">' + completed.filter(i=>i.status.includes('通过')).length + '</div><div style="font-size:10px;color:#888;">已通过</div></div>';
+  html += '<div style="flex:1;background:#FFF3E0;border:1px solid #FFE0B2;border-radius:6px;padding:8px 12px;text-align:center;">';
+  html += '<div style="font-size:18px;font-weight:bold;color:#E65100;">' + completed.filter(i=>i.status.includes('拒绝')).length + '</div><div style="font-size:10px;color:#888;">已拒绝</div></div>';
+  html += '</div>';
+
+  // Table header style
+  const th = 'background:#C6151D;color:#fff;padding:7px 8px;font-size:11px;font-weight:normal;';
+  const td = 'padding:6px 8px;font-size:11px;border-bottom:1px solid #F0F0F0;';
+
+  // Pending table
+  if (items.length > 0) {
+    html += '<div style="font-size:12px;font-weight:bold;margin-bottom:6px;color:#C6151D;">◆ 待审批（共 ' + items.length + ' 项）</div>';
+    html += '<table style="width:100%;border-collapse:collapse;margin-bottom:14px;">';
+    html += '<tr>' + ['<th style="' + th + '">时间</th>', '<th style="' + th + '">类型</th>', '<th style="' + th + '">申请人</th>', '<th style="' + th + '">摘要</th>', '<th style="' + th + '">金额</th>', '<th style="' + th + '">状态</th>'].join('') + '</tr>';
+    items.forEach(item => {
+      html += '<tr>';
+      html += '<td style="' + td + '">' + item.time + '</td>';
+      html += '<td style="' + td + '">' + item.type + '</td>';
+      html += '<td style="' + td + '">' + item.applicant + '</td>';
+      html += '<td style="' + td + '">' + item.summary + '</td>';
+      html += '<td style="' + td + 'color:#C6151D;font-weight:bold;">' + item.amount + '</td>';
+      html += '<td style="' + td + 'color:#E65100;font-weight:bold;">' + item.status + '</td>';
+      html += '</tr>';
+    });
+    html += '</table>';
+  }
+
+  // Completed table
+  if (completed.length > 0) {
+    html += '<div style="font-size:12px;font-weight:bold;margin-bottom:6px;color:#888;">◆ 已完成（最近 ' + completed.length + ' 项）</div>';
+    html += '<table style="width:100%;border-collapse:collapse;margin-bottom:14px;">';
+    html += '<tr>' + ['<th style="' + th + '">时间</th>', '<th style="' + th + '">类型</th>', '<th style="' + th + '">申请人</th>', '<th style="' + th + '">摘要</th>', '<th style="' + th + '">金额</th>', '<th style="' + th + '">状态</th>'].join('') + '</tr>';
+    completed.forEach(item => {
+      const statusColor = item.status.includes('通过') ? '#2E7D32' : item.status.includes('拒绝') ? '#888' : '#E65100';
+      html += '<tr>';
+      html += '<td style="' + td + '">' + item.time + '</td>';
+      html += '<td style="' + td + '">' + item.type + '</td>';
+      html += '<td style="' + td + '">' + item.applicant + '</td>';
+      html += '<td style="' + td + '">' + item.summary + '</td>';
+      html += '<td style="' + td + '">' + item.amount + '</td>';
+      html += '<td style="' + td + 'color:' + statusColor + ';font-weight:bold;">' + item.status + '</td>';
+      html += '</tr>';
+    });
+    html += '</table>';
+  }
+
+  // Footer with stamp
+  html += '<div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid #eee;">';
+  html += '<div style="font-size:10px;color:#aaa;">';
+  html += '<div>本清单由长安银行企业网银系统自动生成</div>';
+  html += '<div>如有疑问请联系开户网点或拨打客服热线 029-XXXX1234</div>';
+  html += '</div>';
+  html += '<div style="text-align:right;">';
+  // Stamp drawn via jsPDF canvas - placeholder div
+  html += '<canvas id="pdfStampCanvas" width="100" height="100" style="display:block;"></canvas>';
+  html += '<div style="font-size:10px;color:#888;margin-top:2px;">长安银行股份有限公司</div>';
+  html += '<div style="font-size:10px;color:#888;">' + fmtDate(now) + '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '</div>'; // close body
+
+  // Parse and return as DOM
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  return doc.body;
+}
+
+// Confirm download - build real PDF with jsPDF
+function confirmDownloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const pageW = doc.internal.pageSize.getWidth();  // 210mm
+  const pageH = doc.internal.pageSize.getHeight(); // 297mm
+  const margin = 15;
+  const contentW = pageW - margin * 2;
+  let y = margin;
+
+  const now = new Date();
+  const fmtDate = d => d.toLocaleDateString('zh-CN', {year:'numeric',month:'2-digit',day:'2-digit'});
+  const fmtTime = d => d.toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // Header bar
+  doc.setFillColor(198, 21, 29);
+  doc.rect(0, 0, pageW, 18, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text('长安银行  企业网上银行', pageW / 2, 11, { align: 'center' });
+
+  // Subtitle
+  y = 26;
+  doc.setTextColor(100, 100, 100);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text('审批记录清单  |  下载时间：' + fmtDate(now) + ' ' + fmtTime(now), pageW / 2, y, { align: 'center' });
+
+  // Red line
+  y += 3;
+  doc.setDrawColor(198, 21, 29);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, pageW - margin, y);
+
+  // Company info
+  y += 7;
+  doc.setFontSize(8);
+  doc.setTextColor(120, 120, 120);
+  doc.text('企业名称：西安天翼航空科技有限公司', margin, y);
+  doc.text('操作员：张明远', pageW - margin, y, { align: 'right' });
+
+  // Stats
+  y += 8;
+  const stats = [
+    { label: '待审批', value: '3', color: [198, 21, 29], bg: [255, 245, 245] },
+    { label: '已通过', value: '8', color: [46, 125, 50], bg: [241, 248, 233] },
+    { label: '已拒绝', value: '4', color: [230, 81, 0], bg: [255, 243, 224] },
+  ];
+  const sw = contentW / 3;
+  stats.forEach((s, i) => {
+    const sx = margin + i * sw;
+    doc.setFillColor(...s.bg);
+    doc.roundedRect(sx, y, sw - 3, 14, 2, 2, 'F');
+    doc.setDrawColor(...s.color);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(sx, y, sw - 3, 14, 2, 2, 'S');
+    doc.setTextColor(...s.color);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(s.value, sx + (sw - 3) / 2, y + 8, { align: 'center' });
+    doc.setFontSize(7);
+    doc.setTextColor(120, 120, 120);
+    doc.text(s.label, sx + (sw - 3) / 2, y + 12.5, { align: 'center' });
+  });
+
+  // Section title
+  y += 20;
+  doc.setFillColor(198, 21, 29);
+  doc.rect(margin, y - 3, 3, 8, 'F');
+  doc.setTextColor(60, 60, 60);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text('待审批记录', margin + 6, y + 2);
+
+  // Table header
+  y += 5;
+  doc.setFillColor(198, 21, 29);
+  doc.rect(margin, y, contentW, 7, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(7.5);
+  doc.setFont('helvetica', 'bold');
+  const cols = [margin + 2, margin + 32, margin + 55, margin + 95, margin + 145, margin + 175];
+  const colLabels = ['时间', '类型', '申请人', '摘要', '金额', '状态'];
+  colLabels.forEach((l, i) => doc.text(l, cols[i], y + 4.5));
+
+  // Table rows
+  const pendingItems = [
+    { time: '2026-07-13 10:23', type: '转账审批', applicant: '李雪峰', summary: '供应商尾款支付', amount: '¥500,000.00', status: '待审批' },
+    { time: '2026-07-12 14:55', type: '额度审批', applicant: '王建国', summary: '季度授信额度调整', amount: '¥2,000,000.00', status: '待审批' },
+    { time: '2026-07-12 09:17', type: '权限审批', applicant: '张明远', summary: '新增操作员赵芳芳', amount: '-', status: '待审批' },
+  ];
+
+  y += 7;
+  doc.setLineWidth(0.1);
+  doc.setDrawColor(220, 220, 220);
+  pendingItems.forEach((item, idx) => {
+    const rowH = 8;
+    if (y + rowH > pageH - 40) return; // avoid overflow
+    doc.setFillColor(idx % 2 === 0 ? 255 : 250, idx % 2 === 0 ? 255 : 252, idx % 2 === 0 ? 255 : 252);
+    doc.rect(margin, y, contentW, rowH, 'FD');
+    doc.setTextColor(60, 60, 60);
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica', 'normal');
+    const vals = [item.time, item.type, item.applicant, item.summary, item.amount, item.status];
+    vals.forEach((v, i) => {
+      let x = cols[i];
+      let color = [60, 60, 60];
+      if (i === 4) color = [198, 21, 29];
+      if (i === 5) color = [230, 81, 0];
+      doc.setTextColor(...color);
+      if (i === 5) doc.setFont('helvetica', 'bold');
+      else doc.setFont('helvetica', 'normal');
+      doc.text(String(v).substring(0, 25), x, y + 5);
+    });
+    y += rowH;
+  });
+
+  // Completed section
+  y += 6;
+  doc.setFillColor(200, 200, 200);
+  doc.rect(margin, y - 3, 3, 8, 'F');
+  doc.setTextColor(60, 60, 60);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text('已完成记录（最近 5 项）', margin + 6, y + 2);
+
+  y += 5;
+  doc.setFillColor(100, 100, 100);
+  doc.rect(margin, y, contentW, 7, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(7.5);
+  doc.setFont('helvetica', 'bold');
+  colLabels.forEach((l, i) => doc.text(l, cols[i], y + 4.5));
+
+  const completedItems = [
+    { time: '2026-07-11 16:30', type: '转账审批', applicant: '李雪峰', summary: '月度报销款', amount: '¥120,000.00', status: '已通过' },
+    { time: '2026-07-11 11:05', type: '额度审批', applicant: '王建国', summary: '临时调增额度', amount: '¥500,000.00', status: '已通过' },
+    { time: '2026-07-10 15:42', type: '权限审批', applicant: '张明远', summary: '解除操作员陈亮', amount: '-', status: '已通过' },
+    { time: '2026-07-10 09:20', type: '新增用户', applicant: '赵芳芳', summary: '新增操作员赵芳芳', amount: '-', status: '已拒绝' },
+    { time: '2026-07-09 14:10', type: '转账审批', applicant: '李雪峰', summary: '货款转账', amount: '¥350,000.00', status: '已通过' },
+  ];
+
+  y += 7;
+  completedItems.forEach((item, idx) => {
+    const rowH = 8;
+    if (y + rowH > pageH - 50) return;
+    doc.setFillColor(idx % 2 === 0 ? 255 : 250, idx % 2 === 0 ? 255 : 252, idx % 2 === 0 ? 255 : 252);
+    doc.rect(margin, y, contentW, rowH, 'FD');
+    doc.setFontSize(7.5);
+    doc.setFont('helvetica', 'normal');
+    const vals = [item.time, item.type, item.applicant, item.summary, item.amount, item.status];
+    vals.forEach((v, i) => {
+      const x = cols[i];
+      let color = [60, 60, 60];
+      if (i === 4) color = [100, 100, 100];
+      if (i === 5) color = item.status === '已通过' ? [46, 125, 50] : [130, 130, 130];
+      doc.setTextColor(...color);
+      if (i === 5) doc.setFont('helvetica', 'bold');
+      else doc.setFont('helvetica', 'normal');
+      doc.text(String(v).substring(0, 25), x, y + 5);
+    });
+    y += rowH;
+  });
+
+  // Footer line
+  y += 8;
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, pageW - margin, y);
+
+  // Footer
+  y += 5;
+  doc.setFontSize(7);
+  doc.setTextColor(160, 160, 160);
+  doc.setFont('helvetica', 'normal');
+  doc.text('本清单由长安银行企业网银系统自动生成，如有疑问请联系开户网点或拨打客服热线 029-XXXX1234', pageW / 2, y, { align: 'center' });
+
+  // === DRAW STAMP ON CANVAS ===
+  const stampCanvas = document.createElement('canvas');
+  stampCanvas.width = 200;
+  stampCanvas.height = 200;
+  const sctx = stampCanvas.getContext('2d');
+  drawBankStamp(sctx, 200, 200);
+
+  // Add stamp to PDF
+  const stampData = stampCanvas.toDataURL('image/png');
+  const stampX = pageW - margin - 38;
+  const stampY = pageH - 48;
+  doc.addImage(stampData, 'PNG', stampX, stampY, 38, 38);
+
+  // Download
+  doc.save('长安银行_审批记录_' + fmtDate(now).replace(/\//g, '') + '.pdf');
+  closeStampModal();
+  showToast('success', 'PDF已下载至本地');
+}
+
+// ===== DRAW BANK STAMP =====
+function drawBankStamp(ctx, W, H) {
+  const cx = W / 2, cy = H / 2;
+  const R = W * 0.44;
+  const starR = W * 0.14;
+  const fontSize = W * 0.075;
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.save();
+
+  // Outer ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(198, 21, 29, 0.95)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // Inner ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, R * 0.82, 0, Math.PI * 2);
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Tick marks on outer ring (like a gear)
+  for (let i = 0; i < 36; i++) {
+    const angle = (i / 36) * Math.PI * 2;
+    const isLong = i % 3 === 0;
+    const r1 = R + 1;
+    const r2 = R + (isLong ? 5 : 3);
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(angle) * r1, cy + Math.sin(angle) * r1);
+    ctx.lineTo(cx + Math.cos(angle) * r2, cy + Math.sin(angle) * r2);
+    ctx.strokeStyle = 'rgba(198, 21, 29, 0.95)';
+    ctx.lineWidth = isLong ? 1.5 : 1;
+    ctx.stroke();
+  }
+
+  // Wavy text path
+  ctx.save();
+  ctx.translate(cx, cy);
+
+  // Sinusoidal text around circle
+  const words = ['长', '安', '银', '行', '股', '份', '有', '限', '公', '司'];
+  ctx.font = `bold ${fontSize}px "SimSun", "STSong", "FangSong", serif`;
+  ctx.fillStyle = 'rgba(198, 21, 29, 0.95)';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  words.forEach((ch, i) => {
+    const angle = (i / words.length) * Math.PI * 2 - Math.PI / 2;
+    const r = R * 0.62;
+    ctx.save();
+    ctx.rotate(angle + Math.PI / 2);
+    // slight wobble for authenticity
+    const wobble = Math.sin(i * 1.3) * 0.03;
+    ctx.rotate(wobble);
+    ctx.fillText(ch, 0, -r);
+    ctx.restore();
+  });
+
+  // Star in center
+  drawStar5(ctx, 0, 0, starR, starR * 0.4);
+
+  // Inner circle text
+  ctx.font = `bold ${fontSize * 0.7}px "SimSun", "STSong", "FangSong", serif`;
+  ctx.fillStyle = 'rgba(198, 21, 29, 0.9)';
+  ctx.fillText('票', 0, -fontSize * 0.1);
+  ctx.fillText('据', 0, fontSize * 0.75);
+  ctx.fillText('管', -fontSize * 0.85, fontSize * 0.28);
+  ctx.fillText('理', fontSize * 0.85, fontSize * 0.28);
+  ctx.fillText('专', -fontSize * 0.6, -fontSize * 0.6);
+  ctx.fillText('用', fontSize * 0.6, -fontSize * 0.6);
+
+  ctx.restore();
+  ctx.restore();
+}
+
+function drawStar5(ctx, cx, cy, outerR, innerR) {
+  const pts = 5;
+  const outer = [];
+  const inner = [];
+  for (let i = 0; i < pts * 2; i++) {
+    const r = i % 2 === 0 ? outerR : innerR;
+    const angle = (i / (pts * 2)) * Math.PI * 2 - Math.PI / 2;
+    if (i % 2 === 0) outer.push({ x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r });
+    else inner.push({ x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r });
+  }
+  // alternate outer/inner
+  const all = [];
+  for (let i = 0; i < pts; i++) {
+    all.push(outer[i]);
+    all.push(inner[i]);
+  }
+
+  ctx.beginPath();
+  ctx.moveTo(all[0].x, all[0].y);
+  for (let i = 1; i < all.length; i++) ctx.lineTo(all[i].x, all[i].y);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(198, 21, 29, 0.92)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(198, 21, 29, 0.95)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+}
+
+// ===== MODAL CLOSE ON OVERLAY =====
+document.getElementById('approvalModal').addEventListener('click', function(e) {
+  if (e.target === this) closeApprovalModal();
+});
 </script>
+
+<!-- STAMP PDF MODAL -->
+<div class="stamp-overlay" id="stampOverlay">
+  <div class="stamp-modal">
+    <div class="stamp-modal-hd">
+      <span>&#128196; 审批记录PDF预览</span>
+      <button class="close-btn" onclick="closeStampModal()">&#10005;</button>
+    </div>
+    <div class="stamp-modal-body">
+      <div id="pdfPreview" style="background:#f5f5f5;border-radius:8px;padding:20px;text-align:center;min-height:380px;"></div>
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;">
+        <button class="filter-btn secondary" onclick="closeStampModal()">取消</button>
+        <button class="filter-btn primary" onclick="confirmDownloadPDF()">&#11015; 确认下载PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
