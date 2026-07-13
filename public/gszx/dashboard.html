@@ -1741,18 +1741,35 @@ init();
 
 // ========== EVENT LISTENER SETUP (extension compat) ==========
 (function() {
-  document.querySelectorAll('[data-action]').forEach(function(el) {
+  // 事件委托：统一处理所有 data-action 按钮（包括动态插入的）
+  document.addEventListener('click', function(e) {
+    var el = e.target.closest('[data-action]');
+    if (!el) return;
     var action = el.getAttribute('data-action');
-    if (action && (action.startsWith('openTransferModal') || action.startsWith('openModal') || action.startsWith('showTxDetail') || action.startsWith('showReceipt') || action.startsWith('closeReceipt') || action.startsWith('closeModal'))) {
-      el.addEventListener('click', function() { eval(action); });
-    }
-    if (action && (action.startsWith('toggleSelectAll') || action.startsWith('updateSelectedCount'))) {
-      el.addEventListener('change', function() { eval(action); });
+    if (!action) return;
+    // 白名单函数才执行
+    if (action && (action.startsWith('openTransferModal') || action.startsWith('openModal') ||
+      action.startsWith('showTxDetail') || action.startsWith('showReceipt') ||
+      action.startsWith('closeReceipt') || action.startsWith('closeTxDetail') ||
+      action.startsWith('closeModal'))) {
+      eval(action);
     }
   });
-  // 点击详情弹窗外部关闭
+  document.addEventListener('change', function(e) {
+    var el = e.target.closest('[data-action]');
+    if (!el) return;
+    var action = el.getAttribute('data-action');
+    if (!action) return;
+    if (action.startsWith('toggleSelectAll') || action.startsWith('updateSelectedCount')) {
+      eval(action);
+    }
+  });
+  // 点击弹窗外部关闭
   document.getElementById('txDetailModal').addEventListener('click', function(e) {
     if (e.target === document.getElementById('txDetailModal')) closeTxDetail();
+  });
+  document.getElementById('receiptModal').addEventListener('click', function(e) {
+    if (e.target === document.getElementById('receiptModal')) closeReceipt();
   });
 })();
 </script>
