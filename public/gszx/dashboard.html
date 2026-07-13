@@ -1848,12 +1848,39 @@ function closeStampModal() {
 function renderStampPreview() {
   const container = document.getElementById('pdfPreview');
   container.innerHTML = '<div style="color:#888;font-size:14px;padding:40px;">正在生成预览...</div>';
+
+  // Build the element
   const el = buildPdfContent();
-  html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false })
-    .then(canvas => {
+
+  // Must attach to DOM before html2canvas can capture it
+  // Use a hidden staging area inside the preview container
+  let staging = document.getElementById('pdfStaging');
+  if (!staging) {
+    staging = document.createElement('div');
+    staging.id = 'pdfStaging';
+    staging.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:640px;z-index:-1;opacity:0;pointer-events:none;';
+    document.body.appendChild(staging);
+  }
+  staging.innerHTML = '';
+  staging.appendChild(el);
+
+  // Wait for fonts/images to settle
+  setTimeout(() => {
+    html2canvas(el, {
+      backgroundColor: '#ffffff',
+      scale: 1.5,
+      useCORS: true,
+      logging: false,
+      width: 640,
+      windowWidth: 640
+    }).then(canvas => {
       container.innerHTML = '<img src="' + canvas.toDataURL('image/png') + '" style="max-width:100%;border:1px solid #ddd;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.1);" />';
-    })
-    .catch(() => { container.innerHTML = '<div style="color:#888;font-size:13px;padding:20px;">预览生成失败，可直接下载PDF</div>'; });
+      staging.innerHTML = '';
+    }).catch(err => {
+      console.error('html2canvas error:', err);
+      container.innerHTML = '<div style="color:#888;font-size:13px;padding:20px;">预览生成中遇到问题，可直接下载PDF</div>';
+    });
+  }, 100);
 }
 
 function buildPdfContent() {
