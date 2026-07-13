@@ -1577,31 +1577,49 @@ function showReceipt(date) {
           <td style="padding:10px 0;color:#333;">${tx.fee === 0 ? '免手续费' : '2.00元'}</td>
         </tr>
       </table>
-      <!-- 电子印章 - 椭圆形红色鲜章 -->
+      <!-- 电子印章 - 仿真椭圆形红色鲜章 -->
       <div style="margin-top:24px;padding-top:16px;border-top:1px dashed #ccc;text-align:center;">
-        <div style="display:inline-block;position:relative;width:120px;height:80px;margin:0 auto;">
-          <!-- 五角星 -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(0deg);width:22px;height:22px;z-index:1;">
-            <svg viewBox="0 0 51 48" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
-              <path d="M25.5 0l6.18 12.52L51 14.18 38.9 23.82l4.08 15.04L25.5 32.18l-17.48 6.68 4.08-15.04L0 14.18l19.32-1.66z" fill="#C6151D"/>
-            </svg>
-          </div>
-          <!-- 椭圆章边框 -->
-          <div style="position:absolute;top:0;left:0;width:120px;height:80px;border:3px solid #C6151D;border-radius:50%/40%;box-sizing:border-box;background:rgba(255,255,255,0.9);"></div>
-          <!-- 章内上半圆文字 -->
-          <div style="position:absolute;top:8px;left:0;width:120px;text-align:center;">
-            <div style="font-size:9px;color:#C6151D;font-weight:bold;letter-spacing:3px;font-family:'Microsoft YaHei',SimHei,Arial,sans-serif;">长安银行</div>
-          </div>
-          <!-- 章内下半圆文字 -->
-          <div style="position:absolute;bottom:8px;left:0;width:120px;text-align:center;">
-            <div style="font-size:8px;color:#C6151D;letter-spacing:1px;font-family:'Microsoft YaHei',SimHei,Arial,sans-serif;">财务专用章</div>
-          </div>
-          <!-- 章边缘装饰线 -->
-          <div style="position:absolute;top:2px;left:2px;width:116px;height:76px;border:1px solid rgba(198,21,29,0.3);border-radius:50%/40%;box-sizing:border-box;"></div>
+        <div style="display:inline-block;position:relative;width:140px;height:90px;margin:0 auto;">
+          <svg viewBox="0 0 200 130" width="140" height="90" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+            <!-- 印章底纹（盖章时的纹理感） -->
+            <defs>
+              <filter id="inkBleed" x="-5%" y="-5%" width="110%" height="110%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+              <filter id="roughEdge">
+                <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2"/>
+              </filter>
+              <!-- 弧形文字路径（上半圆） -->
+              <path id="topArc" d="M 20,70 A 80,65 0 0,1 180,70" fill="none"/>
+              <!-- 弧形文字路径（下半圆） -->
+              <path id="bottomArc" d="M 30,72 A 70,55 0 0,0 170,72" fill="none"/>
+            </defs>
+            <!-- 印章主体 - 仿盖章效果，带边缘毛刺 -->
+            <ellipse cx="100" cy="68" rx="82" ry="55" fill="none" stroke="#B2000D" stroke-width="3.5" opacity="0.95" filter="url(#roughEdge)"/>
+            <!-- 内圈细线 -->
+            <ellipse cx="100" cy="68" rx="74" ry="48" fill="none" stroke="#B2000D" stroke-width="1" opacity="0.5"/>
+            <!-- 上半圆弧文字 -->
+            <text font-family="'SimHei','Microsoft YaHei',Arial Black,sans-serif" font-size="14" font-weight="900" fill="#B2000D" letter-spacing="4">
+              <textPath href="#topArc" startOffset="50%" text-anchor="middle">长安银行</textPath>
+            </text>
+            <!-- 下半圆弧文字 -->
+            <text font-family="'SimHei','Microsoft YaHei',Arial Black,sans-serif" font-size="9" font-weight="bold" fill="#B2000D" letter-spacing="2">
+              <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">电子业务专用章</textPath>
+            </text>
+            <!-- 五角星（带毛边效果） -->
+            <polygon points="100,28 104,42 118,42 107,51 111,64 100,56 89,64 93,51 82,42 96,42" fill="#B2000D" opacity="0.9" filter="url(#roughEdge)"/>
+            <!-- 印章边缘装饰线 - 断裂感 -->
+            <path d="M 22,55 Q 30,20 55,14 Q 80,8 100,8 Q 120,8 145,14 Q 170,20 178,55" fill="none" stroke="#B2000D" stroke-width="0.8" opacity="0.35" stroke-dasharray="3,2"/>
+            <path d="M 22,80 Q 30,115 55,121 Q 80,127 100,127 Q 120,127 145,121 Q 170,115 178,80" fill="none" stroke="#B2000D" stroke-width="0.8" opacity="0.35" stroke-dasharray="3,2"/>
+          </svg>
+          <!-- 印章日期 -->
+          <div style="position:absolute;bottom:2px;left:0;width:100%;text-align:center;font-size:8px;color:#B2000D;font-family:'SimHei','Microsoft YaHei',Arial,sans-serif;opacity:0.85;">${approvedDate}</div>
         </div>
-        <div style="margin-top:12px;font-size:11px;color:#888;">此回执单由银行系统自动签发</div>
+        <div style="margin-top:14px;font-size:11px;color:#888;">此回执单由银行系统自动签发</div>
         <div style="margin-top:4px;font-size:10px;color:#bbb;">汇款回执单编号：${receiptNo}</div>
-        <div style="margin-top:6px;font-size:10px;color:#C6151D;font-weight:bold;">签发时间：${approvedDate}</div>
+        <div style="margin-top:6px;font-size:10px;color:#B2000D;font-weight:bold;">签发时间：${approvedDate}</div>
       </div>
     </div>`;
   document.getElementById('receiptContent').innerHTML = html;
