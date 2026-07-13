@@ -1577,16 +1577,31 @@ function showReceipt(date) {
           <td style="padding:10px 0;color:#333;">${tx.fee === 0 ? '免手续费' : '2.00元'}</td>
         </tr>
       </table>
-      <!-- 电子印章 -->
+      <!-- 电子印章 - 椭圆形红色鲜章 -->
       <div style="margin-top:24px;padding-top:16px;border-top:1px dashed #ccc;text-align:center;">
-        <div style="display:inline-block;border:3px solid #1a5f2a;border-radius:8px;padding:12px 20px;position:relative;">
-          <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#fff;padding:0 8px;font-size:11px;color:#1a5f2a;font-weight:bold;">电子回执章</div>
-          <div style="font-size:15px;font-weight:bold;color:#1a5f2a;letter-spacing:1px;">${bankName}</div>
-          <div style="font-size:11px;color:#1a5f2a;margin-top:4px;">电子业务专用章</div>
-          <div style="font-size:10px;color:#666;margin-top:6px;">${approvedDate}</div>
+        <div style="display:inline-block;position:relative;width:120px;height:80px;margin:0 auto;">
+          <!-- 五角星 -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(0deg);width:22px;height:22px;z-index:1;">
+            <svg viewBox="0 0 51 48" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+              <path d="M25.5 0l6.18 12.52L51 14.18 38.9 23.82l4.08 15.04L25.5 32.18l-17.48 6.68 4.08-15.04L0 14.18l19.32-1.66z" fill="#C6151D"/>
+            </svg>
+          </div>
+          <!-- 椭圆章边框 -->
+          <div style="position:absolute;top:0;left:0;width:120px;height:80px;border:3px solid #C6151D;border-radius:50%/40%;box-sizing:border-box;background:rgba(255,255,255,0.9);"></div>
+          <!-- 章内上半圆文字 -->
+          <div style="position:absolute;top:8px;left:0;width:120px;text-align:center;">
+            <div style="font-size:9px;color:#C6151D;font-weight:bold;letter-spacing:3px;font-family:'Microsoft YaHei',SimHei,Arial,sans-serif;">长安银行</div>
+          </div>
+          <!-- 章内下半圆文字 -->
+          <div style="position:absolute;bottom:8px;left:0;width:120px;text-align:center;">
+            <div style="font-size:8px;color:#C6151D;letter-spacing:1px;font-family:'Microsoft YaHei',SimHei,Arial,sans-serif;">财务专用章</div>
+          </div>
+          <!-- 章边缘装饰线 -->
+          <div style="position:absolute;top:2px;left:2px;width:116px;height:76px;border:1px solid rgba(198,21,29,0.3);border-radius:50%/40%;box-sizing:border-box;"></div>
         </div>
-        <div style="margin-top:10px;font-size:11px;color:#888;">此回执单由银行系统自动签发</div>
+        <div style="margin-top:12px;font-size:11px;color:#888;">此回执单由银行系统自动签发</div>
         <div style="margin-top:4px;font-size:10px;color:#bbb;">汇款回执单编号：${receiptNo}</div>
+        <div style="margin-top:6px;font-size:10px;color:#C6151D;font-weight:bold;">签发时间：${approvedDate}</div>
       </div>
     </div>`;
   document.getElementById('receiptContent').innerHTML = html;
