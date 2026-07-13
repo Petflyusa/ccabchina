@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>转账汇款 - 长安银行 企业网上银行</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #C6151D;
+  --red-dark: #8B0010;
+  --bg: #F0F2F5;
+  --white: #fff;
+  --text: #333;
+  --text-light: #666;
+  --text-muted: #999;
+  --border: #E4E7EB;
+  --sidebar-w: 240px;
+}
+body {
+  font-family: "Microsoft YaHei","PingFang SC",Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 64px;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  min-width: var(--sidebar-w);
+}
+.topbar-center { flex: 1; display: flex; align-items: center; gap: 8px; }
+.topbar-search {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 340px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+.topbar-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 13px;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,0.6); }
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.topbar-nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.topbar-nav a:hover { background: rgba(255,255,255,0.15); }
+.topbar-nav a.active { background: rgba(255,255,255,0.2); color: #fff; }
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 16px;
+}
+.topbar-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s;
+}
+.topbar-icon-btn:hover { background: rgba(255,255,255,0.25); }
+.topbar-icon-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 16px; height: 16px;
+  background: #FFD700;
+  color: #333;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.2s;
+}
+.user-avatar:hover { background: rgba(255,255,255,0.25); }
+.user-avatar .avatar-circle {
+  width: 28px; height: 28px;
+  background: #FFD700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold;
+  color: var(--red);
+  font-size: 12px;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  padding-top: 64px;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 64px; bottom: 0;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.sidebar-section { margin-bottom: 4px; }
+.sidebar-title {
+  padding: 10px 20px 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: #F8F8F8; color: var(--red); }
+.sidebar-item.active {
+  background: #FFF5F5;
+  color: var(--red);
+  border-left-color: var(--red);
+  font-weight: 600;
+}
+.sidebar-item .icon {
+  width: 20px; height: 20px;
+  background: #F5F5F5;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: #888;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sidebar-item:hover .icon,
+.sidebar-item.active .icon {
+  background: var(--red);
+  color: #fff;
+}
+.sidebar-item .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 16px;
+}
+
+/* MAIN CONTENT */
+.main {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  padding: 24px;
+  min-width: 0;
+}
+
+/* PAGE HEADER */
+.page-header {
+  margin-bottom: 24px;
+}
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.page-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* CARDS */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.card-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+.card-header .more {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.card-header .more:hover { color: var(--red); }
+.card-body { padding: 20px 24px; }
+
+/* GRID LAYOUT */
+.transfer-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* FORM */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.form-label .required { color: var(--red); margin-left: 2px; }
+.form-control {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.form-control:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(198,21,29,0.1);
+}
+.form-control::placeholder { color: var(--text-muted); }
+select.form-control {
+  appearance: none;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 12px center;
+  cursor: pointer;
+}
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+.form-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.form-error {
+  font-size: 11px;
+  color: var(--red);
+  display: none;
+}
+.form-group.has-error .form-control {
+  border-color: var(--red);
+}
+.form-group.has-error .form-error { display: block; }
+
+/* AMOUNT INPUT */
+.amount-input-wrap {
+  position: relative;
+}
+.amount-input-wrap .currency {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--text-light);
+  font-weight: 600;
+}
+.amount-input-wrap .form-control {
+  padding-left: 32px;
+  font-size: 18px;
+  font-family: "Roboto Mono", "Consolas", monospace;
+  font-weight: 600;
+}
+
+/* SUBMIT BUTTON */
+btn-primary {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover { background: var(--red-dark); }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary.outline {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-light);
+}
+.btn-primary.outline:hover { border-color: var(--red); color: var(--red); }
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* LIMIT INFO */
+.limit-box {
+  background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E6 100%);
+  border: 1px solid #F5D89A;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.limit-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #B45309;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.limit-box-title .icon { font-size: 16px; }
+.limit-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.limit-table th {
+  text-align: left;
+  font-size: 11px;
+  color: #92703A;
+  padding: 6px 8px;
+  border-bottom: 1px solid #F0D9A0;
+  font-weight: 500;
+}
+.limit-table td {
+  padding: 8px 8px;
+  font-size: 12px;
+  color: #7A5C2E;
+  border-bottom: 1px solid #F9EFD5;
+}
+.limit-table tr:last-child td { border-bottom: none; }
+.limit-table .num {
+  font-family: "Roboto Mono", "Consolas", monospace;
+  font-weight: 600;
+  color: #B45309;
+}
+.limit-tips {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #FFFDF5;
+  border-radius: 8px;
+  border: 1px dashed #E8C97A;
+}
+.limit-tips p {
+  font-size: 11px;
+  color: #8A6830;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.limit-tips p:last-child { margin-bottom: 0; }
+.limit-tips .bullet { color: var(--red); font-weight: bold; flex-shrink: 0; }
+
+/* RECENT PAYEES */
+.recent-payeers {
+  margin-top: 16px;
+}
+.recent-payeers-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+.payeer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.payeer-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #F8F9FA;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.payeer-item:hover {
+  background: #FFF5F5;
+  border-color: #FFCDD2;
+}
+.payeer-avatar {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--red) 0%, #E57373 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.payeer-avatar.blue {
+  background: linear-gradient(135deg, #1976D2 0%, #64B5F6 100%);
+}
+.payeer-avatar.green {
+  background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
+}
+.payeer-avatar.orange {
+  background: linear-gradient(135deg, #E65100 0%, #FF9800 100%);
+}
+.payeer-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.payeer-bank { font-size: 11px; color: var(--text-muted); }
+
+/* HISTORY TABLE */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.history-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.history-table td {
+  padding: 13px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid #F5F5F5;
+  color: var(--text);
+}
+.history-table tr:last-child td { border-bottom: none; }
+.history-table tr:hover td { background: #FAFAFA; }
+.tx-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.tx-type .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tx-type.out .dot { background: var(--red); }
+.tx-type.out { color: var(--red); }
+.tx-type.in .dot { background: #2E8B57; }
+.tx-type.in { color: #2E8B57; }
+.tx-amount {
+  font-family: "Roboto Mono", "Consolas", monospace;
+  font-weight: 600;
+}
+.tx-amount.out { color: var(--red); }
+.tx-amount.in { color: #2E8B57; }
+.tx-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+.tx-status.success { background: #E8F5E9; color: #2E7D32; }
+.tx-status.pending { background: #FFF8E1; color: #F57F17; }
+.tx-status.failed { background: #FFEBEE; color: #C62828; }
+.tx-status.rejected { background: #F3E5F5; color: #7B1FA2; }
+.history-actions { display: flex; gap: 8px; }
+.history-actions button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.history-actions button:hover { border-color: var(--red); color: var(--red); }
+.history-actions button.danger:hover { border-color: #C62828; color: #C62828; }
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 4px;
+}
+.pagination-info {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pagination-controls button {
+  width: 30px; height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.pagination-controls button:hover { border-color: var(--red); color: var(--red); }
+.pagination-controls button.active { background: var(--red); border-color: var(--red); color: #fff; }
+.pagination-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 20px;
+}
+.tab {
+  padding: 10px 22px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+  font-weight: 700;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  display: none;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 500px;
+  max-width: 90vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-close {
+  width: 32px; height: 32px;
+  border: none;
+  background: #F5F5F5;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  transition: background 0.2s;
+}
+.modal-close:hover { background: #E0E0E0; }
+.modal-body { padding: 24px; }
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* CONFIRM DETAIL */
+.confirm-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #F5F5F5;
+  font-size: 13px;
+}
+.confirm-row:last-child { border-bottom: none; }
+.confirm-row .label { color: var(--text-muted); }
+.confirm-row .value { font-weight: 600; color: var(--text); }
+.confirm-row .value.red { color: var(--red); }
+.confirm-total {
+  background: #FFF9F0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.confirm-total .label { font-size: 13px; color: var(--text); }
+.confirm-total .amount {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--red);
+  font-family: "Roboto Mono", "Consolas", monospace;
+}
+
+/* VERIFY CODE */
+.verify-code-wrap {
+  display: flex;
+  gap: 10px;
+}
+.verify-code-wrap .form-control { flex: 1; }
+.verify-code-btn {
+  padding: 10px 16px;
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.verify-code-btn:hover { background: #FFF5F5; }
+.verify-code-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* NOTIFICATION */
+.notif {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  z-index: 500;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+}
+.notif.show { transform: translateX(0); }
+.notif.success .notif-icon { color: #2E8B57; }
+.notif.error .notif-icon { color: var(--red); }
+.notif-icon { font-size: 20px; }
+.notif-content { flex: 1; }
+.notif-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.notif-msg { font-size: 12px; color: var(--text-muted); }
+.notif-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="4" fill="#fff" opacity="0.15"/><text x="16" y="22" font-size="16" text-anchor="middle" fill="white" font-family="serif" font-weight="bold">银</text></svg>
+    长安银行
+  </div>
+  <div class="topbar-center">
+    <div class="topbar-search">
+      <span>🔍</span>
+      <input type="text" placeholder="搜索功能、帮助文档...">
+    </div>
+  </div>
+  <div class="topbar-nav">
+    <a href="#">首页</a>
+    <a href="#">账户管理</a>
+    <a href="#" class="active">转账汇款</a>
+    <a href="#">票据管理</a>
+    <a href="#">融资贷款</a>
+    <a href="#">外汇业务</a>
+  </div>
+  <div class="topbar-right">
+    <button class="topbar-icon-btn">🔔<span class="badge">3</span></button>
+    <div class="user-avatar">
+      <div class="avatar-circle">张</div>
+      <span>张明远</span>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">转账汇款</div>
+      <div class="sidebar-item active">
+        <span class="icon">💸</span>
+        转账汇款
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">📋</span>
+        转账记录
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">📁</span>
+        常用收款人
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">⏱️</span>
+        预约转账
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">管理</div>
+      <div class="sidebar-item">
+        <span class="icon">🛡️</span>
+        限额管理
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">🔑</span>
+        密钥管理
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-header">
+      <div class="page-title">转账汇款</div>
+      <div class="page-subtitle">执行行内转账、跨行转账多种汇款业务</div>
+    </div>
+
+    <div class="transfer-layout">
+      <!-- LEFT: FORM -->
+      <div>
+        <!-- TRANSFER FORM -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">发起转账</div>
+          </div>
+          <div class="card-body">
+            <form id="transferForm">
+              <div class="form-grid">
+                <!-- 收款人 -->
+                <div class="form-group">
+                  <label class="form-label">收款人名称<span class="required">*</span></label>
+                  <input type="text" class="form-control" id="payeeName" placeholder="请输入收款人全称" autocomplete="off">
+                  <span class="form-error">请输入收款人名称</span>
+                </div>
+
+                <!-- 开户行 -->
+                <div class="form-group">
+                  <label class="form-label">收款银行<span class="required">*</span></label>
+                  <select class="form-control" id="payeeBank">
+                    <option value="">请选择收款银行</option>
+                    <option value="ccab">长安银行</option>
+                    <option value="icbc">中国工商银行</option>
+                    <option value="abc">中国农业银行</option>
+                    <option value="boc">中国银行</option>
+                    <option value="ccb">中国建设银行</option>
+                    <option value="comm">交通银行</option>
+                    <option value="citic">中信银行</option>
+                    <option value="cebb">中国光大银行</option>
+                    <option value="hxb">华夏银行</option>
+                    <option value="cmb">招商银行</option>
+                    <option value="gdb">广发银行</option>
+                    <option value="pab">平安银行</option>
+                    <option value="psbc">中国邮政储蓄银行</option>
+                    <option value="other">其他银行</option>
+                  </select>
+                  <span class="form-error">请选择收款银行</span>
+                </div>
+
+                <!-- 收款账号 -->
+                <div class="form-group">
+                  <label class="form-label">收款账号<span class="required">*</span></label>
+                  <input type="text" class="form-control" id="payeeAccount" placeholder="请输入收款账号" maxlength="23" autocomplete="off">
+                  <span class="form-error">请输入正确的收款账号</span>
+                </div>
+
+                <!-- 金额 -->
+                <div class="form-group">
+                  <label class="form-label">转账金额<span class="required">*</span></label>
+                  <div class="amount-input-wrap">
+                    <span class="currency">¥</span>
+                    <input type="text" class="form-control" id="amount" placeholder="0.00" autocomplete="off">
+                  </div>
+                  <span class="form-error">请输入正确的转账金额</span>
+                </div>
+
+                <!-- 用途 -->
+                <div class="form-group full">
+                  <label class="form-label">用途<span class="required">*</span></label>
+                  <select class="form-control" id="purpose">
+                    <option value="">请选择资金用途</option>
+                    <option value="procurement">货款/采购款</option>
+                    <option value="salary">工资/劳务费</option>
+                    <option value="rent">房租/物业费</option>
+                    <option value="utility">水电/通讯费</option>
+                    <option value="tax">税费缴纳</option>
+                    <option value="investment">投资/理财</option>
+                    <option value="loan">贷款还款</option>
+                    <option value="other">其他</option>
+                  </select>
+                  <span class="form-error">请选择资金用途</span>
+                </div>
+
+                <!-- 附言 -->
+                <div class="form-group full">
+                  <label class="form-label">附言（选填）</label>
+                  <textarea class="form-control" id="remark" placeholder="请输入备注信息（可选），最多50个字符" maxlength="50"></textarea>
+                  <span class="form-hint">可输入转账说明、订单号等信息</span>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-primary">提交转账</button>
+                <button type="button" class="btn-primary outline" onclick="resetForm()">重置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- RECENT PAYEES -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">常用收款人</div>
+            <a href="#" class="more">管理 ></a>
+          </div>
+          <div class="card-body">
+            <div class="recent-payeers">
+              <div class="payeer-list">
+                <div class="payeer-item" onclick="fillPayee('西安华腾商贸有限公司','6217****8842','ccab')">
+                  <div class="payeer-avatar">西</div>
+                  <div>
+                    <div class="payeer-name">西安华腾商贸有限公司</div>
+                    <div class="payeer-bank">长安银行 · 6217****8842</div>
+                  </div>
+                </div>
+                <div class="payeer-item" onclick="fillPayee('深圳创新科技有限公司','6222****1093','icbc')">
+                  <div class="payeer-avatar blue">深</div>
+                  <div>
+                    <div class="payeer-name">深圳创新科技有限公司</div>
+                    <div class="payeer-bank">工商银行 · 6222****1093</div>
+                  </div>
+                </div>
+                <div class="payeer-item" onclick="fillPayee('北京蓝天贸易集团','6228****5567','abc')">
+                  <div class="payeer-avatar green">北</div>
+                  <div>
+                    <div class="payeer-name">北京蓝天贸易集团</div>
+                    <div class="payeer-bank">农业银行 · 6228****5567</div>
+                  </div>
+                </div>
+                <div class="payeer-item" onclick="fillPayee('杭州西湖物业有限公司','6210****3321','ccb')">
+                  <div class="payeer-avatar orange">杭</div>
+                  <div>
+                    <div class="payeer-name">杭州西湖物业有限公司</div>
+                    <div class="payeer-bank">建设银行 · 6210****3321</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: LIMIT + HISTORY -->
+      <div>
+        <!-- LIMIT INFO -->
+        <div class="limit-box">
+          <div class="limit-box-title">
+            <span class="icon">⚡</span>
+            转账限额说明
+          </div>
+          <table class="limit-table">
+            <thead>
+              <tr>
+                <th>转账类型</th>
+                <th>单笔限额</th>
+                <th>日累计限额</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>行内转账</td>
+                <td class="num">无限制</td>
+                <td class="num">无限制</td>
+              </tr>
+              <tr>
+                <td>跨行转账（普通）</td>
+                <td class="num">500万</td>
+                <td class="num">2000万</td>
+              </tr>
+              <tr>
+                <td>跨行转账（加急）</td>
+                <td class="num">100万</td>
+                <td class="num">500万</td>
+              </tr>
+              <tr>
+                <td>实时到账</td>
+                <td class="num">5万</td>
+                <td class="num">20万</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="limit-tips">
+            <p><span class="bullet">•</span>行内转账实时到账，跨行转账时间以人民银行系统为准</p>
+            <p><span class="bullet">•</span>如需调整限额，请前往"限额管理"申请变更</p>
+            <p><span class="bullet">•</span>大额转账（≥100万）需经过二级审批流程</p>
+            <p><span class="bullet">•</span>工作日16:00前提交的跨行转账当日发出，节假日顺延</p>
+          </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">历史转账记录</div>
+            <a href="#" class="more">更多记录 ></a>
+          </div>
+          <div class="card-body" style="padding:0">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>收款人</th>
+                  <th>金额</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;font-size:13px;">西安华腾商贸有限公司</div>
+                    <div style="font-size:11px;color:var(--text-muted);">2026-07-10 14:32</div>
+                  </td>
+                  <td><span class="tx-amount out">-¥128,500.00</span></td>
+                  <td><span class="tx-status success">成功</span></td>
+                  <td class="history-actions">
+                    <button>详情</button>
+                    <button>重发</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;font-size:13px;">深圳创新科技有限公司</div>
+                    <div style="font-size:11px;color:var(--text-muted);">2026-07-09 09:15</div>
+                  </td>
+                  <td><span class="tx-amount out">-¥35,000.00</span></td>
+                  <td><span class="tx-status success">成功</span></td>
+                  <td class="history-actions">
+                    <button>详情</button>
+                    <button>重发</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;font-size:13px;">北京蓝光贸易集团</div>
+                    <div style="font-size:11px;color:var(--text-muted);">2026-07-08 16:45</div>
+                  </td>
+                  <td><span class="tx-amount out">-¥520,000.00</span></td>
+                  <td><span class="tx-status pending">审批中</span></td>
+                  <td class="history-actions">
+                    <button>详情</button>
+                    <button class="danger">撤回</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;font-size:13px;">杭州西湖物业有限公司</div>
+                    <div style="font-size:11px;color:var(--text-muted);">2026-07-07 11:20</div>
+                  </td>
+                  <td><span class="tx-amount out">-¥8,600.00</span></td>
+                  <td><span class="tx-status success">成功</span></td>
+                  <td class="history-actions">
+                    <button>详情</button>
+                    <button>重发</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight:600;font-size:13px;">上海恒通物流有限公司</div>
+                    <div style="font-size:11px;color:var(--text-muted);">2026-07-05 10:05</div>
+                  </td>
+                  <td><span class="tx-amount out">-¥45,200.00</span></td>
+                  <td><span class="tx-status failed">失败</span></td>
+                  <td class="history-actions">
+                    <button>详情</button>
+                    <button>重试</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <div class="pagination-info">共 5 条记录，第 1/1 页</div>
+              <div class="pagination-controls">
+                <button disabled>‹</button>
+                <button class="active">1</button>
+                <button disabled>›</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">转账确认</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-row">
+        <span class="label">收款人名称</span>
+        <span class="value" id="cfPayee">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="label">收款银行</span>
+        <span class="value" id="cfBank">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="label">收款账号</span>
+        <span class="value" id="cfAccount">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="label">资金用途</span>
+        <span class="value" id="cfPurpose">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="label">附言</span>
+        <span class="value" id="cfRemark">—</span>
+      </div>
+      <div class="confirm-total">
+        <span class="label">转账金额</span>
+        <span class="amount" id="cfAmount">¥0.00</span>
+      </div>
+      <div style="margin-top: 16px;">
+        <label class="form-label">验证码<span class="required">*</span></label>
+        <div class="verify-code-wrap" style="margin-top:6px;">
+          <input type="text" class="form-control" id="verifyCode" placeholder="请输入短信验证码" maxlength="6" autocomplete="off">
+          <button class="verify-code-btn" id="sendCodeBtn" onclick="sendCode()">发送验证码</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary outline" onclick="closeModal()">取消</button>
+      <button class="btn-primary" onclick="doTransfer()">确认转账</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">转账提交成功</div>
+      <button class="modal-close" onclick="closeSuccessModal()">×</button>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:32px 24px;">
+      <div style="font-size:48px;margin-bottom:16px;">✅</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;">转账申请已提交</div>
+      <div style="font-size:13px;color:var(--text-muted);line-height:1.7;">
+        您的转账申请已成功提交，<br>
+        预计在 <strong style="color:var(--red);">1-2个工作日</strong> 内到账，<br>
+        请留意收款方账户变动。
+      </div>
+      <div style="margin-top:20px;padding:14px;background:#F8F9FA;border-radius:8px;font-size:12px;color:var(--text-muted);">
+        交易流水号：<span style="font-family:monospace;color:var(--text);">TXN20260713001</span>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:center;">
+      <button class="btn-primary" onclick="closeSuccessModal()">完成</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif">
+  <span class="notif-icon">✓</span>
+  <div class="notif-content">
+    <div class="notif-title" id="notifTitle">操作成功</div>
+    <div class="notif-msg" id="notifMsg">转账申请已提交</div>
+  </div>
+  <button class="notif-close" onclick="hideNotif()">×</button>
+</div>
+
+<script>
+// Fill payee from recent list
+function fillPayee(name, account, bank) {
+  document.getElementById('payeeName').value = name;
+  document.getElementById('payeeAccount').value = account;
+  document.getElementById('payeeBank').value = bank;
+}
+
+// Reset form
+function resetForm() {
+  document.getElementById('transferForm').reset();
+}
+
+// Format account with spaces
+document.getElementById('payeeAccount').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  v = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+  e.target.value = v.substring(0, 23);
+});
+
+// Format amount
+document.getElementById('amount').addEventListener('input', function(e) {
+  let v = e.target.value.replace(/[^\d.]/g, '');
+  let parts = v.split('.');
+  if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+  if (parts[1] && parts[1].length > 2) parts[1] = parts[1].substring(0, 2);
+  v = parts.join('.');
+  e.target.value = v;
+});
+
+// Form validation
+function validateForm() {
+  const fields = [
+    { id: 'payeeName', msg: '请输入收款人名称' },
+    { id: 'payeeBank', msg: '请选择收款银行' },
+    { id: 'payeeAccount', msg: '请输入收款账号' },
+    { id: 'amount', msg: '请输入转账金额' },
+    { id: 'purpose', msg: '请选择资金用途' }
+  ];
+  let valid = true;
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    const group = el.closest('.form-group');
+    if (!el.value.trim()) {
+      group.classList.add('has-error');
+      valid = false;
+    } else {
+      group.classList.remove('has-error');
+    }
+  });
+  // Amount check
+  const amt = parseFloat(document.getElementById('amount').value);
+  if (isNaN(amt) || amt <= 0) {
+    document.getElementById('amount').closest('.form-group').classList.add('has-error');
+    valid = false;
+  }
+  return valid;
+}
+
+// Remove error on input
+document.querySelectorAll('.form-control').forEach(el => {
+  el.addEventListener('input', () => {
+    el.closest('.form-group')?.classList.remove('has-error');
+  });
+});
+
+// Submit
+document.getElementById('transferForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!validateForm()) return;
+  showConfirmModal();
+});
+
+// Bank name map
+const bankNames = {
+  ccab:'长安银行', icbc:'中国工商银行', abc:'中国农业银行', boc:'中国银行',
+  ccb:'中国建设银行', comm:'交通银行', citic:'中信银行', cebb:'中国光大银行',
+  hxb:'华夏银行', cmb:'招商银行', gdb:'广发银行', pab:'平安银行',
+  psbc:'中国邮政储蓄银行', other:'其他银行'
+};
+const purposeNames = {
+  procurement:'货款/采购款', salary:'工资/劳务费', rent:'房租/物业费',
+  utility:'水电/通讯费', tax:'税费缴纳', investment:'投资/理财',
+  loan:'贷款还款', other:'其他'
+};
+
+function showConfirmModal() {
+  document.getElementById('cfPayee').textContent = document.getElementById('payeeName').value;
+  document.getElementById('cfBank').textContent = bankNames[document.getElementById('payeeBank').value] || '—';
+  document.getElementById('cfAccount').textContent = document.getElementById('payeeAccount').value;
+  document.getElementById('cfPurpose').textContent = purposeNames[document.getElementById('purpose').value] || '—';
+  document.getElementById('cfRemark').textContent = document.getElementById('remark').value || '（无）';
+  document.getElementById('cfAmount').textContent = '¥' + parseFloat(document.getElementById('amount').value).toLocaleString('zh-CN', {minimumFractionDigits:2});
+  document.getElementById('confirmModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('confirmModal').classList.remove('show');
+  document.getElementById('verifyCode').value = '';
+}
+
+function sendCode() {
+  const btn = document.getElementById('sendCodeBtn');
+  btn.disabled = true;
+  let countdown = 60;
+  btn.textContent = countdown + 's后重发';
+  let timer = setInterval(() => {
+    countdown--;
+    if (countdown <= 0) {
+      clearInterval(timer);
+      btn.disabled = false;
+      btn.textContent = '发送验证码';
+    } else {
+      btn.textContent = countdown + 's后重发';
+    }
+  }, 1000);
+  showNotif('success', '验证码已发送', '请查收手机短信中的6位验证码');
+}
+
+function doTransfer() {
+  const code = document.getElementById('verifyCode').value;
+  if (!code || code.length < 6) {
+    showNotif('error', '验证码错误', '请输入6位短信验证码');
+    return;
+  }
+  closeModal();
+  document.getElementById('successModal').classList.add('show');
+}
+
+function closeSuccessModal() {
+  document.getElementById('successModal').classList.remove('show');
+  resetForm();
+}
+
+function showNotif(type, title, msg) {
+  const notif = document.getElementById('notif');
+  notif.className = 'notif ' + type;
+  document.getElementById('notifTitle').textContent = title;
+  document.getElementById('notifMsg').textContent = msg;
+  const icon = notif.querySelector('.notif-icon');
+  icon.textContent = type === 'success' ? '✓' : '✗';
+  notif.classList.add('show');
+  setTimeout(hideNotif, 3000);
+}
+
+function hideNotif() {
+  document.getElementById('notif').classList.remove('show');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>集团服务 - 长安银行</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #C6151D;
+  --red-dark: #8B0010;
+  --red-light: #FFF5F5;
+  --bg: #F0F2F5;
+  --white: #fff;
+  --text: #333;
+  --text-light: #666;
+  --text-muted: #999;
+  --border: #E4E7EB;
+  --sidebar-w: 240px;
+  --green: #1A9E5A;
+  --orange: #E67E22;
+  --blue: #2471A3;
+}
+body {
+  font-family: "Microsoft YaHei","PingFang SC",Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== TOPBAR ===== */
+.topbar {
+  height: 64px;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  min-width: var(--sidebar-w);
+}
+.topbar-logo img { height: 36px; }
+.topbar-center { flex: 1; display: flex; align-items: center; gap: 8px; }
+.topbar-search {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 340px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+.topbar-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 13px;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,0.6); }
+.topbar-nav { display: flex; align-items: center; gap: 4px; }
+.topbar-nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.topbar-nav a:hover { background: rgba(255,255,255,0.15); }
+.topbar-nav a.active { background: rgba(255,255,255,0.2); color: #fff; }
+.topbar-right { display: flex; align-items: center; gap: 12px; margin-left: 16px; }
+.topbar-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s;
+}
+.topbar-icon-btn:hover { background: rgba(255,255,255,0.25); }
+.topbar-icon-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 16px; height: 16px;
+  background: #FFD700;
+  color: #333;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.2s;
+}
+.user-avatar:hover { background: rgba(255,255,255,0.25); }
+.user-avatar .avatar-circle {
+  width: 28px; height: 28px;
+  background: #FFD700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold;
+  color: var(--red);
+  font-size: 12px;
+}
+
+/* ===== LAYOUT ===== */
+.layout { display: flex; padding-top: 64px; min-height: 100vh; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 64px; bottom: 0;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.sidebar-section { margin-bottom: 4px; }
+.sidebar-title {
+  padding: 10px 20px 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: #F8F8F8; color: var(--red); }
+.sidebar-item.active {
+  background: var(--red-light);
+  color: var(--red);
+  border-left-color: var(--red);
+  font-weight: 600;
+}
+.sidebar-item .icon {
+  width: 20px; height: 20px;
+  background: #F5F5F5;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: #888;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sidebar-item:hover .icon,
+.sidebar-item.active .icon {
+  background: var(--red);
+  color: #fff;
+}
+.sidebar-item .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+/* ===== MAIN CONTENT ===== */
+.main { flex: 1; margin-left: var(--sidebar-w); padding: 24px; min-width: 0; }
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.page-title { font-size: 22px; font-weight: 700; color: var(--text); }
+.page-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.page-actions { display: flex; gap: 10px; }
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 24px;
+  gap: 0;
+}
+.tab-btn {
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+.tab-btn:hover { color: var(--red); }
+.tab-btn.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+  font-weight: 600;
+}
+.tab-btn .tab-icon {
+  margin-right: 6px;
+  opacity: 0.7;
+}
+.tab-btn.active .tab-icon { opacity: 1; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ===== CARDS ===== */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.card-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.card-header .more {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.card-header .more:hover { color: var(--red); }
+.card-body { padding: 20px 24px; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--red-dark); }
+.btn-outline {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--red); color: var(--red); }
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+.btn-lg { padding: 12px 28px; font-size: 15px; }
+.btn-success { background: var(--green); color: #fff; }
+.btn-success:hover { background: #148F4A; }
+
+/* ===== STAT CARDS ===== */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.stat-card .stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.stat-card .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+}
+.stat-card .stat-value.red { color: var(--red); }
+.stat-card .stat-value.green { color: var(--green); }
+.stat-card .stat-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.stat-card .stat-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.stat-card .stat-icon.red { background: #FFE8E8; color: var(--red); }
+.stat-card .stat-icon.green { background: #E8F8F0; color: var(--green); }
+.stat-card .stat-icon.orange { background: #FFF3E0; color: var(--orange); }
+.stat-card .stat-icon.blue { background: #EBF5FB; color: var(--blue); }
+
+/* ===== TABLES ===== */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead th {
+  background: #FAFAFA;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-light);
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F5F5F5;
+  color: var(--text);
+}
+tbody tr:hover { background: #FAFAFA; }
+tbody tr:last-child td { border-bottom: none; }
+.status { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+.status-success { background: #E8F8F0; color: var(--green); }
+.status-pending { background: #FFF8E1; color: #D68910; }
+.status-danger { background: #FDEDEC; color: var(--red); }
+.status-info { background: #EBF5FB; color: var(--blue); }
+
+/* ===== FORMS ===== */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.form-item { margin-bottom: 16px; }
+.form-item.full { grid-column: span 2; }
+.form-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.form-label .required { color: var(--red); margin-left: 2px; }
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 9px 14px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  background: #fff;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus { border-color: var(--red); }
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.form-row { display: flex; gap: 12px; align-items: flex-end; }
+.form-row .form-item { flex: 1; margin-bottom: 0; }
+
+/* ===== ALERT ===== */
+.alert {
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.alert-info { background: #EBF5FB; border: 1px solid #AED6F1; color: #1A5276; }
+.alert-warning { background: #FFF8E1; border: 1px solid #F9E79F; color: #7D6608; }
+.alert-icon { flex-shrink: 0; margin-top: 1px; }
+
+/* ===== STEPS ===== */
+.steps { display: flex; align-items: center; margin-bottom: 28px; }
+.step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+.step-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.step-circle.done { background: var(--green); color: #fff; }
+.step-circle.active { background: var(--red); color: #fff; }
+.step-label { font-size: 13px; color: var(--text-muted); margin-left: 8px; }
+.step-label.active { color: var(--text); font-weight: 600; }
+.step-line { flex: 1; height: 2px; background: var(--border); margin: 0 12px; }
+.step-line.done { background: var(--green); }
+
+/* ===== TRANSFER VISUAL ===== */
+.transfer-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #FAFAFA;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+.transfer-node {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 24px;
+  text-align: center;
+  min-width: 140px;
+}
+.transfer-node.main { border-color: var(--red); background: var(--red-light); }
+.transfer-node .node-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.transfer-node .node-account { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.transfer-node .node-amount { font-size: 18px; font-weight: 700; color: var(--red); margin-top: 6px; }
+.transfer-arrow { font-size: 24px; color: var(--red); margin: 0 20px; }
+
+/* ===== CHART PLACEHOLDER ===== */
+.chart-box {
+  background: #FAFAFA;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text-muted);
+  font-size: 13px;
+  gap: 8px;
+}
+.chart-placeholder {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, #FDE8E8 0%, #E8F4FD 50%, #E8F8F0 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+}
+.bar {
+  width: 40px;
+  background: linear-gradient(to top, var(--red), #E88080);
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 6px;
+  font-size: 10px;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.bar:hover { opacity: 0.8; transform: scaleY(1.05); transform-origin: bottom; }
+.bar.green { background: linear-gradient(to top, var(--green), #5DCE8B); }
+.bar.orange { background: linear-gradient(to top, var(--orange), #F0A500); }
+.bar.blue { background: linear-gradient(to top, var(--blue), #5DADE2); }
+
+/* ===== TAG ===== */
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+.tag-red { background: #FDEDEC; color: var(--red); }
+.tag-green { background: #E8F8F0; color: var(--green); }
+.tag-orange { background: #FFF3E0; color: var(--orange); }
+.tag-blue { background: #EBF5FB; color: var(--blue); }
+
+/* ===== PAGINATION ===== */
+.pagination { display: flex; align-items: center; justify-content: space-between; padding: 16px 0 4px; }
+.pagination-info { font-size: 12px; color: var(--text-muted); }
+.pagination-controls { display: flex; gap: 4px; }
+.pg-btn {
+  min-width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-light);
+  cursor: pointer;
+  background: #fff;
+  transition: all 0.15s;
+}
+.pg-btn:hover { border-color: var(--red); color: var(--red); }
+.pg-btn.active { background: var(--red); color: #fff; border-color: var(--red); }
+
+/* ===== PROGRESS ===== */
+.progress-wrap { display: flex; align-items: center; gap: 12px; }
+.progress-bar { flex: 1; height: 8px; background: #F0F0F0; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+.progress-fill.red { background: linear-gradient(to right, var(--red), #E88080); }
+.progress-fill.green { background: linear-gradient(to right, var(--green), #5DCE8B); }
+.progress-fill.orange { background: linear-gradient(to right, var(--orange), #F0A500); }
+.progress-label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 640px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.modal-header {
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: #F5F5F5;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.modal-close:hover { background: #EBEBEB; }
+.modal-body { padding: 24px 28px; }
+.modal-footer { padding: 16px 28px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+/* ===== SCHEDULE ===== */
+.schedule-list { display: flex; flex-direction: column; gap: 12px; }
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: #FAFAFA;
+  border-radius: 10px;
+  border: 1px solid #F0F0F0;
+}
+.schedule-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.schedule-dot.red { background: var(--red); }
+.schedule-dot.green { background: var(--green); }
+.schedule-dot.orange { background: var(--orange); }
+.schedule-info { flex: 1; }
+.schedule-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.schedule-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.schedule-time { font-size: 12px; color: var(--text-light); white-space: nowrap; }
+
+/* ===== BUDGET TREE ===== */
+.budget-tree { font-size: 13px; }
+.budget-node { padding: 8px 0; border-bottom: 1px dashed #F0F0F0; }
+.budget-node:last-child { border-bottom: none; }
+.budget-node-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.budget-node-header:hover { background: #F8F8F8; }
+.budget-node-title { flex: 1; font-weight: 600; color: var(--text); }
+.budget-dept { font-size: 12px; color: var(--text-muted); }
+.budget-indent { padding-left: 24px; }
+.budget-sub { display: none; }
+.budget-sub.open { display: block; }
+
+/* ===== ACTION BAR ===== */
+.action-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #FAFAFA;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.action-bar label { font-size: 13px; color: var(--text-light); white-space: nowrap; }
+.action-bar select, .action-bar input {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+}
+.action-bar select:focus, .action-bar input:focus { border-color: var(--red); }
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+.search-box input { border: none; outline: none; font-size: 13px; width: 180px; }
+.search-box input::placeholder { color: var(--text-muted); }
+
+/* ===== INFO ROW ===== */
+.info-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.info-item {
+  background: #FAFAFA;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.info-item .info-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.info-item .info-value { font-size: 15px; font-weight: 700; color: var(--text); }
+.info-item .info-value.red { color: var(--red); }
+.info-item .info-value.green { color: var(--green); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='6' fill='%23C6151D'/><text x='18' y='25' font-size='20' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>" alt="logo">
+    <span>长安银行 · 企业网上银行</span>
+  </div>
+  <div class="topbar-center">
+    <div class="topbar-search">
+      <span>🔍</span>
+      <input type="text" placeholder="搜索功能、账户…" />
+    </div>
+    <div class="topbar-nav">
+      <a href="#">首页</a>
+      <a href="#">账户管理</a>
+      <a href="#">转账汇款</a>
+      <a href="#" class="active">集团服务</a>
+      <a href="#">融资贷款</a>
+      <a href="#">票据服务</a>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="topbar-icon-btn">🔔<span class="badge">3</span></button>
+    <button class="topbar-icon-btn">💬</button>
+    <div class="user-avatar">
+      <div class="avatar-circle">陈</div>
+      <span>陈明远</span>
+      <span>▼</span>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">常用功能</div>
+      <div class="sidebar-item"><span class="icon">📊</span>工作台<span class="badge">99+</span></div>
+      <div class="sidebar-item"><span class="icon">📅</span>账户概览</div>
+      <div class="sidebar-item"><span class="icon">💰</span>资金管理</div>
+      <div class="sidebar-item"><span class="icon">🔄</span>转账汇款</div>
+      <div class="sidebar-item"><span class="icon">📑</span>集团服务</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">集团服务</div>
+      <div class="sidebar-item active"><span class="icon">🔗</span>资金归集</div>
+      <div class="sidebar-item"><span class="icon">↔️</span>内部转账</div>
+      <div class="sidebar-item"><span class="icon">📐</span>预算管理</div>
+      <div class="sidebar-item"><span class="icon">📋</span>成员管理</div>
+      <div class="sidebar-item"><span class="icon">📈</span>集团报表</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">其他服务</div>
+      <div class="sidebar-item"><span class="icon">🏦</span>融资贷款</div>
+      <div class="sidebar-item"><span class="icon">📄</span>票据服务</div>
+      <div class="sidebar-item"><span class="icon">🔐</span>安全设置</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">集团服务</div>
+        <div class="page-subtitle">陕西能源集团 · 资金集中管理平台</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-outline btn-sm" onclick="alert('刷新成功')">🔄 刷新</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal('addRuleModal')">+ 新建归集规则</button>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon red">📊</div>
+        <div class="stat-label">归集总金额</div>
+        <div class="stat-value red">¥ 8,456.78 <span style="font-size:13px;font-weight:400">万</span></div>
+        <div class="stat-sub">较上月 +12.5% ↑</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">↔️</div>
+        <div class="stat-label">本月内部转账</div>
+        <div class="stat-value">¥ 2,340.50 <span style="font-size:13px;font-weight:400">万</span></div>
+        <div class="stat-sub">共 128 笔</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">📐</div>
+        <div class="stat-label">预算执行率</div>
+        <div class="stat-value orange">68.5%</div>
+        <div class="stat-sub">正常范围内</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">🏢</div>
+        <div class="stat-label">成员单位</div>
+        <div class="stat-value">12 <span style="font-size:13px;font-weight:400">家</span></div>
+        <div class="stat-sub">3 家待审批</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this, 'tab1')">
+        <span class="tab-icon">🔗</span>资金归集
+      </button>
+      <button class="tab-btn" onclick="switchTab(this, 'tab2')">
+        <span class="tab-icon">↔️</span>内部转账
+      </button>
+      <button class="tab-btn" onclick="switchTab(this, 'tab3')">
+        <span class="tab-icon">📐</span>预算管理
+      </button>
+    </div>
+
+    <!-- ========== TAB1: 资金归集 ========== -->
+    <div class="tab-panel active" id="tab1">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">归集规则列表</div>
+          <div>
+            <button class="btn btn-outline btn-sm" style="margin-right:6px">导出</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('addRuleModal')">+ 新建规则</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>规则名称</th>
+                  <th>归集方向</th>
+                  <th>源账户</th>
+                  <th>目标账户</th>
+                  <th>归集模式</th>
+                  <th>月归集额度</th>
+                  <th>已归集</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>西安矿业归集</strong></td>
+                  <td><span class="tag tag-red">↑ 上收</span></td>
+                  <td>西安矿业 (4892)</td>
+                  <td>集团总部 (1001)</td>
+                  <td>实时归集</td>
+                  <td>¥ 2,000.00 万</td>
+                  <td><strong style="color:var(--red)">¥ 1,456.78 万</strong></td>
+                  <td><span class="status status-success">● 运行中</span></td>
+                  <td>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">编辑</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>榆林化工归集</strong></td>
+                  <td><span class="tag tag-red">↑ 上收</span></td>
+                  <td>榆林化工 (3301)</td>
+                  <td>集团总部 (1001)</td>
+                  <td>定时归集</td>
+                  <td>¥ 1,500.00 万</td>
+                  <td><strong style="color:var(--red)">¥ 980.50 万</strong></td>
+                  <td><span class="status status-success">● 运行中</span></td>
+                  <td>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">编辑</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>咸阳电力归集</strong></td>
+                  <td><span class="tag tag-blue">↓ 下拨</span></td>
+                  <td>集团总部 (1001)</td>
+                  <td>咸阳电力 (5502)</td>
+                  <td>手动归集</td>
+                  <td>¥ 800.00 万</td>
+                  <td><strong style="color:var(--red)">¥ 320.00 万</strong></td>
+                  <td><span class="status status-pending">○ 待执行</span></td>
+                  <td>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">编辑</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>宝鸡冶炼归集</strong></td>
+                  <td><span class="tag tag-red">↑ 上收</span></td>
+                  <td>宝鸡冶炼 (7723)</td>
+                  <td>集团总部 (1001)</td>
+                  <td>定时归集</td>
+                  <td>¥ 1,200.00 万</td>
+                  <td><strong style="color:var(--red)">¥ 0.00 万</strong></td>
+                  <td><span class="status status-danger">✕ 已暂停</span></td>
+                  <td>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button>
+                    <button class="btn btn-success btn-sm" style="padding:4px 10px;font-size:12px">启用</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>渭南新能源归集</strong></td>
+                  <td><span class="tag tag-red">↑ 上收</span></td>
+                  <td>渭南新能源 (8812)</td>
+                  <td>集团总部 (1001)</td>
+                  <td>实时归集</td>
+                  <td>¥ 1,000.00 万</td>
+                  <td><strong style="color:var(--red)">¥ 756.30 万</strong></td>
+                  <td><span class="status status-success">● 运行中</span></td>
+                  <td>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button>
+                    <button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">编辑</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pagination-info">共 5 条记录，第 1/1 页</div>
+            <div class="pagination-controls">
+              <button class="pg-btn active">1</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 归集趋势 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">近6月归集趋势（万元）</div>
+          </div>
+          <div class="card-body">
+            <div class="chart-placeholder">
+              <div class="bar" style="height:45%">456</div>
+              <div class="bar" style="height:60%">680</div>
+              <div class="bar green" style="height:75%">820</div>
+              <div class="bar green" style="height:65%">720</div>
+              <div class="bar green" style="height:88%">980</div>
+              <div class="bar green" style="height:100%">1105</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:8px">
+              <span>1月</span><span>2月</span><span>3月</span><span>4月</span><span>5月</span><span>6月</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">各成员归集占比</div>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                  <span>西安矿业</span><strong style="color:var(--red)">40.2%</strong>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill red" style="width:40.2%"></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                  <span>榆林化工</span><strong style="color:var(--orange)">27.1%</strong>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill orange" style="width:27.1%"></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                  <span>渭南新能源</span><strong style="color:var(--green)">20.9%</strong>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill green" style="width:20.9%"></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                  <span>咸阳电力</span><strong style="color:var(--blue)">8.8%</strong>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill" style="width:8.8%;background:var(--blue)"></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                  <span>其他成员</span><strong style="color:var(--text-muted)">3.0%</strong>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill" style="width:3%;background:var(--text-muted)"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TAB2: 内部转账 ========== -->
+    <div class="tab-panel" id="tab2">
+      <div class="alert alert-info">
+        <span class="alert-icon">ℹ️</span>
+        <div>
+          <strong>内部转账说明：</strong>内部转账是指集团内部成员单位之间的资金划转，享受手续费优惠或免费。
+          转账实时到账，请确保收款账户信息准确无误。
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">发起内部转账</div>
+        </div>
+        <div class="card-body">
+          <div class="transfer-flow">
+            <div class="transfer-node">
+              <div class="node-title">转出成员</div>
+              <div class="node-account">西安矿业 4892</div>
+              <div class="node-amount">¥ 500.00 万</div>
+            </div>
+            <div class="transfer-arrow">→</div>
+            <div class="transfer-node main">
+              <div class="node-title">集团结算中心</div>
+              <div class="node-account">中转账户 1001</div>
+              <div class="node-amount">手续费全免</div>
+            </div>
+            <div class="transfer-arrow">→</div>
+            <div class="transfer-node">
+              <div class="node-title">转入成员</div>
+              <div class="node-account">榆林化工 3301</div>
+              <div class="node-amount">¥ 500.00 万</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-item">
+              <label class="form-label">付款单位 <span class="required">*</span></label>
+              <select class="form-select">
+                <option value="">— 请选择付款单位 —</option>
+                <option value="1" selected>西安矿业有限公司 (4892)</option>
+                <option value="2">榆林化工集团 (3301)</option>
+                <option value="3">咸阳电力发展 (5502)</option>
+                <option value="4">宝鸡有色金属 (7723)</option>
+                <option value="5">渭南新能源科技 (8812)</option>
+              </select>
+            </div>
+            <div class="form-item">
+              <label class="form-label">收款单位 <span class="required">*</span></label>
+              <select class="form-select">
+                <option value="">— 请选择收款单位 —</option>
+                <option value="1">西安矿业有限公司 (4892)</option>
+                <option value="2" selected>榆林化工集团 (3301)</option>
+                <option value="3">咸阳电力发展 (5502)</option>
+                <option value="4">宝鸡有色金属 (7723)</option>
+                <option value="5">渭南新能源科技 (8812)</option>
+              </select>
+            </div>
+            <div class="form-item">
+              <label class="form-label">转账金额 <span class="required">*</span></label>
+              <input type="text" class="form-input" placeholder="请输入转账金额" value="¥ 500.00 万" />
+              <div class="form-hint">单笔最高5000万，超额请分笔操作</div>
+            </div>
+            <div class="form-item">
+              <label class="form-label">转账方式</label>
+              <select class="form-select">
+                <option value="realtime" selected>实时到账</option>
+                <option value="schedule">定时转账</option>
+              </select>
+            </div>
+            <div class="form-item full">
+              <label class="form-label">备注说明</label>
+              <textarea class="form-textarea" placeholder="请输入转账用途及备注信息（可选）">采购设备款项</textarea>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button class="btn btn-primary">💸 提交转账</button>
+            <button class="btn btn-outline">重置</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">转账记录</div>
+          <div>
+            <button class="btn btn-outline btn-sm" style="margin-right:6px">导出</button>
+            <select class="form-select" style="width:auto;padding:6px 12px;font-size:13px">
+              <option>全部状态</option>
+              <option>转账成功</option>
+              <option>处理中</option>
+              <option>转账失败</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="action-bar">
+            <div class="search-box">
+              <span>🔍</span>
+              <input type="text" placeholder="搜索付款/收款单位" />
+            </div>
+            <label>付款单位</label>
+            <select style="width:160px">
+              <option>全部</option>
+              <option>西安矿业</option>
+              <option>榆林化工</option>
+              <option>咸阳电力</option>
+              <option>宝鸡冶炼</option>
+              <option>渭南新能源</option>
+            </select>
+            <label>日期范围</label>
+            <input type="date" style="width:140px" value="2026-06-01" />
+            <span style="color:var(--text-muted)">至</span>
+            <input type="date" style="width:140px" value="2026-06-30" />
+            <button class="btn btn-outline btn-sm">查询</button>
+            <button class="btn btn-outline btn-sm">重置</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>交易流水号</th>
+                  <th>付款单位</th>
+                  <th>收款单位</th>
+                  <th>转账金额</th>
+                  <th>手续费</th>
+                  <th>交易时间</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">TX20260613001</span></td>
+                  <td>西安矿业 (4892)</td>
+                  <td>榆林化工 (3301)</td>
+                  <td><strong style="color:var(--red)">¥ 500.00 万</strong></td>
+                  <td><span style="color:var(--green)">免费</span></td>
+                  <td>2026-06-13 09:32:15</td>
+                  <td><span class="status status-success">● 成功</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button></td>
+                </tr>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">TX20260612008</span></td>
+                  <td>榆林化工 (3301)</td>
+                  <td>渭南新能源 (8812)</td>
+                  <td><strong style="color:var(--red)">¥ 280.00 万</strong></td>
+                  <td><span style="color:var(--green)">免费</span></td>
+                  <td>2026-06-12 14:21:08</td>
+                  <td><span class="status status-success">● 成功</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button></td>
+                </tr>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">TX20260611005</span></td>
+                  <td>集团总部 (1001)</td>
+                  <td>咸阳电力 (5502)</td>
+                  <td><strong style="color:var(--red)">¥ 150.00 万</strong></td>
+                  <td><span style="color:var(--green)">免费</span></td>
+                  <td>2026-06-11 16:45:30</td>
+                  <td><span class="status status-success">● 成功</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button></td>
+                </tr>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">TX20260610003</span></td>
+                  <td>宝鸡冶炼 (7723)</td>
+                  <td>集团总部 (1001)</td>
+                  <td><strong style="color:var(--red)">¥ 80.00 万</strong></td>
+                  <td><span style="color:var(--green)">免费</span></td>
+                  <td>2026-06-10 11:07:42</td>
+                  <td><span class="status status-info">◐ 处理中</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">详情</button></td>
+                </tr>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">TX20260609002</span></td>
+                  <td>渭南新能源 (8812)</td>
+                  <td>西安矿业 (4892)</td>
+                  <td><strong style="color:var(--red)">¥ 60.00 万</strong></td>
+                  <td><span style="color:var(--green)">免费</span></td>
+                  <td>2026-06-09 08:15:55</td>
+                  <td><span class="status status-danger">✕ 失败</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">重试</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pagination-info">共 5 条记录，第 1/1 页</div>
+            <div class="pagination-controls">
+              <button class="pg-btn active">1</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TAB3: 预算管理 ========== -->
+    <div class="tab-panel" id="tab3">
+      <div class="alert alert-warning">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <strong>预算提醒：</strong>2026年Q2还剩 <strong>18天</strong>，集团整体预算执行率为 <strong>68.5%</strong>，
+          其中榆林化工超支预警，请相关单位注意控制支出。
+        </div>
+      </div>
+
+      <!-- 预算概览 -->
+      <div class="info-row">
+        <div class="info-item">
+          <div class="info-label">年度预算总额</div>
+          <div class="info-value red">¥ 15,000.00 万</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">已执行金额</div>
+          <div class="info-value">¥ 10,275.00 万</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">剩余可用额度</div>
+          <div class="info-value green">¥ 4,725.00 万</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">预算执行进度</div>
+            <a href="#" class="more">查看全部 →</a>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                  <span style="font-size:13px;font-weight:600">集团总部管理费用</span>
+                  <span style="font-size:13px"><strong style="color:var(--red)">72.3%</strong> / ¥3000万</span>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill red" style="width:72.3%"></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                  <span style="font-size:13px;font-weight:600">西安矿业运营成本</span>
+                  <span style="font-size:13px"><strong style="color:var(--green)">65.1%</strong> / ¥4000万</span>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill green" style="width:65.1%"></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                  <span style="font-size:13px;font-weight:600">榆林化工采购支出</span>
+                  <span style="font-size:13px"><strong style="color:var(--orange)">91.4%</strong> / ¥3500万</span>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill orange" style="width:91.4%"></div></div>
+                </div>
+                <div style="font-size:11px;color:#E74C3C;margin-top:3px">⚠️ 已超预算预警线（90%）</div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                  <span style="font-size:13px;font-weight:600">渭南新能源研发费用</span>
+                  <span style="font-size:13px"><strong style="color:var(--green)">45.8%</strong> / ¥2500万</span>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill green" style="width:45.8%"></div></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                  <span style="font-size:13px;font-weight:600">咸阳电力运维费用</span>
+                  <span style="font-size:13px"><strong style="color:var(--green)">55.2%</strong> / ¥2000万</span>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-bar"><div class="progress-fill green" style="width:55.2%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">预算执行趋势（万元）</div>
+          </div>
+          <div class="card-body">
+            <div class="chart-placeholder">
+              <div class="bar blue" style="height:35%">520</div>
+              <div class="bar blue" style="height:50%">780</div>
+              <div class="bar" style="height:68%">980</div>
+              <div class="bar green" style="height:80%">1200</div>
+              <div class="bar green" style="height:75%">1120</div>
+              <div class="bar green" style="height:70%">1050</div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:8px">
+              <span>1月</span><span>2月</span><span>3月</span><span>4月</span><span>5月</span><span>6月</span>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:12px;font-size:11px">
+              <span><span style="display:inline-block;width:10px;height:10px;background:var(--blue);border-radius:2px;margin-right:4px"></span>预算</span>
+              <span><span style="display:inline-block;width:10px;height:10px;background:var(--green);border-radius:2px;margin-right:4px"></span>实际</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">预算科目明细</div>
+          <div>
+            <button class="btn btn-primary btn-sm">+ 新增预算</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="action-bar">
+            <label>预算周期</label>
+            <select style="width:120px">
+              <option>2026年度</option>
+              <option>2026H1</option>
+              <option>2026Q1</option>
+            </select>
+            <label>成员单位</label>
+            <select style="width:160px">
+              <option>全部单位</option>
+              <option>集团总部</option>
+              <option>西安矿业</option>
+              <option>榆林化工</option>
+              <option>渭南新能源</option>
+            </select>
+            <label>状态</label>
+            <select style="width:120px">
+              <option>全部</option>
+              <option>正常</option>
+              <option>预警</option>
+              <option>超支</option>
+            </select>
+            <div class="search-box" style="margin-left:auto">
+              <span>🔍</span>
+              <input type="text" placeholder="搜索预算科目" />
+            </div>
+            <button class="btn btn-outline btn-sm">查询</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>预算科目</th>
+                  <th>所属单位</th>
+                  <th>年度预算</th>
+                  <th>已执行</th>
+                  <th>执行率</th>
+                  <th>剩余额度</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>管理费用</strong></td>
+                  <td>集团总部</td>
+                  <td>¥ 3,000.00 万</td>
+                  <td>¥ 2,169.00 万</td>
+                  <td>
+                    <div class="progress-wrap" style="width:100px">
+                      <div class="progress-bar"><div class="progress-fill red" style="width:72.3%"></div></div>
+                    </div>
+                    <span style="font-size:11px;color:var(--red)">72.3%</span>
+                  </td>
+                  <td><strong style="color:var(--green)">¥ 831.00 万</strong></td>
+                  <td><span class="status status-success">● 正常</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">调整</button></td>
+                </tr>
+                <tr>
+                  <td><strong>生产采购</strong></td>
+                  <td>西安矿业</td>
+                  <td>¥ 2,500.00 万</td>
+                  <td>¥ 1,450.00 万</td>
+                  <td>
+                    <div class="progress-wrap" style="width:100px">
+                      <div class="progress-bar"><div class="progress-fill green" style="width:58%"></div></div>
+                    </div>
+                    <span style="font-size:11px;color:var(--green)">58.0%</span>
+                  </td>
+                  <td><strong style="color:var(--green)">¥ 1,050.00 万</strong></td>
+                  <td><span class="status status-success">● 正常</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">调整</button></td>
+                </tr>
+                <tr>
+                  <td><strong>原材料采购</strong></td>
+                  <td>榆林化工</td>
+                  <td>¥ 3,500.00 万</td>
+                  <td>¥ 3,199.00 万</td>
+                  <td>
+                    <div class="progress-wrap" style="width:100px">
+                      <div class="progress-bar"><div class="progress-fill orange" style="width:91.4%"></div></div>
+                    </div>
+                    <span style="font-size:11px;color:var(--orange)">91.4%</span>
+                  </td>
+                  <td><strong style="color:var(--orange)">¥ 301.00 万</strong></td>
+                  <td><span class="status status-pending">⚠ 预警</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">调整</button></td>
+                </tr>
+                <tr>
+                  <td><strong>研发投入</strong></td>
+                  <td>渭南新能源</td>
+                  <td>¥ 2,500.00 万</td>
+                  <td>¥ 1,145.00 万</td>
+                  <td>
+                    <div class="progress-wrap" style="width:100px">
+                      <div class="progress-bar"><div class="progress-fill green" style="width:45.8%"></div></div>
+                    </div>
+                    <span style="font-size:11px;color:var(--green)">45.8%</span>
+                  </td>
+                  <td><strong style="color:var(--green)">¥ 1,355.00 万</strong></td>
+                  <td><span class="status status-success">● 正常</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">调整</button></td>
+                </tr>
+                <tr>
+                  <td><strong>设备维护</strong></td>
+                  <td>咸阳电力</td>
+                  <td>¥ 1,500.00 万</td>
+                  <td>¥ 827.00 万</td>
+                  <td>
+                    <div class="progress-wrap" style="width:100px">
+                      <div class="progress-bar"><div class="progress-fill green" style="width:55.1%"></div></div>
+                    </div>
+                    <span style="font-size:11px;color:var(--green)">55.1%</span>
+                  </td>
+                  <td><strong style="color:var(--green)">¥ 673.00 万</strong></td>
+                  <td><span class="status status-success">● 正常</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">调整</button></td>
+                </tr>
+                <tr>
+                  <td><strong>市场营销</strong></td>
+                  <td>集团总部</td>
+                  <td>¥ 2,000.00 万</td>
+                  <td>¥ 1,485.00 万</td>
+                  <td>
+                    <div class="progress-wrap" style="width:100px">
+                      <div class="progress-bar"><div class="progress-fill red" style="width:74.3%"></div></div>
+                    </div>
+                    <span style="font-size:11px;color:var(--red)">74.3%</span>
+                  </td>
+                  <td><strong style="color:var(--green)">¥ 515.00 万</strong></td>
+                  <td><span class="status status-success">● 正常</span></td>
+                  <td><button class="btn btn-outline btn-sm" style="padding:4px 10px;font-size:12px">调整</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pagination-info">共 6 条记录，第 1/1 页</div>
+            <div class="pagination-controls">
+              <button class="pg-btn active">1</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 预算调整记录 -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">预算调整记录</div>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>调整单号</th>
+                  <th>预算科目</th>
+                  <th>调整单位</th>
+                  <th>调整类型</th>
+                  <th>调整金额</th>
+                  <th>调整原因</th>
+                  <th>申请人</th>
+                  <th>审批状态</th>
+                  <th>申请时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">BA2026061003</span></td>
+                  <td>原材料采购</td>
+                  <td>榆林化工</td>
+                  <td><span class="tag tag-orange">追加</span></td>
+                  <td><strong style="color:var(--red)">+¥ 300.00 万</strong></td>
+                  <td>二期项目启动，原料需求增加</td>
+                  <td>张建国</td>
+                  <td><span class="status status-pending">○ 审批中</span></td>
+                  <td>2026-06-10</td>
+                </tr>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">BA2026060501</span></td>
+                  <td>研发投入</td>
+                  <td>渭南新能源</td>
+                  <td><span class="tag tag-orange">追加</span></td>
+                  <td><strong style="color:var(--red)">+¥ 200.00 万</strong></td>
+                  <td>新项目研发人员扩充</td>
+                  <td>李明辉</td>
+                  <td><span class="status status-success">● 已批准</span></td>
+                  <td>2026-06-05</td>
+                </tr>
+                <tr>
+                  <td><span style="font-family:monospace;color:var(--text-muted)">BA2026052802</span></td>
+                  <td>市场营销</td>
+                  <td>集团总部</td>
+                  <td><span class="tag tag-blue">调减</span></td>
+                  <td><strong style="color:var(--green)">-¥ 150.00 万</strong></td>
+                  <td>上半年推广计划缩减</td>
+                  <td>王芳</td>
+                  <td><span class="status status-success">● 已批准</span></td>
+                  <td>2026-05-28</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 新建归集规则 -->
+<div class="modal-overlay" id="addRuleModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">新建归集规则</div>
+      <button class="modal-close" onclick="closeModal('addRuleModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="steps">
+        <div class="step">
+          <div class="step-circle active">1</div>
+          <div class="step-label active">填写信息</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-circle">2</div>
+          <div class="step-label">确认规则</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-circle">3</div>
+          <div class="step-label">完成</div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-item">
+          <label class="form-label">规则名称 <span class="required">*</span></label>
+          <input type="text" class="form-input" placeholder="请输入规则名称，如：XX公司归集" />
+        </div>
+        <div class="form-item">
+          <label class="form-label">归集方向 <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">— 请选择 —</option>
+            <option value="up">上收（子公司→集团）</option>
+            <option value="down">下拨（集团→子公司）</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label class="form-label">源账户 <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">— 请选择账户 —</option>
+            <option value="1">西安矿业有限公司 (4892) - ¥1,234.56万</option>
+            <option value="2">榆林化工集团 (3301) - ¥876.43万</option>
+            <option value="3">咸阳电力发展 (5502) - ¥543.21万</option>
+            <option value="4">宝鸡有色金属 (7723) - ¥432.10万</option>
+            <option value="5">渭南新能源科技 (8812) - ¥321.09万</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label class="form-label">目标账户 <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">— 请选择账户 —</option>
+            <option value="0">集团总部结算中心 (1001) - ¥8,456.78万</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label class="form-label">归集模式 <span class="required">*</span></label>
+          <select class="form-select">
+            <option value="">— 请选择模式 —</option>
+            <option value="realtime">实时归集（自动）</option>
+            <option value="daily">每日定时归集</option>
+            <option value="weekly">每周归集</option>
+            <option value="monthly">每月归集</option>
+            <option value="manual">手动归集</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label class="form-label">月归集额度上限 <span class="required">*</span></label>
+          <input type="text" class="form-input" placeholder="请输入月额度上限（万元）" />
+          <div class="form-hint">超过此额度将暂停自动归集</div>
+        </div>
+        <div class="form-item full">
+          <label class="form-label">备注说明</label>
+          <textarea class="form-textarea" placeholder="请输入规则说明及注意事项（可选）"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addRuleModal')">取消</button>
+      <button class="btn btn-primary">下一步 →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switcher
+function switchTab(btn, panelId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// Modal
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+});
+
+// User avatar menu
+document.querySelector('.user-avatar').addEventListener('click', function() {
+  alert('用户菜单：\n• 个人设置\n• 安全中心\n• 消息中心\n• 退出登录');
+});
+</script>
+</body>
+</html>

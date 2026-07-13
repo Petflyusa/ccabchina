@@ -1,0 +1,2360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业金融 - 长安银行</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #C6151D;
+  --red-dark: #8B0010;
+  --bg: #F0F2F5;
+  --white: #fff;
+  --text: #333;
+  --text-light: #666;
+  --text-muted: #999;
+  --border: #E4E7EB;
+  --sidebar-w: 240px;
+  --green: #1A9E5A;
+  --blue: #2965F1;
+  --orange: #F59C0C;
+}
+body {
+  font-family: "Microsoft YaHei","PingFang SC",Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 64px;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  min-width: var(--sidebar-w);
+}
+.topbar-center { flex: 1; display: flex; align-items: center; gap: 8px; }
+.topbar-search {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 340px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+.topbar-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 13px;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,0.6); }
+.topbar-nav { display: flex; align-items: center; gap: 4px; }
+.topbar-nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.topbar-nav a:hover { background: rgba(255,255,255,0.15); }
+.topbar-nav a.active { background: rgba(255,255,255,0.2); color: #fff; }
+.topbar-right { display: flex; align-items: center; gap: 12px; margin-left: 16px; }
+.topbar-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s;
+}
+.topbar-icon-btn:hover { background: rgba(255,255,255,0.25); }
+.topbar-icon-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 16px; height: 16px;
+  background: #FFD700;
+  color: #333;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.2s;
+}
+.user-avatar:hover { background: rgba(255,255,255,0.25); }
+.user-avatar .avatar-circle {
+  width: 28px; height: 28px;
+  background: #FFD700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold;
+  color: var(--red);
+  font-size: 12px;
+}
+
+/* LAYOUT */
+.layout { display: flex; padding-top: 64px; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 64px; bottom: 0;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.sidebar-section { margin-bottom: 4px; }
+.sidebar-title {
+  padding: 10px 20px 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: #F8F8F8; color: var(--red); }
+.sidebar-item.active {
+  background: #FFF5F5;
+  color: var(--red);
+  border-left-color: var(--red);
+  font-weight: 600;
+}
+.sidebar-item .icon {
+  width: 20px; height: 20px;
+  background: #F5F5F5;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: #888;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sidebar-item:hover .icon,
+.sidebar-item.active .icon {
+  background: var(--red);
+  color: #fff;
+}
+.sidebar-item .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+/* MAIN */
+.main { flex: 1; margin-left: var(--sidebar-w); padding: 24px; min-width: 0; }
+
+/* CARDS */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.card-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.card-header .more { font-size: 12px; color: var(--text-muted); text-decoration: none; }
+.card-header .more:hover { color: var(--red); }
+.card-body { padding: 20px 24px; }
+
+/* PAGE HEADER */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+.page-breadcrumb {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.page-breadcrumb a { color: var(--red); text-decoration: none; }
+.page-actions { display: flex; gap: 10px; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  border: 1px solid var(--red);
+}
+.btn-primary:hover { background: var(--red-dark); border-color: var(--red-dark); }
+.btn-outline {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--red); color: var(--red); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-blue { background: var(--blue); color: #fff; border: 1px solid var(--blue); }
+.btn-blue:hover { background: #1a52c4; }
+.btn-green { background: var(--green); color: #fff; border: 1px solid var(--green); }
+.btn-green:hover { background: #157a47; }
+.btn-orange { background: var(--orange); color: #fff; border: 1px solid var(--orange); }
+.btn-orange:hover { background: #d68910; }
+
+/* TABS */
+.tab-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 24px;
+}
+.tab-btn {
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  position: relative;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--red); }
+.tab-btn.active {
+  color: var(--red);
+  border-bottom: 2px solid var(--red);
+  margin-bottom: -2px;
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* TABLES */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead th {
+  background: #FAF8F8;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F5F5F5;
+  color: var(--text);
+}
+tbody tr:hover td { background: #FAFAFA; }
+tbody tr:last-child td { border-bottom: none; }
+
+/* STAT CARDS */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.stat-card .label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.stat-card .value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-card .sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.stat-card .trend { font-size: 12px; margin-top: 4px; }
+.stat-card .trend.up { color: var(--green); }
+.stat-card .trend.down { color: #E74C3C; }
+.stat-card.red .value { color: var(--red); }
+.stat-card.blue .value { color: var(--blue); }
+.stat-card.green .value { color: var(--green); }
+.stat-card.orange .value { color: var(--orange); }
+
+/* FORMS */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 12px; color: var(--text-light); font-weight: 500; }
+.form-control {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text);
+  background: #fff;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-control:focus { border-color: var(--red); }
+.form-control[readonly] { background: #F8F8F8; color: var(--text-muted); }
+select.form-control { cursor: pointer; }
+textarea.form-control { resize: vertical; min-height: 80px; }
+
+/* STATUS TAGS */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.status-success { background: #E8F8EF; color: var(--green); }
+.status-warning { background: #FFF8E6; color: var(--orange); }
+.status-danger { background: #FFECEC; color: #E74C3C; }
+.status-info { background: #EBF3FF; color: var(--blue); }
+.status-pending { background: #F5F5F5; color: var(--text-muted); }
+
+/* FILTER BAR */
+.filter-bar {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.filter-bar .form-group { flex: 0 0 auto; }
+.filter-bar .form-control { min-width: 160px; }
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 680px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: #F5F5F5;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: #E8E8E8; color: var(--text); }
+.modal-body { padding: 24px; }
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* STEP INDICATOR */
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px 0;
+}
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.step .num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--border);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+}
+.step.active .num { background: var(--red); }
+.step.done .num { background: var(--green); }
+.step-line {
+  width: 80px;
+  height: 2px;
+  background: var(--border);
+  margin: 0 12px;
+}
+.step.done + .step-line,
+.step.done ~ .step-line { background: var(--green); }
+
+/* PROGRESS BAR */
+.progress-bar {
+  height: 8px;
+  background: #E8E8E8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill { height: 100%; border-radius: 4px; }
+
+/* CHART AREA */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.chart-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: #FAFAFA;
+}
+.chart-title { font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 12px; }
+.chart-placeholder {
+  height: 180px;
+  background: linear-gradient(135deg, #fafafa 25%, #f0f0f0 50%, #fafafa 75%);
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+}
+.bar {
+  width: 28px;
+  background: linear-gradient(to top, var(--red), #FF6B6B);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+.bar:hover { opacity: 1; }
+
+/* ALERT BOX */
+.alert-box {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+}
+.alert-warning { background: #FFF8E6; border: 1px solid #FFE082; color: #8D6008; }
+.alert-info { background: #EBF3FF; border: 1px solid #BDD7FF; color: #1A4A8A; }
+.alert-success { background: #E8F8EF; border: 1px solid #A5D6B1; color: #1A5A3A; }
+
+/* INFO ROW */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.info-item { display: flex; flex-direction: column; gap: 3px; }
+.info-item .label { font-size: 11px; color: var(--text-muted); }
+.info-item .value { font-size: 13px; color: var(--text); font-weight: 500; }
+
+/* TAG LIST */
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  padding: 3px 10px;
+  background: #F5F5F5;
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--text-light);
+  border: 1px solid var(--border);
+}
+
+/* PAGINATION */
+.pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 0 4px; }
+.pagination-info { font-size: 12px; color: var(--text-muted); }
+.pagination-controls { display: flex; gap: 4px; }
+.pg-btn {
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.pg-btn:hover { border-color: var(--red); color: var(--red); }
+.pg-btn.active { background: var(--red); color: #fff; border-color: var(--red); }
+.pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* TIMELINE */
+.timeline { padding: 8px 0; }
+.timeline-item {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 20px;
+  position: relative;
+}
+.timeline-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.timeline-content { flex: 1; }
+.timeline-content .title { font-size: 13px; font-weight: 600; color: var(--text); }
+.timeline-content .desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+.timeline-content .time { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 16px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.timeline-item:last-child::before { display: none; }
+
+/* OPERATIONS MENU */
+.ops-menu {
+  display: flex;
+  gap: 6px;
+}
+.text-link {
+  font-size: 12px;
+  color: var(--red);
+  cursor: pointer;
+  text-decoration: none;
+  padding: 2px 0;
+}
+.text-link:hover { text-decoration: underline; }
+.text-link + .text-link::before {
+  content: '|';
+  margin: 0 6px;
+  color: var(--border);
+}
+
+/* SECTION TITLE */
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  padding-left: 12px;
+  border-left: 3px solid var(--red);
+}
+
+/* ICON WRAP */
+.icon-wrap {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.icon-wrap.red { background: #FFE8E8; color: var(--red); }
+.icon-wrap.blue { background: #DBE8FF; color: var(--blue); }
+.icon-wrap.green { background: #D8F8E4; color: var(--green); }
+.icon-wrap.orange { background: #FFF2D6; color: var(--orange); }
+
+/* FILE LIST */
+.file-list { display: flex; flex-direction: column; gap: 8px; }
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #FAFAFA;
+}
+.file-item .icon { font-size: 20px; }
+.file-item .name { font-size: 13px; color: var(--text); flex: 1; }
+.file-item .size { font-size: 11px; color: var(--text-muted); }
+
+/* FLOW STEP */
+.flow-steps { display: flex; align-items: center; gap: 0; margin: 20px 0; }
+.flow-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  text-align: center;
+}
+.flow-step::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 55%;
+  width: 90%;
+  height: 2px;
+  background: var(--border);
+}
+.flow-step:last-child::after { display: none; }
+.flow-step .flow-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  color: #fff;
+  z-index: 1;
+  margin-bottom: 8px;
+}
+.flow-step.active .flow-icon { background: var(--red); }
+.flow-step.done .flow-icon { background: var(--green); }
+.flow-step .flow-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.flow-step .flow-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* COUNTER */
+.counter-box {
+  background: #FAFAFA;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.counter-box .num { font-size: 32px; font-weight: 800; color: var(--red); }
+.counter-box .unit { font-size: 12px; color: var(--text-muted); }
+.counter-box .txt { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+/* CURRENCY INPUT */
+.currency-input {
+  position: relative;
+}
+.currency-input input {
+  padding-left: 30px;
+}
+.currency-input::before {
+  content: '¥';
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* TWO COL LAYOUT */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="6" fill="#FFD700"/>
+      <text x="16" y="22" text-anchor="middle" font-size="16" font-weight="bold" fill="#C6151D" font-family="serif">银</text>
+    </svg>
+    长安银行 · 企业金融
+  </div>
+  <div class="topbar-center">
+    <div class="topbar-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="搜索功能、账户…">
+    </div>
+    <nav class="topbar-nav">
+      <a href="#">首页</a>
+      <a href="#">账户管理</a>
+      <a href="#" class="active">企业金融</a>
+      <a href="#">国际业务</a>
+      <a href="#">投资理财</a>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <button class="topbar-icon-btn">🔔<span class="badge">3</span></button>
+    <button class="topbar-icon-btn">💬</button>
+    <div class="user-avatar">
+      <div class="avatar-circle">李</div>
+      <span>李明远</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">企业金融</div>
+      <div class="sidebar-item active">
+        <span class="icon">💰</span> 企业金融
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">📊</span> 银企对账
+        <span class="badge">新</span>
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">🔗</span> 供应链金融
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">📋</span> 贷款管理
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">🌐</span> 国际业务
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">快捷操作</div>
+      <div class="sidebar-item">
+        <span class="icon">✏️</span> 发起申请
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">📑</span> 审批流程
+      </div>
+      <div class="sidebar-item">
+        <span class="icon">📎</span> 附件管理
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">企业金融服务中心</div>
+        <div class="page-breadcrumb">
+          <a href="#">首页</a> / 企业金融 / <span id="tabName">银企对账</span>
+        </div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-outline btn-sm">📥 导出报表</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal('applyModal')">➕ 发起申请</button>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid">
+      <div class="stat-card red">
+        <div class="label">本月待对账金额</div>
+        <div class="value">¥ 2,847,390</div>
+        <div class="sub">共 23 笔交易</div>
+        <div class="trend up">↑ 12.5% 较上月</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="label">供应链融资余额</div>
+        <div class="value">¥ 5,600,000</div>
+        <div class="sub">核心企业 12 家</div>
+        <div class="trend">↑ 3 笔新增</div>
+      </div>
+      <div class="stat-card orange">
+        <div class="label">贷款余额（人民币）</div>
+        <div class="value">¥ 12,350,000</div>
+        <div class="sub">综合授信 ¥ 30,000,000</div>
+        <div class="trend down">剩余额度 ¥ 17,650,000</div>
+      </div>
+      <div class="stat-card green">
+        <div class="label">国际结算量（本月）</div>
+        <div class="value">$ 3,280,000</div>
+        <div class="sub">美元等值</div>
+        <div class="trend up">↑ 8.3% 较上月</div>
+      </div>
+    </div>
+
+    <!-- ALERT -->
+    <div class="alert-box alert-warning">
+      <span style="font-size:16px">⚠️</span>
+      <div>
+        <strong>您有 5 笔对账单待确认</strong>，请于 <strong>3 个工作日内</strong> 完成核对确认，超期将自动按企业端数据为准。
+        <span class="text-link" style="margin-left:12px">立即处理</span>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('reconcile', this)">🏦 银企对账</button>
+      <button class="tab-btn" onclick="switchTab('supply', this)">🔗 供应链金融</button>
+      <button class="tab-btn" onclick="switchTab('loan', this)">📋 贷款管理</button>
+      <button class="tab-btn" onclick="switchTab('global', this)">🌐 国际业务</button>
+    </div>
+
+    <!-- ====== TAB 1: 银企对账 ====== -->
+    <div id="tab-reconcile" class="tab-content active">
+      <div class="two-col" style="margin-bottom:20px">
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">对账概览</span>
+              <a href="#" class="more">查看详情 →</a>
+            </div>
+            <div class="card-body">
+              <div class="chart-placeholder" style="height:200px;align-items:center;justify-content:space-around">
+                <div style="text-align:center">
+                  <div style="font-size:40px;font-weight:800;color:var(--green)">86%</div>
+                  <div style="font-size:12px;color:var(--text-muted);margin-top:4px">已对账完成</div>
+                </div>
+                <div style="text-align:center">
+                  <div style="font-size:40px;font-weight:800;color:var(--orange)">12%</div>
+                  <div style="font-size:12px;color:var(--text-muted);margin-top:4px">待确认</div>
+                </div>
+                <div style="text-align:center">
+                  <div style="font-size:40px;font-weight:800;color:var(--red)">2%</div>
+                  <div style="font-size:12px;color:var(--text-muted);margin-top:4px">异常</div>
+                </div>
+              </div>
+              <div class="chart-grid" style="margin-top:16px;grid-template-columns:1fr 1fr 1fr">
+                <div style="text-align:center">
+                  <div style="font-size:20px;font-weight:700;color:var(--text)">156</div>
+                  <div style="font-size:11px;color:var(--text-muted)">本月对账单</div>
+                </div>
+                <div style="text-align:center">
+                  <div style="font-size:20px;font-weight:700;color:var(--green)">134</div>
+                  <div style="font-size:11px;color:var(--text-muted)">已确认</div>
+                </div>
+                <div style="text-align:center">
+                  <div style="font-size:20px;font-weight:700;color:var(--red)">3</div>
+                  <div style="font-size:11px;color:var(--text-muted)">异常</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">近期对账动态</span>
+              <a href="#" class="more">全部记录 →</a>
+            </div>
+            <div class="card-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:var(--green)"></div>
+                  <div class="timeline-content">
+                    <div class="title">7月对账单（一般户）已确认</div>
+                    <div class="desc">确认金额 ¥ 892,340.00，银行与企业的交易记录完全一致</div>
+                    <div class="time">今天 09:32 · 操作人：李明远</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:var(--orange)"></div>
+                  <div class="timeline-content">
+                    <div class="title">7月对账单（基本户）待确认</div>
+                    <div class="desc">请核对 3 笔差异项，确认后提交银行审核</div>
+                    <div class="time">昨天 17:15 · 待确认</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:var(--green)"></div>
+                  <div class="timeline-content">
+                    <div class="title">6月对账单（美元户）已归档</div>
+                    <div class="desc">确认金额 $ 1,250,000.00，差异 ¥ 0.00</div>
+                    <div class="time">7月5日 10:20 · 已归档</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot" style="background:var(--red)"></div>
+                  <div class="timeline-content">
+                    <div class="title">6月对账单存在异常</div>
+                    <div class="desc">5笔差异项（金额不符），请联系客户经理处理</div>
+                    <div class="time">7月3日 14:08 · 异常</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">对账记录查询</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm">📥 批量导出</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('reconcileModal')">发起对账</button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <div class="form-group">
+            <label>账户</label>
+            <select class="form-control">
+              <option>全部账户</option>
+              <option>基本户（8888）</option>
+              <option>一般户（6666）</option>
+              <option>美元户（8888USD）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>对账月份</label>
+            <input type="month" class="form-control" value="2026-07">
+          </div>
+          <div class="form-group">
+            <label>状态</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>已确认</option>
+              <option>待确认</option>
+              <option>异常</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>对账方向</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>企业发起</option>
+              <option>银行发起</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-sm">🔍 查询</button>
+          <button class="btn btn-outline btn-sm">重置</button>
+        </div>
+        <div class="card-body" style="padding-top:0">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox"></th>
+                  <th>对账单号</th>
+                  <th>账户</th>
+                  <th>对账期间</th>
+                  <th>企业交易笔数</th>
+                  <th>银行交易笔数</th>
+                  <th>核对金额</th>
+                  <th>差异金额</th>
+                  <th>状态</th>
+                  <th>发起方</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>RZ202607001</td>
+                  <td>基本户（8888）</td>
+                  <td>2026年7月</td>
+                  <td>45</td>
+                  <td>45</td>
+                  <td>¥ 892,340.00</td>
+                  <td>¥ 0.00</td>
+                  <td><span class="status status-warning">待确认</span></td>
+                  <td>银行发起</td>
+                  <td>
+                    <div class="ops-menu">
+                      <span class="text-link" onclick="openModal('reconcileModal')">核对</span>
+                      <span class="text-link">详情</span>
+                      <span class="text-link">下载</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>RZ202607002</td>
+                  <td>一般户（6666）</td>
+                  <td>2026年7月</td>
+                  <td>38</td>
+                  <td>38</td>
+                  <td>¥ 456,780.00</td>
+                  <td>¥ 0.00</td>
+                  <td><span class="status status-success">已确认</span></td>
+                  <td>企业发起</td>
+                  <td>
+                    <div class="ops-menu">
+                      <span class="text-link">详情</span>
+                      <span class="text-link">下载</span>
+                      <span class="text-link">打印</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>RZ202606015</td>
+                  <td>基本户（8888）</td>
+                  <td>2026年6月</td>
+                  <td>62</td>
+                  <td>57</td>
+                  <td>¥ 1,203,450.00</td>
+                  <td>¥ 32,100.00</td>
+                  <td><span class="status status-danger">异常</span></td>
+                  <td>企业发起</td>
+                  <td>
+                    <div class="ops-menu">
+                      <span class="text-link">差异明细</span>
+                      <span class="text-link">申诉</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>RZ202606008</td>
+                  <td>美元户（USD8888）</td>
+                  <td>2026年6月</td>
+                  <td>21</td>
+                  <td>21</td>
+                  <td>$ 1,250,000.00</td>
+                  <td>$ 0.00</td>
+                  <td><span class="status status-success">已确认</span></td>
+                  <td>银行发起</td>
+                  <td>
+                    <div class="ops-menu">
+                      <span class="text-link">详情</span>
+                      <span class="text-link">下载</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>RZ202605021</td>
+                  <td>基本户（8888）</td>
+                  <td>2026年5月</td>
+                  <td>54</td>
+                  <td>54</td>
+                  <td>¥ 987,600.00</td>
+                  <td>¥ 0.00</td>
+                  <td><span class="status status-success">已确认</span></td>
+                  <td>企业发起</td>
+                  <td>
+                    <div class="ops-menu">
+                      <span class="text-link">详情</span>
+                      <span class="text-link">下载</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pagination-info">共 156 条记录，第 1/16 页</div>
+            <div class="pagination-controls">
+              <button class="pg-btn" disabled>‹</button>
+              <button class="pg-btn active">1</button>
+              <button class="pg-btn">2</button>
+              <button class="pg-btn">3</button>
+              <button class="pg-btn">…</button>
+              <button class="pg-btn">16</button>
+              <button class="pg-btn">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== TAB 2: 供应链金融 ====== -->
+    <div id="tab-supply" class="tab-content">
+      <div class="alert-box alert-info">
+        <span style="font-size:16px">💡</span>
+        <div>
+          <strong>供应链金融</strong>：为核心企业及其上下游提供应收账款融资、订单融资、货押融资等综合金融服务。
+          <span class="text-link" style="margin-left:12px">了解更多</span>
+        </div>
+      </div>
+
+      <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card blue">
+          <div class="label">应收账款融资（已申请）</div>
+          <div class="value">¥ 3,800,000</div>
+          <div class="sub">在途单据 15 笔</div>
+          <div class="trend">平均利率 4.35%</div>
+        </div>
+        <div class="stat-card green">
+          <div class="label">订单融资（已放款）</div>
+          <div class="value">¥ 1,200,000</div>
+          <div class="sub">有效订单 8 笔</div>
+          <div class="trend">平均利率 4.8%</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="label">核心企业授信额度</div>
+          <div class="value">¥ 8,000,000</div>
+          <div class="sub">已用 5,600,000</div>
+          <div class="trend">剩余 2,400,000</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">核心企业概览</span>
+            <a href="#" class="more">全部核心企业 →</a>
+          </div>
+          <div class="card-body">
+            <div class="info-grid" style="grid-template-columns:repeat(2,1fr)">
+              <div class="info-item">
+                <span class="label">核心企业名称</span>
+                <span class="value">陕西华通供应链有限公司</span>
+              </div>
+              <div class="info-item">
+                <span class="label">行业类型</span>
+                <span class="value">批发业 / 供应链管理</span>
+              </div>
+              <div class="info-item">
+                <span class="label">合作开始时间</span>
+                <span class="value">2022年3月</span>
+              </div>
+              <div class="info-item">
+                <span class="label">评级等级</span>
+                <span class="value">AA+</span>
+              </div>
+              <div class="info-item">
+                <span class="label">授信总额度</span>
+                <span class="value">¥ 8,000,000</span>
+              </div>
+              <div class="info-item">
+                <span class="label">下游供应商数量</span>
+                <span class="value">34 家</span>
+              </div>
+            </div>
+            <div style="margin-top:16px">
+              <div class="section-title">额度使用情况</div>
+              <div style="margin-bottom:10px">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:4px">
+                  <span>已用额度</span><span>¥ 5,600,000 / ¥ 8,000,000</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width:70%;background:var(--blue)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">融资产品推荐</span>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="padding:14px;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:12px">
+                <div class="icon-wrap blue">📄</div>
+                <div style="flex:1">
+                  <div style="font-size:13px;font-weight:600;color:var(--text)">应收账款质押融资</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">以核心企业确权的应收账款质押，单笔最高 ¥ 500万</div>
+                </div>
+                <button class="btn btn-blue btn-sm">申请</button>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:12px">
+                <div class="icon-wrap green">📦</div>
+                <div style="flex:1">
+                  <div style="font-size:13px;font-weight:600;color:var(--text)">订单融资</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">凭有效订单申请预付款融资，解决备货资金压力</div>
+                </div>
+                <button class="btn btn-green btn-sm">申请</button>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:12px">
+                <div class="icon-wrap orange">🏭</div>
+                <div style="flex:1">
+                  <div style="font-size:13px;font-weight:600;color:var(--text)">货押融资</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">以库存商品动产质押，动态监管，灵活还款</div>
+                </div>
+                <button class="btn btn-orange btn-sm">申请</button>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:12px">
+                <div class="icon-wrap red">🏢</div>
+                <div style="flex:1">
+                  <div style="font-size:13px;font-weight:600;color:var(--text)">反向保理</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">核心企业主动推荐供应商，快速确权，利率优惠</div>
+                </div>
+                <button class="btn btn-primary btn-sm">申请</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">应收账款融资记录</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm">📥 导出</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('supplyApplyModal')">发起融资申请</button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <div class="form-group">
+            <label>融资类型</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>应收账款质押</option>
+              <option>订单融资</option>
+              <option>货押融资</option>
+              <option>反向保理</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>状态</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>审批中</option>
+              <option>已放款</option>
+              <option>已还款</option>
+              <option>已拒绝</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>申请日期</label>
+            <input type="date" class="form-control" value="2026-07-01">
+          </div>
+          <button class="btn btn-primary btn-sm">🔍 查询</button>
+          <button class="btn btn-outline btn-sm">重置</button>
+        </div>
+        <div class="card-body" style="padding-top:0">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>申请编号</th>
+                  <th>融资类型</th>
+                  <th>核心企业</th>
+                  <th>融资金额</th>
+                  <th>申请日期</th>
+                  <th>到期日期</th>
+                  <th>利率</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SCF202607001</td>
+                  <td>应收账款质押</td>
+                  <td>陕西华通供应链</td>
+                  <td>¥ 800,000</td>
+                  <td>2026-07-08</td>
+                  <td>2026-10-08</td>
+                  <td>4.35%</td>
+                  <td><span class="status status-info">审批中</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">撤回</span></td>
+                </tr>
+                <tr>
+                  <td>SCF202607002</td>
+                  <td>订单融资</td>
+                  <td>陕西华通供应链</td>
+                  <td>¥ 400,000</td>
+                  <td>2026-07-09</td>
+                  <td>2026-09-09</td>
+                  <td>4.80%</td>
+                  <td><span class="status status-success">已放款</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">还款</span></td>
+                </tr>
+                <tr>
+                  <td>SCF202606015</td>
+                  <td>反向保理</td>
+                  <td>西安恒信商贸</td>
+                  <td>¥ 1,200,000</td>
+                  <td>2026-06-20</td>
+                  <td>2026-09-20</td>
+                  <td>4.20%</td>
+                  <td><span class="status status-success">已放款</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">还款</span></td>
+                </tr>
+                <tr>
+                  <td>SCF202606008</td>
+                  <td>应收账款质押</td>
+                  <td>陕西华通供应链</td>
+                  <td>¥ 600,000</td>
+                  <td>2026-06-12</td>
+                  <td>2026-07-12</td>
+                  <td>4.35%</td>
+                  <td><span class="status status-pending">已还款</span></td>
+                  <td><span class="text-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>SCF202606003</td>
+                  <td>货押融资</td>
+                  <td>宝鸡天瑞商贸</td>
+                  <td>¥ 950,000</td>
+                  <td>2026-06-05</td>
+                  <td>2026-08-05</td>
+                  <td>5.20%</td>
+                  <td><span class="status status-danger">已拒绝</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">重新申请</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pagination-info">共 42 条记录，第 1/5 页</div>
+            <div class="pagination-controls">
+              <button class="pg-btn" disabled>‹</button>
+              <button class="pg-btn active">1</button>
+              <button class="pg-btn">2</button>
+              <button class="pg-btn">3</button>
+              <button class="pg-btn">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== TAB 3: 贷款管理 ====== -->
+    <div id="tab-loan" class="tab-content">
+      <div class="alert-box alert-success">
+        <span style="font-size:16px">✅</span>
+        <div>
+          <strong>企业综合授信</strong>：当前授信额度 ¥ 30,000,000，已使用 ¥ 12,350,000，剩余可用额度 ¥ 17,650,000。
+          授信到期日：2027年6月30日。
+          <span class="text-link" style="margin-left:12px">查看授信详情</span>
+        </div>
+      </div>
+
+      <div class="flow-steps">
+        <div class="flow-step done">
+          <div class="flow-icon">1</div>
+          <div class="flow-name">额度申请</div>
+          <div class="flow-desc">提交申请材料</div>
+        </div>
+        <div class="flow-step done">
+          <div class="flow-icon">2</div>
+          <div class="flow-name">尽职调查</div>
+          <div class="flow-desc">银行审查评估</div>
+        </div>
+        <div class="flow-step active">
+          <div class="flow-icon">3</div>
+          <div class="flow-name">审批</div>
+          <div class="flow-desc">审批中（3/5）</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">4</div>
+          <div class="flow-name">合同签订</div>
+          <div class="flow-desc">签订借款合同</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-icon">5</div>
+          <div class="flow-name">放款</div>
+          <div class="flow-desc">资金到账</div>
+        </div>
+      </div>
+
+      <div class="stat-grid" style="grid-template-columns:repeat(4,1fr)">
+        <div class="stat-card">
+          <div class="label">综合授信额度</div>
+          <div class="value" style="color:var(--blue)">¥ 30,000,000</div>
+          <div class="sub">有效期至 2027-06-30</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">已使用额度</div>
+          <div class="value" style="color:var(--red)">¥ 12,350,000</div>
+          <div class="sub">含流动资金贷款</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">本月应还利息</div>
+          <div class="value" style="color:var(--orange)">¥ 58,740</div>
+          <div class="sub">还款日：每月20日</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">剩余可用额度</div>
+          <div class="value" style="color:var(--green)">¥ 17,650,000</div>
+          <div class="sub">额度充足</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">贷款明细</span>
+            <button class="btn btn-primary btn-sm" onclick="openModal('loanApplyModal')">申请贷款</button>
+          </div>
+          <div class="card-body" style="padding-top:0">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>贷款编号</th>
+                    <th>贷款类型</th>
+                    <th>金额</th>
+                    <th>利率</th>
+                    <th>到期日</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>LN202603001</td>
+                    <td>流动资金贷款</td>
+                    <td>¥ 8,000,000</td>
+                    <td>4.35%</td>
+                    <td>2027-03-15</td>
+                    <td><span class="status status-success">正常</span></td>
+                    <td><span class="text-link">还款</span><span class="text-link">详情</span></td>
+                  </tr>
+                  <tr>
+                    <td>LN202604005</td>
+                    <td>固定资产贷款</td>
+                    <td>¥ 3,500,000</td>
+                    <td>4.65%</td>
+                    <td>2028-04-20</td>
+                    <td><span class="status status-success">正常</span></td>
+                    <td><span class="text-link">还款</span><span class="text-link">详情</span></td>
+                  </tr>
+                  <tr>
+                    <td>LN202605012</td>
+                    <td>流动资金贷款</td>
+                    <td>¥ 850,000</td>
+                    <td>4.35%</td>
+                    <td>2026-08-15</td>
+                    <td><span class="status status-warning">即将到期</span></td>
+                    <td><span class="text-link" style="color:var(--orange)">立即还款</span><span class="text-link">详情</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">还款计划</span>
+            <a href="#" class="more">全部计划 →</a>
+          </div>
+          <div class="card-body" style="padding-top:0">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>期次</th>
+                    <th>应还本金</th>
+                    <th>应还利息</th>
+                    <th>还款日期</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>第1期</td>
+                    <td>¥ 0.00</td>
+                    <td>¥ 28,960.00</td>
+                    <td>2026-07-20</td>
+                    <td><span class="status status-success">已还</span></td>
+                  </tr>
+                  <tr>
+                    <td>第2期</td>
+                    <td>¥ 0.00</td>
+                    <td>¥ 29,370.00</td>
+                    <td>2026-08-20</td>
+                    <td><span class="status status-warning">待还</span></td>
+                  </tr>
+                  <tr>
+                    <td>第3期</td>
+                    <td>¥ 0.00</td>
+                    <td>¥ 29,370.00</td>
+                    <td>2026-09-20</td>
+                    <td><span class="status status-pending">待还</span></td>
+                  </tr>
+                  <tr>
+                    <td>第4期</td>
+                    <td>¥ 2,000,000.00</td>
+                    <td>¥ 29,370.00</td>
+                    <td>2026-10-20</td>
+                    <td><span class="status status-pending">待还</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="margin-top:16px">
+              <div class="section-title">本月还款提醒</div>
+              <div style="padding:14px;background:#FFF8E6;border-radius:10px;border:1px solid #FFE082;margin-top:8px">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <div style="font-size:13px;font-weight:600;color:var(--text)">流动资金贷款 · 第2期利息</div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-top:3px">应还本息合计：¥ 29,370.00</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="font-size:13px;font-weight:700;color:var(--orange)">¥ 29,370.00</div>
+                    <div style="font-size:11px;color:var(--text-muted)">到期日：2026-08-20</div>
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-sm" style="margin-top:10px;width:100%">立即还款</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">贷款申请记录</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm">📥 导出记录</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('loanApplyModal')">新建贷款申请</button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <div class="form-group">
+            <label>贷款类型</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>流动资金贷款</option>
+              <option>固定资产贷款</option>
+              <option>项目贷款</option>
+              <option>票据融资</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>申请日期</label>
+            <input type="date" class="form-control" value="2026-01-01">
+          </div>
+          <div class="form-group">
+            <label>状态</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>审批中</option>
+              <option>已放款</option>
+              <option>已还款</option>
+              <option>已拒绝</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-sm">🔍 查询</button>
+          <button class="btn btn-outline btn-sm">重置</button>
+        </div>
+        <div class="card-body" style="padding-top:0">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>申请编号</th>
+                  <th>贷款类型</th>
+                  <th>申请金额</th>
+                  <th>申请日期</th>
+                  <th>审批日期</th>
+                  <th>实际放款</th>
+                  <th>利率</th>
+                  <th>期限</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>LN202607003</td>
+                  <td>流动资金贷款</td>
+                  <td>¥ 5,000,000</td>
+                  <td>2026-07-10</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>4.35%</td>
+                  <td>12个月</td>
+                  <td><span class="status status-info">审批中</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">撤回</span></td>
+                </tr>
+                <tr>
+                  <td>LN202605012</td>
+                  <td>流动资金贷款</td>
+                  <td>¥ 850,000</td>
+                  <td>2026-05-20</td>
+                  <td>2026-05-25</td>
+                  <td>¥ 850,000</td>
+                  <td>4.35%</td>
+                  <td>3个月</td>
+                  <td><span class="status status-warning">即将到期</span></td>
+                  <td><span class="text-link" style="color:var(--orange)">还款</span><span class="text-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>LN202604005</td>
+                  <td>固定资产贷款</td>
+                  <td>¥ 3,500,000</td>
+                  <td>2026-04-18</td>
+                  <td>2026-04-28</td>
+                  <td>¥ 3,500,000</td>
+                  <td>4.65%</td>
+                  <td>36个月</td>
+                  <td><span class="status status-success">正常</span></td>
+                  <td><span class="text-link">还款</span><span class="text-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>LN202603001</td>
+                  <td>流动资金贷款</td>
+                  <td>¥ 8,000,000</td>
+                  <td>2026-03-10</td>
+                  <td>2026-03-18</td>
+                  <td>¥ 8,000,000</td>
+                  <td>4.35%</td>
+                  <td>12个月</td>
+                  <td><span class="status status-success">正常</span></td>
+                  <td><span class="text-link">还款</span><span class="text-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>LN202512008</td>
+                  <td>项目贷款</td>
+                  <td>¥ 2,000,000</td>
+                  <td>2025-12-05</td>
+                  <td>2025-12-15</td>
+                  <td>¥ 2,000,000</td>
+                  <td>4.50%</td>
+                  <td>6个月</td>
+                  <td><span class="status status-pending">已还款</span></td>
+                  <td><span class="text-link">详情</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pagination-info">共 28 条记录，第 1/3 页</div>
+            <div class="pagination-controls">
+              <button class="pg-btn" disabled>‹</button>
+              <button class="pg-btn active">1</button>
+              <button class="pg-btn">2</button>
+              <button class="pg-btn">3</button>
+              <button class="pg-btn">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== TAB 4: 国际业务 ====== -->
+    <div id="tab-global" class="tab-content">
+      <div class="alert-box alert-info">
+        <span style="font-size:16px">🌐</span>
+        <div>
+          <strong>国际业务服务中心</strong>：提供跨境汇款、信用证、保函、代付外汇等全品类国际结算及贸易融资服务，支持多币种结算。
+          <span class="text-link" style="margin-left:12px">业务咨询</span>
+        </div>
+      </div>
+
+      <div class="stat-grid" style="grid-template-columns:repeat(4,1fr)">
+        <div class="stat-card">
+          <div class="label">本月国际结算量</div>
+          <div class="value" style="color:var(--blue)">$ 3,280,000</div>
+          <div class="sub">美元等值</div>
+          <div class="trend up">↑ 8.3% 较上月</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">待处理业务</div>
+          <div class="value" style="color:var(--orange)">6</div>
+          <div class="sub">笔</div>
+          <div class="trend" style="color:var(--orange)">含2笔加急</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">在途信用证</div>
+          <div class="value" style="color:var(--green)">$ 890,000</div>
+          <div class="sub">美元等值</div>
+          <div class="trend">4 笔未到期</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">外汇敞口（USD）</div>
+          <div class="value" style="color:var(--red)">$ 456,000</div>
+          <div class="sub">净头寸</div>
+          <div class="trend">汇率: 7.2512</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">国际结算产品</span>
+          </div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div style="padding:16px;border:1px solid var(--border);border-radius:10px;display:flex;gap:12px;align-items:center">
+                <div class="icon-wrap blue">💸</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">跨境汇款（TT/MT）</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">支持10+主流币种，当日到账</div>
+                </div>
+                <button class="btn btn-blue btn-sm">申请</button>
+              </div>
+              <div style="padding:16px;border:1px solid var(--border);border-radius:10px;display:flex;gap:12px;align-items:center">
+                <div class="icon-wrap green">📜</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">信用证（L/C）</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">开证/审单/通知/议付</div>
+                </div>
+                <button class="btn btn-green btn-sm">申请</button>
+              </div>
+              <div style="padding:16px;border:1px solid var(--border);border-radius:10px;display:flex;gap:12px;align-items:center">
+                <div class="icon-wrap orange">📋</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">保函（LG/Standby L/C）</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">投标/履约/预付款保函</div>
+                </div>
+                <button class="btn btn-orange btn-sm">申请</button>
+              </div>
+              <div style="padding:16px;border:1px solid var(--border);border-radius:10px;display:flex;gap:12px;align-items:center">
+                <div class="icon-wrap red">💳</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">出口托收/代付</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-top:3px">D/A、D/P、买断型代付</div>
+                </div>
+                <button class="btn btn-primary btn-sm">申请</button>
+              </div>
+            </div>
+            <div style="margin-top:16px">
+              <div class="section-title">外汇牌价（参考）</div>
+              <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+                <div style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;text-align:center;min-width:80px">
+                  <div style="font-size:11px;color:var(--text-muted)">USD/CNY</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--text)">7.2512</div>
+                  <div style="font-size:10px;color:#E74C3C">↑ 0.02%</div>
+                </div>
+                <div style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;text-align:center;min-width:80px">
+                  <div style="font-size:11px;color:var(--text-muted)">EUR/CNY</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--text)">7.8520</div>
+                  <div style="font-size:10px;color:var(--green)">↓ 0.05%</div>
+                </div>
+                <div style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;text-align:center;min-width:80px">
+                  <div style="font-size:11px;color:var(--text-muted)">GBP/CNY</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--text)">9.1540</div>
+                  <div style="font-size:10px;color:#E74C3C">↑ 0.08%</div>
+                </div>
+                <div style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;text-align:center;min-width:80px">
+                  <div style="font-size:11px;color:var(--text-muted)">HKD/CNY</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--text)">0.9285</div>
+                  <div style="font-size:10px;color:var(--green)">↓ 0.01%</div>
+                </div>
+                <div style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;text-align:center;min-width:80px">
+                  <div style="font-size:11px;color:var(--text-muted)">JPY/CNY</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--text)">0.0482</div>
+                  <div style="font-size:10px;color:#E74C3C">↑ 0.12%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">近期国际业务动态</span>
+            <a href="#" class="more">全部记录 →</a>
+          </div>
+          <div class="card-body" style="padding-top:0">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot" style="background:var(--green)"></div>
+                <div class="timeline-content">
+                  <div class="title">汇出汇款 USD 500,000 成功</div>
+                  <div class="desc">收款行：JPMorgan Chase Bank NA，纽约分行</div>
+                  <div class="time">今天 10:45 · 交易号：TT2026071301</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" style="background:var(--blue)"></div>
+                <div class="timeline-content">
+                  <div class="title">信用证 LC2026USD007 已到单</div>
+                  <div class="desc">开证行：Bank of America NA，发票金额 USD 280,000</div>
+                  <div class="time">昨天 16:20 · 待审单</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" style="background:var(--orange)"></div>
+                <div class="timeline-content">
+                  <div class="title">保函 LG202603005 即将到期</div>
+                  <div class="desc">保函金额 EUR 150,000，效期至 2026-08-15，请及时续期</div>
+                  <div class="time">7月10日 09:00 · 提醒</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" style="background:var(--green)"></div>
+                <div class="timeline-content">
+                  <div class="title">汇入汇款 USD 320,000 已入账</div>
+                  <div class="desc">付款方：Hanshin Corp.，日本大阪，已自动结汇</div>
+                  <div class="time">7月8日 14:30 · 已入账</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">国际业务记录</span>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-outline btn-sm">📥 导出</button>
+            <button class="btn btn-primary btn-sm" onclick="openModal('globalApplyModal')">发起申请</button>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <div class="form-group">
+            <label>业务类型</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>汇出汇款</option>
+              <option>汇入汇款</option>
+              <option>信用证</option>
+              <option>保函</option>
+              <option>出口托收</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>币种</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>美元（USD）</option>
+              <option>欧元（EUR）</option>
+              <option>英镑（GBP）</option>
+              <option>日元（JPY）</option>
+              <option>港币（HKD）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>状态</label>
+            <select class="form-control">
+              <option>全部</option>
+              <option>处理中</option>
+              <option>已完成</option>
+              <option>已拒绝</option>
+              <option>已取消</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>申请日期</label>
+            <input type="date" class="form-control" value="2026-07-01">
+          </div>
+          <button class="btn btn-primary btn-sm">🔍 查询</button>
+          <button class="btn btn-outline btn-sm">重置</button>
+        </div>
+        <div class="card-body" style="padding-top:0">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>业务编号</th>
+                  <th>业务类型</th>
+                  <th>币种/金额</th>
+                  <th>汇款路径</th>
+                  <th>申请日期</th>
+                  <th>处理日期</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>TT2026071301</td>
+                  <td>汇出汇款</td>
+                  <td>USD 500,000</td>
+                  <td>中国 → 美国</td>
+                  <td>2026-07-13</td>
+                  <td>2026-07-13</td>
+                  <td><span class="status status-success">已完成</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">下载</span></td>
+                </tr>
+                <tr>
+                  <td>LC202607007</td>
+                  <td>信用证（到单）</td>
+                  <td>USD 280,000</td>
+                  <td>美国 → 中国</td>
+                  <td>2026-07-12</td>
+                  <td>—</td>
+                  <td><span class="status status-info">待审单</span></td>
+                  <td><span class="text-link">审单</span><span class="text-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>LG202607005</td>
+                  <td>保函（履约）</td>
+                  <td>EUR 150,000</td>
+                  <td>中国 → 德国</td>
+                  <td>2026-07-11</td>
+                  <td>2026-07-11</td>
+                  <td><span class="status status-warning">即将到期</span></td>
+                  <td><span class="text-link">续期</span><span class="text-link">详情</span></td>
+                </tr>
+                <tr>
+                  <td>TT2026071002</td>
+                  <td>汇出汇款</td>
+                  <td>EUR 120,000</td>
+                  <td>中国 → 德国</td>
+                  <td>2026-07-10</td>
+                  <td>2026-07-10</td>
+                  <td><span class="status status-success">已完成</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">下载</span></td>
+                </tr>
+                <tr>
+                  <td>LC202607006</td>
+                  <td>信用证（开证）</td>
+                  <td>USD 1,000,000</td>
+                  <td>中国 → 日本</td>
+                  <td>2026-07-08</td>
+                  <td>2026-07-09</td>
+                  <td><span class="status status-info">处理中</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">撤销</span></td>
+                </tr>
+                <tr>
+                  <td>TT2026070801</td>
+                  <td>汇入汇款</td>
+                  <td>USD 320,000</td>
+                  <td>日本 → 中国</td>
+                  <td>2026-07-08</td>
+                  <td>2026-07-08</td>
+                  <td><span class="status status-success">已完成</span></td>
+                  <td><span class="text-link">详情</span><span class="text-link">结汇</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="pagination-info">共 87 条记录，第 1/9 页</div>
+            <div class="pagination-controls">
+              <button class="pg-btn" disabled>‹</button>
+              <button class="pg-btn active">1</button>
+              <button class="pg-btn">2</button>
+              <button class="pg-btn">3</button>
+              <button class="pg-btn">…</button>
+              <button class="pg-btn">9</button>
+              <button class="pg-btn">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL: 发起对账 -->
+<div class="modal-overlay" id="reconcileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">发起银企对账</span>
+      <button class="modal-close" onclick="closeModal('reconcileModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="step-indicator">
+        <div class="step done"><div class="num">1</div><span>选择账户</span></div>
+        <div class="step-line"></div>
+        <div class="step active"><div class="num">2</div><span>确认对账</span></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="num">3</div><span>提交完成</span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>对账账户</label>
+          <select class="form-control">
+            <option>基本户（8888）</option>
+            <option>一般户（6666）</option>
+            <option>美元户（USD8888）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>对账月份</label>
+          <input type="month" class="form-control" value="2026-07">
+        </div>
+        <div class="form-group">
+          <label>对账方向</label>
+          <select class="form-control">
+            <option>企业发起</option>
+            <option>银行发起</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>对账说明（选填）</label>
+        <textarea class="form-control" placeholder="如有特殊说明请在此填写…"></textarea>
+      </div>
+      <div class="alert-box alert-info">
+        <span>ℹ️</span>
+        <div>对账发起后，银行将在 <strong>1个工作日内</strong> 完成核对并反馈结果。请确保企业端交易记录已核对完毕。</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('reconcileModal')">取消</button>
+      <button class="btn btn-primary" onclick="closeModal('reconcileModal')">确认发起</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 发起申请 -->
+<div class="modal-overlay" id="applyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">发起企业金融申请</span>
+      <button class="modal-close" onclick="closeModal('applyModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>业务类型</label>
+          <select class="form-control">
+            <option>请选择业务类型</option>
+            <option>银企对账</option>
+            <option>供应链金融</option>
+            <option>贷款申请</option>
+            <option>国际业务</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>联系人</label>
+          <input type="text" class="form-control" value="李明远">
+        </div>
+        <div class="form-group">
+          <label>联系电话</label>
+          <input type="tel" class="form-control" value="139-9123-4567">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>申请说明</label>
+        <textarea class="form-control" placeholder="请简要描述您的业务需求…"></textarea>
+      </div>
+      <div class="file-list">
+        <div class="section-title" style="margin-bottom:8px">上传附件</div>
+        <div class="file-item">
+          <div class="icon">📎</div>
+          <div class="name">企业营业执照.pdf</div>
+          <div class="size">2.3 MB</div>
+          <button class="btn btn-outline btn-sm" style="margin-left:8px">删除</button>
+        </div>
+        <div style="padding:12px;border:2px dashed var(--border);border-radius:8px;text-align:center;color:var(--text-muted);font-size:13px;cursor:pointer">
+          ➕ 点击或拖拽上传文件（PDF/图片，最大10MB）
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('applyModal')">取消</button>
+      <button class="btn btn-primary" onclick="closeModal('applyModal')">提交申请</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 供应链融资申请 -->
+<div class="modal-overlay" id="supplyApplyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">供应链融资申请</span>
+      <button class="modal-close" onclick="closeModal('supplyApplyModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="step-indicator">
+        <div class="step active"><div class="num">1</div><span>选择产品</span></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="num">2</div><span>填写信息</span></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="num">3</div><span>提交审核</span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>融资类型</label>
+          <select class="form-control">
+            <option>应收账款质押融资</option>
+            <option>订单融资</option>
+            <option>货押融资</option>
+            <option>反向保理</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>核心企业</label>
+          <select class="form-control">
+            <option>陕西华通供应链有限公司</option>
+            <option>西安恒信商贸有限公司</option>
+            <option>宝鸡天瑞商贸有限公司</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>融资金额</label>
+          <div class="currency-input">
+            <input type="number" class="form-control" placeholder="请输入金额" style="width:100%">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>融资期限</label>
+          <select class="form-control">
+            <option>30天</option>
+            <option>60天</option>
+            <option>90天</option>
+            <option>180天</option>
+            <option>一年</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>应收账款到期日</label>
+          <input type="date" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>期望利率</label>
+          <input type="text" class="form-control" value="4.35%（参考）" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>业务说明</label>
+        <textarea class="form-control" placeholder="请描述融资用途及贸易背景…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('supplyApplyModal')">取消</button>
+      <button class="btn btn-primary" onclick="closeModal('supplyApplyModal')">下一步</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 贷款申请 -->
+<div class="modal-overlay" id="loanApplyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">贷款申请</span>
+      <button class="modal-close" onclick="closeModal('loanApplyModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="step-indicator">
+        <div class="step active"><div class="num">1</div><span>选择产品</span></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="num">2</div><span>填写材料</span></div>
+        <div class="step-line"></div>
+        <div class="step"><div class="num">3</div><span>提交审批</span></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>贷款类型</label>
+          <select class="form-control">
+            <option>流动资金贷款</option>
+            <option>固定资产贷款</option>
+            <option>项目贷款</option>
+            <option>票据融资</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>申请金额</label>
+          <div class="currency-input">
+            <input type="number" class="form-control" placeholder="请输入金额" style="width:100%">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>贷款期限</label>
+          <select class="form-control">
+            <option>3个月</option>
+            <option>6个月</option>
+            <option>12个月</option>
+            <option>24个月</option>
+            <option>36个月</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>还款方式</label>
+          <select class="form-control">
+            <option>按月付息，到期还本</option>
+            <option>等额本息</option>
+            <option>等额本金</option>
+            <option>自定义</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>资金用途</label>
+          <select class="form-control">
+            <option>采购原材料</option>
+            <option>支付供应商货款</option>
+            <option>补充流动资金</option>
+            <option>设备采购</option>
+            <option>其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>担保方式</label>
+          <select class="form-control">
+            <option>信用贷款</option>
+            <option>抵押贷款</option>
+            <option>质押贷款</option>
+            <option>担保贷款</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>贷款说明</label>
+        <textarea class="form-control" placeholder="请说明贷款用途、还款来源等…"></textarea>
+      </div>
+      <div class="alert-box alert-warning">
+        <span>⚠️</span>
+        <div>请确保填写信息真实有效。银行将在 <strong>3个工作日内</strong> 完成审批，届时将通过短信/邮件通知您审批结果。</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('loanApplyModal')">取消</button>
+      <button class="btn btn-primary" onclick="closeModal('loanApplyModal')">提交申请</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: 国际业务申请 -->
+<div class="modal-overlay" id="globalApplyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">国际业务申请</span>
+      <button class="modal-close" onclick="closeModal('globalApplyModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>业务类型</label>
+          <select class="form-control">
+            <option>汇出汇款（TT）</option>
+            <option>汇入汇款</option>
+            <option>信用证（L/C）</option>
+            <option>保函（LG）</option>
+            <option>出口托收</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>币种</label>
+          <select class="form-control">
+            <option>美元（USD）</option>
+            <option>欧元（EUR）</option>
+            <option>英镑（GBP）</option>
+            <option>日元（JPY）</option>
+            <option>港币（HKD）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>金额</label>
+          <input type="number" class="form-control" placeholder="请输入金额">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>收款人名称</label>
+          <input type="text" class="form-control" placeholder="Beneficiary Name">
+        </div>
+        <div class="form-group">
+          <label>收款银行</label>
+          <input type="text" class="form-control" placeholder="Beneficiary Bank">
+        </div>
+        <div class="form-group">
+          <label>收款人账号</label>
+          <input type="text" class="form-control" placeholder="Account Number">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:16px">
+        <label>附言/汇款原因</label>
+        <textarea class="form-control" placeholder="请简要描述汇款用途（Required）…"></textarea>
+      </div>
+      <div class="file-list">
+        <div class="section-title" style="margin-bottom:8px">上传附件</div>
+        <div style="padding:12px;border:2px dashed var(--border);border-radius:8px;text-align:center;color:var(--text-muted);font-size:13px;cursor:pointer">
+          ➕ 点击或拖拽上传（合同/发票/运输单据等，最大10MB）
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('globalApplyModal')">取消</button>
+      <button class="btn btn-primary" onclick="closeModal('globalApplyModal')">提交申请</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switching
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+  const names = { reconcile: '银企对账', supply: '供应链金融', loan: '贷款管理', global: '国际业务' };
+  document.getElementById('tabName').textContent = names[tabId] || tabId;
+}
+
+// Modal
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('show');
+  });
+});
+</script>
+</body>
+</html>

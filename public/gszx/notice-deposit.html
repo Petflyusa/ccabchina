@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通知存款 - 长安银行 企业网上银行</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #C6151D;
+  --red-dark: #8B0010;
+  --bg: #F0F2F5;
+  --white: #fff;
+  --text: #333;
+  --text-light: #666;
+  --text-muted: #999;
+  --border: #E4E7EB;
+  --sidebar-w: 240px;
+  --green: #2E8B57;
+  --sidebar-w: 240px;
+}
+body {
+  font-family: "Microsoft YaHei","PingFang SC",Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 64px;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  min-width: var(--sidebar-w);
+}
+.topbar-logo img { height: 36px; }
+.topbar-center { flex: 1; display: flex; align-items: center; gap: 8px; }
+.topbar-search {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 340px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+.topbar-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 13px;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,0.6); }
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.topbar-nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.topbar-nav a:hover { background: rgba(255,255,255,0.15); }
+.topbar-nav a.active { background: rgba(255,255,255,0.2); color: #fff; }
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 16px;
+}
+.topbar-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s;
+}
+.topbar-icon-btn:hover { background: rgba(255,255,255,0.25); }
+.topbar-icon-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 16px; height: 16px;
+  background: #FFD700;
+  color: #333;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.2s;
+}
+.user-avatar:hover { background: rgba(255,255,255,0.25); }
+.user-avatar .avatar-circle {
+  width: 28px; height: 28px;
+  background: #FFD700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold;
+  color: var(--red);
+  font-size: 12px;
+}
+.user-menu {
+  position: absolute;
+  top: 56px; right: 20px;
+  width: 200px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: none;
+  z-index: 200;
+  overflow: hidden;
+}
+.user-menu.show { display: block; }
+.user-menu-item {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.user-menu-item:hover { background: #F8F8F8; }
+.user-menu-item.danger { color: var(--red); }
+.user-menu-item.danger:hover { background: #FFF5F5; }
+.user-menu-divider { height: 1px; background: #F0F0F0; margin: 4px 0; }
+
+/* LAYOUT */
+.layout { display: flex; padding-top: 64px; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 64px; bottom: 0;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.sidebar-section { margin-bottom: 4px; }
+.sidebar-title {
+  padding: 10px 20px 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: #F8F8F8; color: var(--red); }
+.sidebar-item.active {
+  background: #FFF5F5;
+  color: var(--red);
+  border-left-color: var(--red);
+  font-weight: 600;
+}
+.sidebar-item .icon {
+  width: 20px; height: 20px;
+  background: #F5F5F5;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: #888;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sidebar-item:hover .icon,
+.sidebar-item.active .icon {
+  background: var(--red);
+  color: #fff;
+}
+.sidebar-item .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+/* MAIN */
+.main {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  padding: 24px;
+  min-width: 0;
+}
+
+/* CARDS */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.card-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.card-header .more { font-size: 12px; color: var(--text-muted); text-decoration: none; }
+.card-header .more:hover { color: var(--red); }
+.card-body { padding: 20px 24px; }
+
+/* PAGE TITLE */
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.page-title .sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: normal;
+}
+
+/* PRODUCT CARDS */
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.product-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+  cursor: pointer;
+}
+.product-card:hover {
+  border-color: var(--red);
+  box-shadow: 0 6px 24px rgba(198,21,29,0.14);
+  transform: translateY(-2px);
+}
+.product-card.selected {
+  border-color: var(--red);
+  background: #FFF5F5;
+}
+.product-card.selected::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--red);
+}
+.product-card .product-badge {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+.product-card .product-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.product-card .product-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+.product-rate {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.product-rate .rate-value {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--red);
+  font-family: "Roboto Mono","Consolas",monospace;
+}
+.product-rate .rate-unit {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.product-rate .rate-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.product-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.product-info-item .product-info-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.product-info-item .product-info-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* FORM */
+.form-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.form-card { background: #fff; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+.form-card-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: #FAFAFA;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-card-header .form-icon {
+  width: 28px; height: 28px;
+  background: var(--red);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 14px;
+}
+.form-card-body { padding: 24px; }
+.form-group { margin-bottom: 18px; }
+.form-group:last-child { margin-bottom: 0; }
+.form-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text);
+  transition: border-color 0.2s;
+  outline: none;
+  background: #fff;
+}
+.form-control:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(198,21,29,0.08); }
+.form-control::placeholder { color: #ccc; }
+.form-control[readonly] { background: #F8F9FA; color: var(--text-muted); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-hint { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+.form-hint.red { color: var(--red); }
+.btn {
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(198,21,29,0.25);
+}
+.btn-primary:hover { background: var(--red-dark); box-shadow: 0 6px 16px rgba(198,21,29,0.3); }
+.btn-outline {
+  background: #fff;
+  color: var(--red);
+  border: 1.5px solid var(--red);
+}
+.btn-outline:hover { background: #FFF5F5; }
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* NOTICE REMINDER */
+.notice-reminder {
+  background: #FFF8E1;
+  border: 1px solid #FFE082;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.notice-reminder .notice-icon {
+  width: 32px; height: 32px;
+  background: #FFA000;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.notice-reminder .notice-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #E65100;
+  margin-bottom: 4px;
+}
+.notice-reminder .notice-text {
+  font-size: 12px;
+  color: #795548;
+  line-height: 1.6;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 20px;
+  gap: 0;
+}
+.tab {
+  padding: 12px 24px;
+  font-size: 14px;
+  color: var(--text-light);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.tab:hover { color: var(--red); }
+.tab.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+  font-weight: 600;
+}
+
+/* TABLE */
+.tx-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tx-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.tx-table td {
+  padding: 13px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid #F5F5F5;
+  color: var(--text);
+}
+.tx-table tr:last-child td { border-bottom: none; }
+.tx-table tr:hover td { background: #FAFAFA; }
+.tx-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.tx-type .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tx-type.in .dot { background: #2E8B57; }
+.tx-type.in { color: #2E8B57; }
+.tx-type.out .dot { background: var(--red); }
+.tx-type.out { color: var(--red); }
+.tx-amount {
+  font-family: "Roboto Mono","Consolas",monospace;
+  font-weight: 600;
+}
+.tx-amount.in { color: #2E8B57; }
+.tx-amount.out { color: var(--red); }
+.tx-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+.tx-status.success { background: #E8F5E9; color: #2E7D32; }
+.tx-status.pending { background: #FFF8E1; color: #F57F17; }
+.tx-status.reviewing { background: #E3F2FD; color: #1565C0; }
+.tx-status.rejected { background: #FFEBEE; color: #C62828; }
+
+/* SELECTED PRODUCT DISPLAY */
+.selected-product-banner {
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+  border-radius: 12px;
+  padding: 18px 24px;
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.selected-product-banner.show { display: flex; }
+.selected-product-banner .sp-name { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.selected-product-banner .sp-rate { font-size: 13px; opacity: 0.8; }
+.selected-product-banner .sp-rate strong { font-size: 22px; font-family: "Roboto Mono","Consolas",monospace; opacity: 1; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  top: 80px; right: 24px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  padding: 14px 20px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  z-index: 300;
+  min-width: 260px;
+  border-left: 4px solid #2E8B57;
+}
+.toast.show { display: flex; }
+.toast.error { border-left-color: var(--red); }
+.toast-icon { font-size: 20px; }
+.toast-content { flex: 1; }
+.toast-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.toast-msg { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+.empty-state .empty-text { font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="4" fill="#fff" opacity="0.2"/><text x="16" y="22" font-size="16" text-anchor="middle" fill="white" font-family="serif" font-weight="bold">银</text></svg>
+    长安银行 · 企业网上银行
+  </div>
+  <div class="topbar-center">
+    <div class="topbar-search">
+      <span>🔍</span>
+      <input type="text" placeholder="搜索功能、产品...">
+    </div>
+  </div>
+  <div class="topbar-nav">
+    <a href="#">首页</a>
+    <a href="#">产品</a>
+    <a href="#">服务</a>
+    <a href="#" class="active">我的账户</a>
+    <a href="#">帮助</a>
+  </div>
+  <div class="topbar-right">
+    <button class="topbar-icon-btn">🔔<span class="badge">3</span></button>
+    <div class="user-avatar" onclick="toggleUserMenu()">
+      <div class="avatar-circle">李</div>
+      <span>李明辉</span>
+      <span style="opacity:0.6;font-size:11px;">▼</span>
+    </div>
+  </div>
+</div>
+
+<!-- USER MENU -->
+<div class="user-menu" id="userMenu">
+  <div class="user-menu-item">👤 账户信息</div>
+  <div class="user-menu-item">🔐 安全设置</div>
+  <div class="user-menu-item">⚙️ 首选项</div>
+  <div class="user-menu-divider"></div>
+  <div class="user-menu-item danger">🚪 安全退出</div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">账户概览</div>
+      <div class="sidebar-item" onclick="location.href='dashboard.html'">🏠 首页总览</div>
+      <div class="sidebar-item">💳 账户余额</div>
+      <div class="sidebar-item">📊 交易明细</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">存款业务</div>
+      <div class="sidebar-item active">📈 通知存款</div>
+      <div class="sidebar-item">🏦 定期存款</div>
+      <div class="sidebar-item">💰 活期存款</div>
+      <div class="sidebar-item">📋 存款证明</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">转账汇款</div>
+      <div class="sidebar-item">💸 行内转账</div>
+      <div class="sidebar-item">🌐 跨行转账</div>
+      <div class="sidebar-item">⏰ 预约转账</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">票据业务</div>
+      <div class="sidebar-item">📄 银行承兑汇票</div>
+      <div class="sidebar-item">🏷️ 商业承兑汇票</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">企业融资</div>
+      <div class="sidebar-item">📉 贷款申请</div>
+      <div class="sidebar-item">🔄 额度管理</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="page-title">
+      📈 通知存款
+      <span class="sub">— 灵活支取，收益更高</span>
+    </div>
+
+    <!-- SELECTED PRODUCT BANNER -->
+    <div class="selected-product-banner" id="selectedBanner">
+      <div>
+        <div class="sp-name" id="bannerName">1天通知存款</div>
+        <div class="sp-rate">年化利率 <strong id="bannerRate">0.55%</strong></div>
+      </div>
+      <div style="font-size:12px;opacity:0.75;text-align:right;">
+        最低起存：<strong style="font-size:14px;">50万元</strong><br>
+        通知期限：<strong style="font-size:14px;">1天</strong>
+      </div>
+    </div>
+
+    <!-- NOTICE REMINDER -->
+    <div class="notice-reminder">
+      <div class="notice-icon">⚠️</div>
+      <div>
+        <div class="notice-title">支取须知</div>
+        <div class="notice-text">
+          1天通知存款需提前<span style="color:#C6151D;font-weight:600;">1个银行工作日</span>预约；7天通知存款需提前<span style="color:#C6151D;font-weight:600;">7个银行工作日</span>预约。
+          未按规定时间预约或金额不足最低起存金额的，将按活期存款利率计息。
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT LIST -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📦 存款产品</div>
+        <a href="#" class="more">产品说明 →</a>
+      </div>
+      <div class="card-body">
+        <div class="product-grid">
+          <div class="product-card" id="product-1d" onclick="selectProduct('1d')">
+            <div class="product-badge">热门</div>
+            <div class="product-name">1天通知存款</div>
+            <div class="product-desc">适合短期闲置资金，随存随取，灵活便捷</div>
+            <div class="product-rate">
+              <span class="rate-value">0.55</span>
+              <span class="rate-unit">%</span>
+            </div>
+            <div class="rate-label">年化利率（%)</div>
+            <div class="product-info-grid">
+              <div class="product-info-item">
+                <div class="product-info-label">最低起存</div>
+                <div class="product-info-value">50万元</div>
+              </div>
+              <div class="product-info-item">
+                <div class="product-info-label">通知期限</div>
+                <div class="product-info-value">1天</div>
+              </div>
+              <div class="product-info-item">
+                <div class="product-info-label">计息方式</div>
+                <div class="product-info-value">按日计息</div>
+              </div>
+              <div class="product-info-item">
+                <div class="product-info-label">支取方式</div>
+                <div class="product-info-value">预约支取</div>
+              </div>
+            </div>
+          </div>
+          <div class="product-card" id="product-7d" onclick="selectProduct('7d')">
+            <div class="product-badge" style="background:#FF8F00;">稳健</div>
+            <div class="product-name">7天通知存款</div>
+            <div class="product-desc">适合中长期闲置资金，利率更高，收益稳定</div>
+            <div class="product-rate">
+              <span class="rate-value">1.10</span>
+              <span class="rate-unit">%</span>
+            </div>
+            <div class="rate-label">年化利率（%)</div>
+            <div class="product-info-grid">
+              <div class="product-info-item">
+                <div class="product-info-label">最低起存</div>
+                <div class="product-info-value">50万元</div>
+              </div>
+              <div class="product-info-item">
+                <div class="product-info-label">通知期限</div>
+                <div class="product-info-value">7天</div>
+              </div>
+              <div class="product-info-item">
+                <div class="product-info-label">计息方式</div>
+                <div class="product-info-value">按日计息</div>
+              </div>
+              <div class="product-info-item">
+                <div class="product-info-label">支取方式</div>
+                <div class="product-info-value">预约支取</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPOSIT/WITHDRAW FORMS -->
+    <div class="form-section">
+      <!-- DEPOSIT FORM -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-icon">💰</div>
+          存入
+        </div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label class="form-label">存款产品</label>
+            <select class="form-control" id="deposit-product">
+              <option value="">-- 请选择存款产品 --</option>
+              <option value="1d">1天通知存款 (年利率 0.55%)</option>
+              <option value="7d">7天通知存款 (年利率 1.10%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">存入金额（元）</label>
+            <input type="number" class="form-control" id="deposit-amount" placeholder="请输入存入金额，最低50万元" min="500000">
+            <div class="form-hint red">* 最低起存金额：500,000.00 元</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">存款账号</label>
+              <input type="text" class="form-control" id="deposit-account" value="6230 9*** **** 7821" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label">可用余额</label>
+              <input type="text" class="form-control" value="8,234,560.00 元" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">资金来源</label>
+            <select class="form-control" id="deposit-source">
+              <option value="">-- 请选择 --</option>
+              <option>活期账户转存</option>
+              <option>转账入账</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">备注（选填）</label>
+            <input type="text" class="form-control" id="deposit-note" placeholder="请输入备注信息">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="doDeposit()">确认存入</button>
+            <button class="btn btn-outline" onclick="resetDeposit()">重置</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WITHDRAW FORM -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-icon" style="background:#2E8B57;">💸</div>
+          提取
+        </div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label class="form-label">取款产品</label>
+            <select class="form-control" id="withdraw-product">
+              <option value="">-- 请选择取款产品 --</option>
+              <option value="1d">1天通知存款 (年利率 0.55%)</option>
+              <option value="7d">7天通知存款 (年利率 1.10%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">支取金额（元）</label>
+            <input type="number" class="form-control" id="withdraw-amount" placeholder="请输入支取金额" min="1">
+            <div class="form-hint">* 单笔支取金额不得低于1元</div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">转入账号</label>
+              <input type="text" class="form-control" id="withdraw-account" value="6230 9*** **** 7821" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label">当前余额</label>
+              <input type="text" class="form-control" id="withdraw-balance" value="0.00 元" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">预约支取日期</label>
+            <input type="date" class="form-control" id="withdraw-date">
+            <div class="form-hint red">* 1天通知存款需提前≥1个工作日；7天需提前≥7个工作日</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">支取密码</label>
+            <input type="password" class="form-control" id="withdraw-pwd" placeholder="请输入支取密码" maxlength="6">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" style="background:#2E8B57;box-shadow:0 4px 12px rgba(46,139,87,0.25);" onclick="doWithdraw()">确认提取</button>
+            <button class="btn btn-outline" onclick="resetWithdraw()">重置</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPOSIT RECORDS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📋 存款记录</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select class="form-control" style="width:150px;padding:6px 10px;font-size:12px;" id="filter-type" onchange="filterRecords()">
+            <option value="">全部类型</option>
+            <option value="deposit">存入</option>
+            <option value="withdraw">提取</option>
+          </select>
+          <select class="form-control" style="width:130px;padding:6px 10px;font-size:12px;" id="filter-product" onchange="filterRecords()">
+            <option value="">全部产品</option>
+            <option value="1d">1天通知存款</option>
+            <option value="7d">7天通知存款</option>
+          </select>
+          <a href="#" class="more" onclick="exportRecords();return false;">导出报表</a>
+        </div>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <table class="tx-table" id="recordsTable">
+          <thead>
+            <tr>
+              <th>交易日期</th>
+              <th>产品名称</th>
+              <th>交易类型</th>
+              <th>金额（元）</th>
+              <th>余额（元）</th>
+              <th>状态</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody">
+          </tbody>
+        </table>
+        <div class="empty-state" id="emptyState" style="display:none;">
+          <div class="empty-icon">📂</div>
+          <div class="empty-text">暂无存款记录</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">✅</div>
+  <div class="toast-content">
+    <div class="toast-title" id="toastTitle">操作成功</div>
+    <div class="toast-msg" id="toastMsg">您的请求已成功提交</div>
+  </div>
+</div>
+
+<script>
+// ==================== DATA ====================
+const products = {
+  '1d': { name: '1天通知存款', rate: 0.55, minAmount: 500000, noticeDays: 1 },
+  '7d': { name: '7天通知存款', rate: 1.10, minAmount: 500000, noticeDays: 7 }
+};
+
+// Mock deposit records
+let records = [
+  { id: 'TXN2026010701', date: '2026-01-07 10:23:45', product: '7d', type: 'deposit', amount: 2000000.00, balance: 2000000.00, status: 'success', note: 'Q1运营资金' },
+  { id: 'TXN2026010801', date: '2026-01-08 14:05:12', product: '1d', type: 'deposit', amount: 500000.00, balance: 2500000.00, status: 'success', note: '短期周转' },
+  { id: 'TXN2026011001', date: '2026-01-10 09:30:00', product: '7d', type: 'withdraw', amount: 500000.00, balance: 2000000.00, status: 'success', note: '设备采购' },
+  { id: 'TXN2026011201', date: '2026-01-12 16:42:33', product: '1d', type: 'withdraw', amount: 300000.00, balance: 1700000.00, status: 'reviewing', note: '等待审核' },
+  { id: 'TXN2026011501', date: '2026-01-15 11:20:00', product: '7d', type: 'deposit', amount: 1000000.00, balance: 2700000.00, status: 'success', note: '' },
+  { id: 'TXN2026011801', date: '2026-01-18 08:55:18', product: '1d', type: 'withdraw', amount: 200000.00, balance: 2500000.00, status: 'rejected', note: '信息有误' },
+  { id: 'TXN2026012001', date: '2026-01-20 15:10:42', product: '7d', type: 'deposit', amount: 800000.00, balance: 3300000.00, status: 'success', note: '年末奖金' },
+];
+
+let selectedProduct = null;
+let balances = { '1d': 1700000.00, '7d': 3300000.00 };
+
+// ==================== RENDER ====================
+function renderRecords() {
+  const tbody = document.getElementById('recordsBody');
+  const empty = document.getElementById('emptyState');
+  const filterType = document.getElementById('filter-type').value;
+  const filterProduct = document.getElementById('filter-product').value;
+
+  let filtered = records.filter(r => {
+    if (filterType && r.type !== filterType) return false;
+    if (filterProduct && r.product !== filterProduct) return false;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+  tbody.innerHTML = filtered.map(r => {
+    const p = products[r.product];
+    const amountClass = r.type === 'deposit' ? 'in' : 'out';
+    const typeLabel = r.type === 'deposit' ? '存入' : '提取';
+    const typeClass = r.type === 'deposit' ? 'in' : 'out';
+    const statusMap = {
+      success: ['success', '已入账'],
+      reviewing: ['reviewing', '审核中'],
+      pending: ['pending', '处理中'],
+      rejected: ['rejected', '已拒绝']
+    };
+    const [sClass, sLabel] = statusMap[r.status] || ['pending', '处理中'];
+    return `<tr>
+      <td style="font-size:12px;color:#666;">${r.date}</td>
+      <td>${p.name}</td>
+      <td><span class="tx-type ${typeClass}"><span class="dot"></span>${typeLabel}</span></td>
+      <td><span class="tx-amount ${amountClass}">${r.type === 'deposit' ? '+' : '-'}${formatMoney(r.amount)}</span></td>
+      <td style="font-family:Roboto Mono,Consolas,monospace;font-size:12px;">${formatMoney(r.balance)}</td>
+      <td><span class="tx-status ${sClass}">${sLabel}</span></td>
+      <td style="font-size:12px;color:#999;">${r.note || '-'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function formatMoney(v) {
+  return v.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function filterRecords() { renderRecords(); }
+
+function exportRecords() {
+  showToast('导出成功', '存款记录已导出至您的下载目录', 'success');
+}
+
+// ==================== ACTIONS ====================
+function selectProduct(type) {
+  document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('product-' + type).classList.add('selected');
+  selectedProduct = type;
+  const p = products[type];
+
+  document.getElementById('selectedBanner').classList.add('show');
+  document.getElementById('bannerName').textContent = p.name;
+  document.getElementById('bannerRate').textContent = p.rate + '%';
+
+  // Auto-fill deposit form
+  document.getElementById('deposit-product').value = type;
+  // Auto-fill withdraw form
+  document.getElementById('withdraw-product').value = type;
+  document.getElementById('withdraw-balance').value = formatMoney(balances[type]) + ' 元';
+
+  // Scroll to form
+  document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function doDeposit() {
+  const product = document.getElementById('deposit-product').value;
+  const amount = parseFloat(document.getElementById('deposit-amount').value);
+  const note = document.getElementById('deposit-note').value;
+
+  if (!product) { showToast('请选择存款产品', '', 'error'); return; }
+  if (!amount || amount < 500000) { showToast('存入金额不能低于50万元', '', 'error'); return; }
+
+  const p = products[product];
+  const now = new Date();
+  const dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+
+  balances[product] = (balances[product] || 0) + amount;
+  const newRecord = {
+    id: 'TXN' + Date.now(),
+    date: dateStr,
+    product: product,
+    type: 'deposit',
+    amount: amount,
+    balance: balances[product],
+    status: 'success',
+    note: note || ''
+  };
+  records.unshift(newRecord);
+  renderRecords();
+  resetDeposit();
+  showToast('存入成功', `${p.name} ${formatMoney(amount)}元 已存入您的账户`, 'success');
+}
+
+function doWithdraw() {
+  const product = document.getElementById('withdraw-product').value;
+  const amount = parseFloat(document.getElementById('withdraw-amount').value);
+  const dateVal = document.getElementById('withdraw-date').value;
+  const pwd = document.getElementById('withdraw-pwd').value;
+
+  if (!product) { showToast('请选择取款产品', '', 'error'); return; }
+  if (!amount || amount <= 0) { showToast('请输入正确的支取金额', '', 'error'); return; }
+  if (!dateVal) { showToast('请选择预约支取日期', '', 'error'); return; }
+  if (!pwd || pwd.length < 6) { showToast('请输入6位支取密码', '', 'error'); return; }
+
+  const p = products[product];
+  const now = new Date();
+  const withdrawDate = new Date(dateVal);
+  const daysDiff = Math.ceil((withdrawDate - now) / (1000*60*60*24));
+
+  if (product === '1d' && daysDiff < 1) { showToast('1天通知存款需提前至少1个工作日预约', '', 'error'); return; }
+  if (product === '7d' && daysDiff < 7) { showToast('7天通知存款需提前至少7个日历日预约', '', 'error'); return; }
+
+  if (balances[product] < amount) { showToast('余额不足，当前可用余额' + formatMoney(balances[product]) + '元', '', 'error'); return; }
+
+  const dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+
+  const newRecord = {
+    id: 'TXN' + Date.now(),
+    date: dateStr,
+    product: product,
+    type: 'withdraw',
+    amount: amount,
+    balance: balances[product] - amount,
+    status: 'reviewing',
+    note: '预约' + dateVal + '支取'
+  };
+  records.unshift(newRecord);
+  balances[product] -= amount;
+  renderRecords();
+  resetWithdraw();
+  document.getElementById('withdraw-balance').value = formatMoney(balances[product]) + ' 元';
+  showToast('预约成功', `${p.name} ${formatMoney(amount)}元 已提交取款预约（${dateVal}）`, 'success');
+}
+
+function resetDeposit() {
+  document.getElementById('deposit-product').value = '';
+  document.getElementById('deposit-amount').value = '';
+  document.getElementById('deposit-source').value = '';
+  document.getElementById('deposit-note').value = '';
+}
+function resetWithdraw() {
+  document.getElementById('withdraw-product').value = '';
+  document.getElementById('withdraw-amount').value = '';
+  document.getElementById('withdraw-date').value = '';
+  document.getElementById('withdraw-pwd').value = '';
+}
+
+// ==================== UI HELPERS ====================
+function toggleUserMenu() {
+  document.getElementById('userMenu').classList.toggle('show');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.user-avatar') && !e.target.closest('.user-menu')) {
+    document.getElementById('userMenu').classList.remove('show');
+  }
+});
+
+function showToast(title, msg, type) {
+  const toast = document.getElementById('toast');
+  const icon = document.getElementById('toastIcon');
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastMsg').textContent = msg;
+  toast.className = 'toast show' + (type === 'error' ? ' error' : '');
+  icon.textContent = type === 'error' ? '❌' : '✅';
+  setTimeout(() => { toast.classList.remove('show'); }, 3500);
+}
+
+// ==================== INIT ====================
+renderRecords();
+</script>
+</body>
+</html>

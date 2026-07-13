@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子票据 - 长安银行</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #C6151D;
+  --red-dark: #8B0010;
+  --bg: #F0F2F5;
+  --white: #fff;
+  --text: #333;
+  --text-light: #666;
+  --text-muted: #999;
+  --border: #E4E7EB;
+  --sidebar-w: 240px;
+  --green: #1A9E5A;
+  --orange: #E8810A;
+  --blue: #2B7FD9;
+  --gray: #94A3B8;
+}
+body {
+  font-family: "Microsoft YaHei","PingFang SC",Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== TOPBAR ===== */
+.topbar {
+  height: 64px;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  min-width: var(--sidebar-w);
+}
+.topbar-logo img { height: 36px; }
+.topbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-search {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 340px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+.topbar-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 13px;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,0.6); }
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.topbar-nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.topbar-nav a:hover { background: rgba(255,255,255,0.15); }
+.topbar-nav a.active { background: rgba(255,255,255,0.2); color: #fff; }
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 16px;
+}
+.topbar-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s;
+}
+.topbar-icon-btn:hover { background: rgba(255,255,255,0.25); }
+.topbar-icon-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 16px; height: 16px;
+  background: #FFD700;
+  color: #333;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.2s;
+}
+.user-avatar:hover { background: rgba(255,255,255,0.25); }
+.user-avatar .avatar-circle {
+  width: 28px; height: 28px;
+  background: #FFD700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold;
+  color: var(--red);
+  font-size: 12px;
+}
+.user-menu {
+  position: absolute;
+  top: 56px; right: 20px;
+  width: 200px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: none;
+  z-index: 200;
+  overflow: hidden;
+}
+.user-menu.show { display: block; }
+.user-menu-item {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.user-menu-item:hover { background: #F8F8F8; }
+.user-menu-item.danger { color: var(--red); }
+.user-menu-item.danger:hover { background: #FFF5F5; }
+.user-menu-divider { height: 1px; background: #F0F0F0; margin: 4px 0; }
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  padding-top: 64px;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 64px; bottom: 0;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.sidebar-section { margin-bottom: 4px; }
+.sidebar-title {
+  padding: 10px 20px 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: var(--text-light);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-link:hover { background: #F8F9FA; color: var(--text); }
+.sidebar-link.active {
+  background: #FFF5F5;
+  color: var(--red);
+  border-left-color: var(--red);
+  font-weight: 500;
+}
+.sidebar-link .icon { font-size: 16px; width: 20px; text-align: center; }
+.sidebar-link .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  padding: 28px 32px;
+}
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+}
+.page-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--red-dark); }
+.btn-outline {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { background: #F8F9FA; }
+.btn-ghost {
+  background: transparent;
+  color: var(--text-light);
+  padding: 6px 12px;
+}
+.btn-ghost:hover { background: #F0F2F5; }
+
+/* ===== STATS ROW ===== */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+}
+.stat-card .label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.stat-card .value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+.stat-card .sub {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+.stat-card .sub .up { color: var(--green); }
+.stat-card.bank .value { color: var(--blue); }
+.stat-card.commercial .value { color: var(--orange); }
+.stat-card.pending .value { color: var(--orange); }
+.stat-card.done .value { color: var(--green); }
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 24px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.filter-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.filter-tab {
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-light);
+  transition: all 0.15s;
+}
+.filter-tab:hover { border-color: var(--red); color: var(--red); }
+.filter-tab.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+.filter-select {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+}
+.filter-select:focus { border-color: var(--red); }
+.filter-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 14px;
+  min-width: 200px;
+}
+.filter-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  color: var(--text);
+}
+.filter-search input::placeholder { color: var(--text-muted); }
+
+/* ===== TABLE ===== */
+.table-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.table-wrapper { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead { background: #FAF9FB; }
+th {
+  padding: 13px 16px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F5F5F5;
+  color: var(--text);
+  vertical-align: middle;
+}
+tbody tr { transition: background 0.12s; cursor: pointer; }
+tbody tr:hover { background: #FFF9F9; }
+tbody tr:last-child td { border-bottom: none; }
+
+.bill-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.bill-type.bank {
+  background: #E8F1FB;
+  color: var(--blue);
+}
+.bill-type.commercial {
+  background: #FEF3E2;
+  color: var(--orange);
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.status-badge.pending {
+  background: #FEF3E2;
+  color: var(--orange);
+}
+.status-badge.active {
+  background: #E8F1FB;
+  color: var(--blue);
+}
+.status-badge.done {
+  background: #E8F5EC;
+  color: var(--green);
+}
+.status-badge.rejected {
+  background: #FDECEC;
+  color: var(--red);
+}
+.bill-no {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  color: var(--text-light);
+}
+.action-btn {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.action-btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+/* ===== PAGINATION ===== */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+}
+.pagination-info {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.page-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.page-btn:hover { border-color: var(--red); color: var(--red); }
+.page-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.modal-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 680px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  transform: translateY(20px);
+  transition: transform 0.25s;
+}
+.modal-overlay.show .modal { transform: translateY(0); }
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-close {
+  width: 32px; height: 32px;
+  border: none;
+  background: #F0F2F5;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--text-light);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.modal-close:hover { background: #FFE5E5; color: var(--red); }
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 140px);
+}
+
+/* Detail Section */
+.detail-section {
+  margin-bottom: 24px;
+}
+.detail-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.detail-item label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.detail-item span {
+  font-size: 13px;
+  color: var(--text);
+}
+.detail-item span.highlight { color: var(--red); font-weight: 600; }
+
+/* Timeline */
+.timeline { padding-left: 20px; border-left: 2px solid var(--border); }
+.timeline-item {
+  position: relative;
+  padding-bottom: 18px;
+  padding-left: 18px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid #fff;
+}
+.timeline-item.done::before { background: var(--green); }
+.timeline-item.current::before { background: var(--blue); box-shadow: 0 0 0 3px rgba(43,127,217,0.2); }
+.timeline-item .time {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.timeline-item .event {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+}
+.timeline-item .event-sub {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: #FAF9FB;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { background: var(--green); }
+.toast.error { background: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <span style="font-size:22px;">🏦</span>
+    <span>长安银行</span>
+  </div>
+  <div class="topbar-center">
+    <div class="topbar-search">
+      <span>🔍</span>
+      <input type="text" placeholder="搜索菜单、功能...">
+    </div>
+    <nav class="topbar-nav">
+      <a href="#">首页</a>
+      <a href="#">转账</a>
+      <a href="#">票据</a>
+      <a href="#">融资</a>
+      <a href="#" class="active">企业服务</a>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <button class="topbar-icon-btn">🔔<span class="badge">3</span></button>
+    <button class="topbar-icon-btn">⚙️</button>
+    <div class="user-avatar" onclick="toggleUserMenu()">
+      <div class="avatar-circle">李</div>
+      <span>李明远</span>
+      <span>▾</span>
+    </div>
+  </div>
+</div>
+<div class="user-menu" id="userMenu">
+  <div class="user-menu-item">👤 个人信息</div>
+  <div class="user-menu-item">🔐 安全设置</div>
+  <div class="user-menu-item">📱 设备管理</div>
+  <div class="user-menu-divider"></div>
+  <div class="user-menu-item danger">🚪 退出登录</div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">企业银行</div>
+      <a class="sidebar-link" href="#">📊 工作台</a>
+      <a class="sidebar-link" href="#">💰 账户管理</a>
+      <a class="sidebar-link" href="#">🔄 转账汇款</a>
+      <a class="sidebar-link active" href="#">📄 电子票据</a>
+      <a class="sidebar-link" href="#">💳 票据管理 <span class="badge">new</span></a>
+      <a class="sidebar-link" href="#">📈 融资贷款</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">国际业务</div>
+      <a class="sidebar-link" href="#">🌐 跨境结算</a>
+      <a class="sidebar-link" href="#">💹 外汇管理</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">集团管理</div>
+      <a class="sidebar-link" href="#">🏛️ 集团账户</a>
+      <a class="sidebar-link" href="#">📋 统一记账</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <div class="page-title">电子票据</div>
+        <div class="page-subtitle">管理企业银行承兑汇票与商业承兑汇票</div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-outline">📤 票据签发</button>
+        <button class="btn btn-primary">➕ 背书转让</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card bank">
+        <div class="label">银行承兑汇票</div>
+        <div class="value">12</div>
+        <div class="sub">剩余 <span class="up">+3</span> 本月新增</div>
+      </div>
+      <div class="stat-card commercial">
+        <div class="label">商业承兑汇票</div>
+        <div class="value">7</div>
+        <div class="sub">剩余 <span class="up">+1</span> 本月新增</div>
+      </div>
+      <div class="stat-card pending">
+        <div class="label">待到期</div>
+        <div class="value">5</div>
+        <div class="sub">30天内到期</div>
+      </div>
+      <div class="stat-card done">
+        <div class="label">已完成</div>
+        <div class="value">38</div>
+        <div class="sub">累计托收</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">票据类型</span>
+        <button class="filter-tab active" onclick="setBillType(this, 'all')">全部</button>
+        <button class="filter-tab" onclick="setBillType(this, 'bank')">银票</button>
+        <button class="filter-tab" onclick="setBillType(this, 'commercial')">商票</button>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">状态</span>
+        <select class="filter-select" id="statusFilter" onchange="filterBills()">
+          <option value="all">全部状态</option>
+          <option value="pending">待到期</option>
+          <option value="active">背书中</option>
+          <option value="done">已到期</option>
+          <option value="rejected">已拒付</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">到期时间</span>
+        <select class="filter-select" id="dateFilter" onchange="filterBills()">
+          <option value="all">全部时间</option>
+          <option value="7">7天内到期</option>
+          <option value="30">30天内到期</option>
+          <option value="90">90天内到期</option>
+          <option value="expired">已到期</option>
+        </select>
+      </div>
+      <div class="filter-search">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="搜索票号、出票人、收票人..." oninput="filterBills()">
+      </div>
+      <button class="btn btn-ghost" onclick="resetFilters()">🔄 重置</button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>票号</th>
+              <th>票据类型</th>
+              <th>出票人</th>
+              <th>收票人</th>
+              <th>票面金额（元）</th>
+              <th>出票日期</th>
+              <th>到期日期</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="billsTableBody">
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <div class="pagination-info" id="paginationInfo">共 0 条记录</div>
+        <div class="pagination-controls">
+          <button class="page-btn" id="prevBtn" onclick="prevPage()">‹</button>
+          <div id="pageNumbers"></div>
+          <button class="page-btn" id="nextBtn" onclick="nextPage()">›</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">📄 票据详情</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Bill Info -->
+      <div class="detail-section">
+        <div class="detail-section-title">基本信息</div>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>票号</label>
+            <span id="mdBillNo" class="bill-no"></span>
+          </div>
+          <div class="detail-item">
+            <label>票据类型</label>
+            <span id="mdBillType"></span>
+          </div>
+          <div class="detail-item">
+            <label>出票人</label>
+            <span id="mdDrawer"></span>
+          </div>
+          <div class="detail-item">
+            <label>收票人</label>
+            <span id="mdPayee"></span>
+          </div>
+          <div class="detail-item">
+            <label>承兑行</label>
+            <span id="mdAcceptor"></span>
+          </div>
+          <div class="detail-item">
+            <label>状态</label>
+            <span id="mdStatus"></span>
+          </div>
+          <div class="detail-item">
+            <label>票面金额</label>
+            <span id="mdAmount" class="highlight"></span>
+          </div>
+          <div class="detail-item">
+            <label>剩余天数</label>
+            <span id="mdDaysLeft"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date Info -->
+      <div class="detail-section">
+        <div class="detail-section-title">日期信息</div>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <label>出票日期</label>
+            <span id="mdIssueDate"></span>
+          </div>
+          <div class="detail-item">
+            <label>到期日期</label>
+            <span id="mdDueDate"></span>
+          </div>
+          <div class="detail-item">
+            <label>承兑日期</label>
+            <span id="mdAcceptDate"></span>
+          </div>
+          <div class="detail-item">
+            <label>提示付款日</label>
+            <span id="mdPayDate"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transfer Info -->
+      <div class="detail-section">
+        <div class="detail-section-title">流转记录</div>
+        <div class="timeline" id="mdTimeline">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">关闭</button>
+      <button class="btn btn-outline" id="btnEndorse" onclick="doEndorse()">🔗 背书转让</button>
+      <button class="btn btn-primary" id="btnPay" onclick="doPay()">💰 提示付款</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// Sample data
+const bills = [
+  { id: 1, billNo: "3050005322001234", type: "bank", drawer: "陕西华达物资有限公司", payee: "西安铭盛钢材贸易公司", acceptor: "长安银行营业部", amount: 500000, issueDate: "2026-04-10", dueDate: "2026-10-10", acceptDate: "2026-04-11", payDate: "—", status: "pending", daysLeft: 90 },
+  { id: 2, billNo: "3050005322001235", type: "bank", drawer: "西安铭盛钢材贸易公司", payee: "陕西鑫瑞建筑公司", acceptor: "长安银行碑林支行", amount: 300000, issueDate: "2026-03-15", dueDate: "2026-09-15", acceptDate: "2026-03-16", payDate: "—", status: "pending", daysLeft: 65 },
+  { id: 3, billNo: "3050005322001236", type: "commercial", drawer: "陕西华达物资有限公司", payee: "成都天府实业集团", acceptor: "招商银行西安分行", amount: 800000, issueDate: "2026-02-20", dueDate: "2026-08-20", acceptDate: "2026-02-21", payDate: "2026-08-18", status: "active", daysLeft: 38 },
+  { id: 4, billNo: "3050005322001237", type: "bank", drawer: "成都天府实业集团", payee: "重庆长江物流公司", acceptor: "工商银行成都分行", amount: 1200000, issueDate: "2025-12-01", dueDate: "2026-06-01", acceptDate: "2025-12-02", payDate: "2026-05-29", status: "done", daysLeft: 0 },
+  { id: 5, billNo: "3050005322001238", type: "commercial", drawer: "重庆长江物流公司", payee: "四川华通建设公司", acceptor: "建设银行重庆分行", amount: 450000, issueDate: "2026-01-18", dueDate: "2026-07-18", acceptDate: "2026-01-19", payDate: "—", status: "pending", daysLeft: 36 },
+  { id: 6, billNo: "3050005322001239", type: "bank", drawer: "四川华通建设公司", payee: "陕西华达物资有限公司", acceptor: "长安银行雁塔支行", amount: 650000, issueDate: "2026-05-05", dueDate: "2026-11-05", acceptDate: "2026-05-06", payDate: "—", status: "pending", daysLeft: 146 },
+  { id: 7, billNo: "3050005322001240", type: "bank", drawer: "陕西华达物资有限公司", payee: "西安铭盛钢材贸易公司", acceptor: "农业银行西安分行", amount: 280000, issueDate: "2026-03-28", dueDate: "2026-09-28", acceptDate: "2026-03-29", payDate: "—", status: "active", daysLeft: 78 },
+  { id: 8, billNo: "3050005322001241", type: "commercial", drawer: "西安铭盛钢材贸易公司", payee: "成都天府实业集团", acceptor: "民生银行西安分行", amount: 920000, issueDate: "2025-11-10", dueDate: "2026-05-10", acceptDate: "2025-11-11", payDate: "2026-05-08", status: "done", daysLeft: 0 },
+  { id: 9, billNo: "3050005322001242", type: "bank", drawer: "陕西鑫瑞建筑公司", payee: "重庆长江物流公司", acceptor: "中国银行陕西分行", amount: 1500000, issueDate: "2026-02-08", dueDate: "2026-08-08", acceptDate: "2026-02-09", payDate: "2026-08-06", status: "rejected", daysLeft: 0 },
+  { id: 10, billNo: "3050005322001243", type: "bank", drawer: "重庆长江物流公司", payee: "四川华通建设公司", acceptor: "交通银行重庆分行", amount: 380000, issueDate: "2026-04-22", dueDate: "2026-10-22", acceptDate: "2026-04-23", payDate: "—", status: "pending", daysLeft: 102 },
+  { id: 11, billNo: "3050005322001244", type: "commercial", drawer: "四川华通建设公司", payee: "陕西华达物资有限公司", acceptor: "光大银行成都分行", amount: 720000, issueDate: "2026-01-30", dueDate: "2026-07-30", acceptDate: "2026-01-31", payDate: "2026-07-28", status: "done", daysLeft: 0 },
+  { id: 12, billNo: "3050005322001245", type: "bank", drawer: "陕西华达物资有限公司", payee: "西安铭盛钢材贸易公司", acceptor: "长安银行未央支行", amount: 560000, issueDate: "2026-05-18", dueDate: "2026-11-18", acceptDate: "2026-05-19", payDate: "—", status: "pending", daysLeft: 159 },
+];
+
+// Timeline data per bill
+const timelines = {
+  1: [
+    { time: "2026-04-10 09:30", event: "出票", eventSub: "陕西华达物资有限公司 开出票据", done: true },
+    { time: "2026-04-11 10:15", event: "承兑完成", eventSub: "长安银行营业部 承兑签章", done: true },
+    { time: "2026-04-12 14:22", event: "背书转让", eventSub: "背书转让给 西安铭盛钢材贸易公司", done: true },
+    { time: "—", event: "提示付款", eventSub: "到期日前提示付款", done: false },
+  ],
+  3: [
+    { time: "2026-02-20 09:00", event: "出票", eventSub: "陕西华达物资有限公司 开出商票", done: true },
+    { time: "2026-02-21 11:30", event: "承兑完成", eventSub: "招商银行西安分行 承兑签章", done: true },
+    { time: "2026-03-05 16:45", event: "背书转让", eventSub: "背书转让给 成都天府实业集团", done: true },
+    { time: "2026-08-18 09:00", event: "提示付款", eventSub: "发起提示付款申请", done: false },
+  ],
+  4: [
+    { time: "2025-12-01 09:00", event: "出票", eventSub: "成都天府实业集团 开出票据", done: true },
+    { time: "2025-12-02 10:00", event: "承兑完成", eventSub: "工商银行成都分行 承兑签章", done: true },
+    { time: "2026-01-15 13:20", event: "背书转让", eventSub: "背书转让给 重庆长江物流公司", done: true },
+    { time: "2026-05-29 09:00", event: "提示付款", eventSub: "发起提示付款", done: true },
+    { time: "2026-06-01 15:00", event: "付款完成", eventSub: "工商银行成都分行 付款到账", done: true },
+  ],
+  9: [
+    { time: "2026-02-08 09:00", event: "出票", eventSub: "陕西鑫瑞建筑公司 开出票据", done: true },
+    { time: "2026-02-09 10:00", event: "承兑完成", eventSub: "中国银行陕西分行 承兑签章", done: true },
+    { time: "2026-04-20 11:00", event: "背书转让", eventSub: "背书转让给 重庆长江物流公司", done: true },
+    { time: "2026-08-06 09:00", event: "提示付款", eventSub: "发起提示付款", done: true },
+    { time: "2026-08-08 14:00", event: "拒付", eventSub: "中国银行陕西分行 拒绝付款，原因：票据瑕疵", done: true },
+  ],
+};
+
+// State
+let currentType = 'all';
+let currentStatus = 'all';
+let currentDate = 'all';
+let searchQuery = '';
+let currentPage = 1;
+const pageSize = 8;
+
+// Format amount
+function formatAmount(v) {
+  return '¥ ' + v.toLocaleString('zh-CN', { minimumFractionDigits: 2 });
+}
+
+// Format date
+function fmtDate(d) {
+  if (d === '—') return d;
+  return d;
+}
+
+// Get status badge HTML
+function statusBadge(s) {
+  const map = { pending: ['待到期', 'pending'], active: ['背书中', 'active'], done: ['已到期', 'done'], rejected: ['已拒付', 'rejected'] };
+  const [txt, cls] = map[s] || [s, ''];
+  return `<span class="status-badge ${cls}">${txt}</span>`;
+}
+
+// Get bill type badge
+function typeBadge(t) {
+  return t === 'bank'
+    ? '<span class="bill-type bank">🏦 银票</span>'
+    : '<span class="bill-type commercial">📝 商票</span>';
+}
+
+// Filter bills
+function getFiltered() {
+  return bills.filter(b => {
+    const typeMatch = currentType === 'all' || b.type === currentType;
+    const statusMatch = currentStatus === 'all' || b.status === currentStatus;
+    const searchMatch = !searchQuery ||
+      b.billNo.includes(searchQuery) ||
+      b.drawer.includes(searchQuery) ||
+      b.payee.includes(searchQuery);
+    let dateMatch = true;
+    if (currentDate !== 'all') {
+      if (currentDate === 'expired') dateMatch = b.daysLeft <= 0;
+      else dateMatch = b.daysLeft > 0 && b.daysLeft <= parseInt(currentDate);
+    }
+    return typeMatch && statusMatch && searchMatch && dateMatch;
+  });
+}
+
+// Render table
+function renderTable() {
+  const filtered = getFiltered();
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  const start = (currentPage - 1) * pageSize;
+  const page = filtered.slice(start, start + pageSize);
+
+  const tbody = document.getElementById('billsTableBody');
+  if (page.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-muted);">暂无票据数据</td></tr>`;
+  } else {
+    tbody.innerHTML = page.map(b => `
+      <tr onclick="openDetail(${b.id})">
+        <td><span class="bill-no">${b.billNo}</span></td>
+        <td>${typeBadge(b.type)}</td>
+        <td>${b.drawer}</td>
+        <td>${b.payee}</td>
+        <td style="font-weight:600;">${formatAmount(b.amount)}</td>
+        <td>${fmtDate(b.issueDate)}</td>
+        <td>${fmtDate(b.dueDate)}</td>
+        <td>${statusBadge(b.status)}</td>
+        <td><button class="action-btn" onclick="event.stopPropagation();openDetail(${b.id})">查看详情</button></td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('paginationInfo').textContent = `共 ${total} 条记录`;
+  renderPagination(totalPages);
+}
+
+function renderPagination(total) {
+  const container = document.getElementById('pageNumbers');
+  if (total <= 1) { container.innerHTML = ''; return; }
+  let html = '';
+  for (let i = 1; i <= total; i++) {
+    html += `<button class="page-btn${i === currentPage ? ' active' : ''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  container.innerHTML = html;
+  document.getElementById('prevBtn').disabled = currentPage <= 1;
+  document.getElementById('nextBtn').disabled = currentPage >= total;
+}
+
+function goPage(n) { currentPage = n; renderTable(); }
+function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
+function nextPage() { const t = Math.ceil(getFiltered().length / pageSize); if (currentPage < t) { currentPage++; renderTable(); } }
+
+// Filter handlers
+function setBillType(el, type) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentType = type;
+  currentPage = 1;
+  filterBills();
+}
+
+function filterBills() {
+  currentStatus = document.getElementById('statusFilter').value;
+  currentDate = document.getElementById('dateFilter').value;
+  searchQuery = document.getElementById('searchInput').value.trim();
+  currentPage = 1;
+  renderTable();
+}
+
+function resetFilters() {
+  currentType = 'all';
+  currentStatus = 'all';
+  currentDate = 'all';
+  searchQuery = '';
+  document.getElementById('statusFilter').value = 'all';
+  document.getElementById('dateFilter').value = 'all';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.filter-tab').classList.add('active');
+  currentPage = 1;
+  renderTable();
+}
+
+// Modal
+function openDetail(id) {
+  const b = bills.find(x => x.id === id);
+  if (!b) return;
+
+  document.getElementById('modalTitle').innerHTML = `${typeBadge(b.type)} 票据详情`;
+  document.getElementById('mdBillNo').textContent = b.billNo;
+  document.getElementById('mdBillType').innerHTML = b.type === 'bank' ? '🏦 银行承兑汇票' : '📝 商业承兑汇票';
+  document.getElementById('mdDrawer').textContent = b.drawer;
+  document.getElementById('mdPayee').textContent = b.payee;
+  document.getElementById('mdAcceptor').textContent = b.acceptor;
+  document.getElementById('mdAmount').textContent = formatAmount(b.amount);
+  document.getElementById('mdStatus').innerHTML = statusBadge(b.status);
+  document.getElementById('mdDaysLeft').textContent = b.daysLeft > 0 ? `还剩 ${b.daysLeft} 天` : '已到期';
+  document.getElementById('mdIssueDate').textContent = fmtDate(b.issueDate);
+  document.getElementById('mdDueDate').textContent = fmtDate(b.dueDate);
+  document.getElementById('mdAcceptDate').textContent = fmtDate(b.acceptDate);
+  document.getElementById('mdPayDate').textContent = fmtDate(b.payDate);
+
+  // Timeline
+  const tl = timelines[id] || [
+    { time: fmtDate(b.issueDate), event: '出票', eventSub: `${b.drawer} 开出票据`, done: true },
+    { time: fmtDate(b.acceptDate), event: '承兑完成', eventSub: `${b.acceptor} 承兑签章`, done: true },
+  ];
+  document.getElementById('mdTimeline').innerHTML = tl.map((t, i) => {
+    let cls = t.done ? 'done' : (i === tl.length - 1 ? 'current' : '');
+    return `<div class="timeline-item ${cls}">
+      <div class="time">${t.time}</div>
+      <div class="event">${t.event}</div>
+      <div class="event-sub">${t.eventSub}</div>
+    </div>`;
+  }).join('');
+
+  // Action buttons visibility
+  document.getElementById('btnPay').style.display = (b.status === 'pending' || b.status === 'active') ? '' : 'none';
+  document.getElementById('btnEndorse').style.display = (b.status === 'pending' || b.status === 'active') ? '' : 'none';
+
+  document.getElementById('detailModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('detailModal').classList.remove('show');
+}
+
+// Actions
+function doEndorse() { showToast('背书转让功能已跳转到相应页面', 'success'); }
+function doPay() { showToast('提示付款申请已提交，请等待银行处理', 'success'); }
+
+// Toast
+function showToast(msg, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast' + (type ? ' ' + type : '') + ' show';
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// User menu
+function toggleUserMenu() {
+  document.getElementById('userMenu').classList.toggle('show');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-avatar') && !e.target.closest('.user-menu')) {
+    document.getElementById('userMenu').classList.remove('show');
+  }
+});
+
+// Close modal on overlay click
+document.getElementById('detailModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('detailModal')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Init
+renderTable();
+</script>
+</body>
+</html>
