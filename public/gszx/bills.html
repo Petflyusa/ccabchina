@@ -723,27 +723,38 @@ tbody tr:last-child td { border-bottom: none; }
 
 <div class="layout">
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <div class="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-title">企业银行</div>
-      <a class="sidebar-link" href="#">📊 工作台</a>
-      <a class="sidebar-link" href="#">💰 账户管理</a>
-      <a class="sidebar-link" href="#">🔄 转账汇款</a>
-      <a class="sidebar-link active" href="#">📄 电子票据</a>
-      <a class="sidebar-link" href="#">💳 票据管理 <span class="badge">new</span></a>
-      <a class="sidebar-link" href="#">📈 融资贷款</a>
+      <div class="sidebar-title">常用功能</div>
+      <div class="sidebar-item" onclick="location.href='dashboard.html'"><div class="icon">🏠</div>工作台首页</div>
+      <div class="sidebar-item" onclick="location.href='account-overview.html'"><div class="icon">💰</div>账户总览</div>
+      <div class="sidebar-item" onclick="location.href='transfer.html'"><div class="icon">💸</div>转账汇款</div>
+      <div class="sidebar-item active" onclick="location.href='bills.html'"><div class="icon">📊</div>电子票据</div>
+      <div class="sidebar-item" onclick="location.href='notice-deposit.html'"><div class="icon">💵</div>通知存款</div>
     </div>
+    <div class="sidebar-divider"></div>
     <div class="sidebar-section">
-      <div class="sidebar-title">国际业务</div>
-      <a class="sidebar-link" href="#">🌐 跨境结算</a>
-      <a class="sidebar-link" href="#">💹 外汇管理</a>
+      <div class="sidebar-title">企业金融</div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'"><div class="icon">✈️</div>银企对账</div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'"><div class="icon">🌿</div>供应链金融</div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'"><div class="icon">💰</div>贷款管理<span class="badge">1</span></div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'"><div class="icon">🚀</div>国际业务</div>
     </div>
+    <div class="sidebar-divider"></div>
     <div class="sidebar-section">
-      <div class="sidebar-title">集团管理</div>
-      <a class="sidebar-link" href="#">🏛️ 集团账户</a>
-      <a class="sidebar-link" href="#">📋 统一记账</a>
+      <div class="sidebar-title">集团服务</div>
+      <div class="sidebar-item" onclick="location.href='group-service.html'"><div class="icon">👥</div>资金归集</div>
+      <div class="sidebar-item" onclick="location.href='group-service.html'"><div class="icon">📋</div>内部转账</div>
+      <div class="sidebar-item" onclick="location.href='group-service.html'"><div class="icon">📈</div>预算管理</div>
     </div>
-  </aside>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">安全中心</div>
+      <div class="sidebar-item" onclick="location.href='security-center.html'"><div class="icon">🔒</div>安全设置</div>
+      <div class="sidebar-item" onclick="location.href='security-center.html'"><div class="icon">📹</div>操作日志</div>
+      <div class="sidebar-item" onclick="location.href='security-center.html'"><div class="icon">🔑</div>授权中心</div>
+    </div>
+  </div>
 
   <!-- MAIN -->
   <main class="main">

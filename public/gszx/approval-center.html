@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>待办审批中心 - 长安银行</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%23C6151D'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='white' font-family='serif'>银</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #C6151D;
+  --red-dark: #8B0010;
+  --bg: #F0F2F5;
+  --white: #fff;
+  --text: #333;
+  --text-light: #666;
+  --text-muted: #999;
+  --border: #E4E7EB;
+  --sidebar-w: 240px;
+}
+body {
+  font-family: "Microsoft YaHei","PingFang SC",Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ===== TOPBAR ===== */
+.topbar {
+  height: 64px;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 2px;
+  min-width: var(--sidebar-w);
+}
+.topbar-logo img { height: 36px; }
+.topbar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-search {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 340px;
+  color: rgba(255,255,255,0.8);
+  font-size: 13px;
+}
+.topbar-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  width: 100%;
+  font-size: 13px;
+}
+.topbar-search input::placeholder { color: rgba(255,255,255,0.6); }
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.topbar-nav a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.topbar-nav a:hover { background: rgba(255,255,255,0.15); }
+.topbar-nav a.active { background: rgba(255,255,255,0.2); color: #fff; }
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 16px;
+}
+.topbar-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background 0.2s;
+}
+.topbar-icon-btn:hover { background: rgba(255,255,255,0.25); }
+.topbar-icon-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 16px; height: 16px;
+  background: #FFD700;
+  color: #333;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+}
+.user-avatar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.2s;
+}
+.user-avatar:hover { background: rgba(255,255,255,0.25); }
+.user-avatar .avatar-circle {
+  width: 28px; height: 28px;
+  background: #FFD700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold;
+  color: var(--red);
+  font-size: 12px;
+}
+.user-menu {
+  position: absolute;
+  top: 56px; right: 20px;
+  width: 200px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  display: none;
+  z-index: 200;
+  overflow: hidden;
+}
+.user-menu.show { display: block; }
+.user-menu-item {
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.user-menu-item:hover { background: #F8F8F8; }
+.user-menu-item.danger { color: var(--red); }
+.user-menu-item.danger:hover { background: #FFF5F5; }
+.user-menu-divider { height: 1px; background: #F0F0F0; margin: 4px 0; }
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  padding-top: 64px;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 64px; bottom: 0;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.sidebar-section {
+  margin-bottom: 4px;
+}
+.sidebar-title {
+  padding: 10px 20px 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 20px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: #F8F8F8; color: var(--red); }
+.sidebar-item.active {
+  background: #FFF5F5;
+  color: var(--red);
+  border-left-color: var(--red);
+  font-weight: 600;
+}
+.sidebar-item .icon {
+  width: 20px; height: 20px;
+  background: #F5F5F5;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: #888;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.sidebar-item:hover .icon,
+.sidebar-item.active .icon {
+  background: var(--red);
+  color: #fff;
+}
+.sidebar-item .badge {
+  margin-left: auto;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 16px;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  padding: 24px;
+  min-width: 0;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.page-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--text);
+}
+.page-title small {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: normal;
+  margin-left: 12px;
+}
+.page-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ===== STATS ROW ===== */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.stat-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.stat-icon.red { background: #FFEBEE; }
+.stat-icon.green { background: #E8F5E9; }
+.stat-icon.orange { background: #FFF3E0; }
+.stat-icon.blue { background: #E3F2FD; }
+.stat-info { flex: 1; }
+.stat-value {
+  font-size: 26px;
+  font-weight: bold;
+  font-family: "Roboto Mono", "Consolas", monospace;
+}
+.stat-value.red { color: var(--red); }
+.stat-value.green { color: #2E8B57; }
+.stat-value.orange { color: #E65100; }
+.stat-value.blue { color: #1976D2; }
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 20px;
+}
+.tab-btn {
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--red); }
+.tab-btn.active {
+  color: var(--red);
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 2px;
+  background: var(--red);
+}
+.tab-btn .tab-count {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+.tab-btn.active .tab-count {
+  background: var(--red);
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.filter-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.filter-select {
+  height: 36px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 12px;
+  font-size: 13px;
+  outline: none;
+  background: #fff;
+  cursor: pointer;
+  min-width: 130px;
+}
+.filter-select:focus { border-color: var(--red); }
+.filter-input {
+  height: 36px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 12px;
+  font-size: 13px;
+  outline: none;
+  width: 180px;
+}
+.filter-input:focus { border-color: var(--red); }
+.filter-btn {
+  padding: 0 20px;
+  height: 36px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.filter-btn.primary {
+  background: var(--red);
+  color: #fff;
+}
+.filter-btn.primary:hover { background: var(--red-dark); }
+.filter-btn.secondary {
+  background: #F5F5F5;
+  color: #666;
+  border: 1px solid #ddd;
+}
+.filter-btn.secondary:hover { background: #eee; }
+.filter-spacer { flex: 1; }
+
+/* ===== DATA TABLE ===== */
+.data-table-wrap {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+  background: #F8F9FA;
+}
+.data-table td {
+  padding: 14px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid #F5F5F5;
+  color: var(--text);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #FAFAFA; }
+.status-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.status-tag.pending {
+  background: #FFF3E0;
+  color: #E65100;
+}
+.status-tag.approved {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+.status-tag.rejected {
+  background: #F5F5F5;
+  color: #757575;
+}
+.action-btn {
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.action-btn.review {
+  background: var(--red);
+  color: #fff;
+}
+.action-btn.review:hover { background: var(--red-dark); }
+.action-btn.view {
+  background: #F0F0F0;
+  color: #555;
+  border: 1px solid #ddd;
+}
+.action-btn.view:hover { background: #E0E0E0; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 520px;
+  max-width: 95vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+.modal-header {
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-header h3 { font-size: 16px; font-weight: 600; }
+.modal-close {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+}
+.modal-close:hover { background: rgba(255,255,255,0.3); }
+.modal-body { padding: 24px; }
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.detail-item { }
+.detail-item.full { grid-column: span 2; }
+.detail-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+.detail-value {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+}
+.detail-value.amount {
+  font-family: "Roboto Mono", "Consolas", monospace;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--red);
+}
+.form-textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+.form-textarea:focus { border-color: var(--red); }
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+.btn-approve {
+  flex: 1;
+  height: 44px;
+  background: linear-gradient(135deg, #2E8B57 0%, #1E6E47 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-approve:hover { opacity: 0.9; }
+.btn-reject {
+  flex: 1;
+  height: 44px;
+  background: #F5F5F5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-reject:hover { background: #eee; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  padding: 14px 20px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  z-index: 400;
+  min-width: 260px;
+}
+.toast.show { display: flex; }
+.toast-icon { font-size: 20px; }
+.toast-text { flex: 1; color: var(--text); }
+.toast.success { border-left-color: #2E8B57; }
+.toast.success .toast-icon { color: #2E8B57; }
+.toast.error { border-left-color: #C62828; }
+.toast.error .toast-icon { color: #C62828; }
+.toast.info { border-left-color: #1976D2; }
+.toast.info .toast-icon { color: #1976D2; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #CCC; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #AAA; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <img src="/images/logo.png" alt="长安银行" onerror="this.style.display='none'">
+    <span>企业网银</span>
+  </div>
+  <div class="topbar-center">
+    <div class="topbar-search">
+      <span>&#128269;</span>
+      <input type="text" placeholder="搜索账户、转账记录、功能...">
+    </div>
+  </div>
+  <div class="topbar-nav">
+    <a href="#">首页</a>
+    <a href="#">账户管理</a>
+    <a href="#">转账汇款</a>
+    <a href="#">票据管理</a>
+    <a href="#">融资贷款</a>
+    <a href="#">客户服务</a>
+  </div>
+  <div class="topbar-right">
+    <button class="topbar-icon-btn">&#128276;<span class="badge">3</span></button>
+    <button class="topbar-icon-btn">&#128172;<span class="badge">2</span></button>
+    <div class="user-avatar" id="userAvatarBtn">
+      <div class="avatar-circle">航</div>
+      <span>syaviation</span>
+      <span>&#9660;</span>
+    </div>
+  </div>
+</div>
+
+<!-- USER MENU -->
+<div class="user-menu" id="userMenu">
+  <div class="user-menu-item">&#128100; 账户信息</div>
+  <div class="user-menu-item">&#128273; 安全设置</div>
+  <div class="user-menu-item">&#9881; 个性化设置</div>
+  <div class="user-menu-divider"></div>
+  <div class="user-menu-item">&#128222; 联系客服</div>
+  <div class="user-menu-item danger">&#128682; 安全退出</div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">常用功能</div>
+      <div class="sidebar-item active">
+        <div class="icon">&#127968;</div>
+        工作台首页
+      </div>
+      <div class="sidebar-item" onclick="location.href='account-overview.html'">
+        <div class="icon">&#128179;</div>
+        账户总览
+      </div>
+      <div class="sidebar-item" onclick="location.href='transfer.html'">
+        <div class="icon">&#128181;</div>
+        转账汇款
+      </div>
+      <div class="sidebar-item" onclick="location.href='bills.html'">
+        <div class="icon">&#128200;</div>
+        电子票据
+      </div>
+      <div class="sidebar-item" onclick="location.href='notice-deposit.html'">
+        <div class="icon">&#128142;</div>
+        通知存款
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">企业金融</div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'">
+        <div class="icon">&#128657;</div>
+        银企对账
+      </div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'">
+        <div class="icon">&#127793;</div>
+        供应链金融
+      </div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'">
+        <div class="icon">&#128176;</div>
+        贷款管理
+        <span class="badge">1</span>
+      </div>
+      <div class="sidebar-item" onclick="location.href='enterprise-finance.html'">
+        <div class="icon">&#128640;</div>
+        国际业务
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">集团服务</div>
+      <div class="sidebar-item" onclick="location.href='group-service.html'">
+        <div class="icon">&#128101;</div>
+        资金归集
+      </div>
+      <div class="sidebar-item" onclick="location.href='group-service.html'">
+        <div class="icon">&#128208;</div>
+        内部转账
+      </div>
+      <div class="sidebar-item" onclick="location.href='group-service.html'">
+        <div class="icon">&#128202;</div>
+        预算管理
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">安全中心</div>
+      <div class="sidebar-item" onclick="location.href='security-center.html'">
+        <div class="icon">&#128272;</div>
+        安全设置
+      </div>
+      <div class="sidebar-item" onclick="location.href='security-center.html'">
+        <div class="icon">&#128247;</div>
+        操作日志
+      </div>
+      <div class="sidebar-item" onclick="location.href='security-center.html'">
+        <div class="icon">&#128275;</div>
+        授权中心
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-title">
+        待办审批中心
+        <small>共 3 项待处理</small>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon red">&#9203;</div>
+        <div class="stat-info">
+          <div class="stat-value red">3项</div>
+          <div class="stat-label">待审批</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">&#10004;</div>
+        <div class="stat-info">
+          <div class="stat-value green">12项</div>
+          <div class="stat-label">已通过</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">&#10006;</div>
+        <div class="stat-info">
+          <div class="stat-value orange">2项</div>
+          <div class="stat-label">已拒绝</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">&#128200;</div>
+        <div class="stat-info">
+          <div class="stat-value blue">85.7%</div>
+          <div class="stat-label">本月通过率</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="pending">
+        待审批 <span class="tab-count" id="pendingCount">8</span>
+      </button>
+      <button class="tab-btn" data-tab="completed">
+        已完成 <span class="tab-count">12</span>
+      </button>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">审批类型</span>
+        <select class="filter-select" id="filterType">
+          <option value="">全部</option>
+          <option value="转账审批">转账审批</option>
+          <option value="额度审批">额度审批</option>
+          <option value="权限审批">权限审批</option>
+          <option value="新增用户审批">新增用户审批</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">日期范围</span>
+        <input type="date" class="filter-input" id="filterDateFrom" style="width:140px;">
+        <span style="color:#999;font-size:13px;">至</span>
+        <input type="date" class="filter-input" id="filterDateTo" style="width:140px;">
+      </div>
+      <div class="filter-group">
+        <input type="text" class="filter-input" id="filterSearch" placeholder="搜索申请人、事项摘要...">
+      </div>
+      <div class="filter-spacer"></div>
+      <button class="filter-btn secondary" onclick="resetFilters()">重置</button>
+      <button class="filter-btn primary">&#11015; 导出</button>
+    </div>
+
+    <!-- PENDING TAB -->
+    <div class="tab-content active" id="pendingTab">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>申请时间</th>
+              <th>申请类型</th>
+              <th>申请人</th>
+              <th>事项摘要</th>
+              <th>金额</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="pendingTableBody">
+            <tr data-id="1">
+              <td>2026-07-13 09:32</td>
+              <td>转账审批</td>
+              <td>张明远</td>
+              <td>供应商货款转账 - 深圳华创科技有限公司</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥500,000.00</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(1)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(1)">查看详情</button>
+              </td>
+            </tr>
+            <tr data-id="2">
+              <td>2026-07-13 10:15</td>
+              <td>额度审批</td>
+              <td>李晓峰</td>
+              <td>申请提高月度透支额度200万元</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥2,000,000.00</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(2)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(2)">查看详情</button>
+              </td>
+            </tr>
+            <tr data-id="3">
+              <td>2026-07-12 14:28</td>
+              <td>转账审批</td>
+              <td>王丽华</td>
+              <td>员工工资发放 - 2026年6月</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥200,000.00</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(3)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(3)">查看详情</button>
+              </td>
+            </tr>
+            <tr data-id="4">
+              <td>2026-07-12 16:45</td>
+              <td>权限审批</td>
+              <td>陈建国</td>
+              <td>申请开通跨行转账权限（单笔500万）</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">—</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(4)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(4)">查看详情</button>
+              </td>
+            </tr>
+            <tr data-id="5">
+              <td>2026-07-11 11:20</td>
+              <td>新增用户审批</td>
+              <td>刘芳芳</td>
+              <td>新增操作员陈思琪（财务专员角色）</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">—</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(5)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(5)">查看详情</button>
+              </td>
+            </tr>
+            <tr data-id="6">
+              <td>2026-07-11 13:08</td>
+              <td>转账审批</td>
+              <td>赵志刚</td>
+              <td>广告宣传费 - 百度在线网络技术有限公司</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥50,000.00</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(6)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(6)">查看详情</button>
+              </td>
+            </tr>
+            <tr data-id="7">
+              <td>2026-07-10 09:55</td>
+              <td>额度审批</td>
+              <td>周海燕</td>
+              <td>申请国际业务信用证开立额度</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥5,000,000.00</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(7)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(7)">查看详情</button>
+              </td>
+            </tr>
+            <tr data-id="8">
+              <td>2026-07-10 15:30</td>
+              <td>权限审批</td>
+              <td>吴晓明</td>
+              <td>申请开通电子票据系统管理员权限</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">—</td>
+              <td><span class="status-tag pending">待审批</span></td>
+              <td>
+                <button class="action-btn review" onclick="openApprovalModal(8)">审批</button>
+                <button class="action-btn view" onclick="viewDetail(8)">查看详情</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COMPLETED TAB -->
+    <div class="tab-content" id="completedTab">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>申请时间</th>
+              <th>申请类型</th>
+              <th>申请人</th>
+              <th>事项摘要</th>
+              <th>金额</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="completedTableBody">
+            <tr data-id="101">
+              <td>2026-07-09 10:20</td>
+              <td>转账审批</td>
+              <td>张明远</td>
+              <td>办公设备采购 - 京东科技集团</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥128,000.00</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(101)">查看详情</button></td>
+            </tr>
+            <tr data-id="102">
+              <td>2026-07-08 14:35</td>
+              <td>额度审批</td>
+              <td>李晓峰</td>
+              <td>提高日累计转账限额至1000万</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥10,000,000.00</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(102)">查看详情</button></td>
+            </tr>
+            <tr data-id="103">
+              <td>2026-07-08 09:12</td>
+              <td>新增用户审批</td>
+              <td>王丽华</td>
+              <td>新增操作员马小龙（账务审核角色）</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">—</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(103)">查看详情</button></td>
+            </tr>
+            <tr data-id="104">
+              <td>2026-07-07 16:40</td>
+              <td>转账审批</td>
+              <td>陈建国</td>
+              <td>场地租赁费 - 西安万达广场商业管理公司</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥85,000.00</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(104)">查看详情</button></td>
+            </tr>
+            <tr data-id="105">
+              <td>2026-07-07 11:25</td>
+              <td>权限审批</td>
+              <td>刘芳芳</td>
+              <td>申请开通移动端审批功能</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">—</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(105)">查看详情</button></td>
+            </tr>
+            <tr data-id="106">
+              <td>2026-07-06 13:50</td>
+              <td>转账审批</td>
+              <td>赵志刚</td>
+              <td>软件维护服务费 - 阿里云计算有限公司</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥36,000.00</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(106)">查看详情</button></td>
+            </tr>
+            <tr data-id="107">
+              <td>2026-07-05 10:05</td>
+              <td>额度审批</td>
+              <td>周海燕</td>
+              <td>申请银行承兑汇票贴现额度</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥3,000,000.00</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(107)">查看详情</button></td>
+            </tr>
+            <tr data-id="108">
+              <td>2026-07-04 15:20</td>
+              <td>新增用户审批</td>
+              <td>吴晓明</td>
+              <td>新增操作员李思琪（出纳角色）</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">—</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(108)">查看详情</button></td>
+            </tr>
+            <tr data-id="109">
+              <td>2026-07-03 09:30</td>
+              <td>转账审批</td>
+              <td>张明远</td>
+              <td>市场推广费 - 腾讯广告（深圳）有限公司</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥200,000.00</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(109)">查看详情</button></td>
+            </tr>
+            <tr data-id="110">
+              <td>2026-07-02 14:15</td>
+              <td>权限审批</td>
+              <td>陈建国</td>
+              <td>申请开通跨境人民币结算权限</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">—</td>
+              <td><span class="status-tag rejected">已拒绝</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(110)">查看详情</button></td>
+            </tr>
+            <tr data-id="111">
+              <td>2026-07-01 11:00</td>
+              <td>额度审批</td>
+              <td>李晓峰</td>
+              <td>申请提高单笔转账限额至2000万</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥20,000,000.00</td>
+              <td><span class="status-tag rejected">已拒绝</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(111)">查看详情</button></td>
+            </tr>
+            <tr data-id="112">
+              <td>2026-07-01 08:45</td>
+              <td>转账审批</td>
+              <td>王丽华</td>
+              <td>咨询服务费 - 北京中磊会计师事务所</td>
+              <td style="font-family:Roboto Mono,Consolas,monospace;font-weight:600;">¥45,000.00</td>
+              <td><span class="status-tag approved">已通过</span></td>
+              <td><button class="action-btn view" onclick="viewDetail(112)">查看详情</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- APPROVAL MODAL -->
+<div class="modal-overlay" id="approvalModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>&#9986; 审批详情</h3>
+      <button class="modal-close" onclick="closeApprovalModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid" id="modalDetailGrid">
+        <div class="detail-item">
+          <div class="detail-label">申请时间</div>
+          <div class="detail-value" id="mTime">—</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">申请类型</div>
+          <div class="detail-value" id="mType">—</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">申请人</div>
+          <div class="detail-value" id="mApplicant">—</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">当前状态</div>
+          <div class="detail-value" id="mStatus">—</div>
+        </div>
+        <div class="detail-item full">
+          <div class="detail-label">事项摘要</div>
+          <div class="detail-value" id="mSummary">—</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">金额</div>
+          <div class="detail-value amount" id="mAmount">—</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">申请部门</div>
+          <div class="detail-value" id="mDept">财务部</div>
+        </div>
+        <div class="detail-item full">
+          <div class="detail-label">审批意见</div>
+          <textarea class="form-textarea" id="mComment" placeholder="请输入审批意见（可选）..."></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-approve" onclick="approveCurrent()">&#10004; 通过</button>
+        <button class="btn-reject" onclick="rejectCurrent()">&#10006; 拒绝</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon">&#10004;</div>
+  <div class="toast-text" id="toastText">操作成功</div>
+</div>
+
+<script>
+// ===== DATA =====
+const approvalData = {
+  1: { time: '2026-07-13 09:32', type: '转账审批', applicant: '张明远', summary: '供应商货款转账 - 深圳华创科技有限公司', amount: '¥500,000.00', dept: '财务部' },
+  2: { time: '2026-07-13 10:15', type: '额度审批', applicant: '李晓峰', summary: '申请提高月度透支额度200万元', amount: '¥2,000,000.00', dept: '融资部' },
+  3: { time: '2026-07-12 14:28', type: '转账审批', applicant: '王丽华', summary: '员工工资发放 - 2026年6月', amount: '¥200,000.00', dept: '人力资源部' },
+  4: { time: '2026-07-12 16:45', type: '权限审批', applicant: '陈建国', summary: '申请开通跨行转账权限（单笔500万）', amount: '—', dept: '信息技术部' },
+  5: { time: '2026-07-11 11:20', type: '新增用户审批', applicant: '刘芳芳', summary: '新增操作员陈思琪（财务专员角色）', amount: '—', dept: '综合管理部' },
+  6: { time: '2026-07-11 13:08', type: '转账审批', applicant: '赵志刚', summary: '广告宣传费 - 百度在线网络技术有限公司', amount: '¥50,000.00', dept: '市场部' },
+  7: { time: '2026-07-10 09:55', type: '额度审批', applicant: '周海燕', summary: '申请国际业务信用证开立额度', amount: '¥5,000,000.00', dept: '国际业务部' },
+  8: { time: '2026-07-10 15:30', type: '权限审批', applicant: '吴晓明', summary: '申请开通电子票据系统管理员权限', amount: '—', dept: '信息技术部' }
+};
+
+let currentApprovalId = null;
+
+// ===== TABS =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    const tabId = this.dataset.tab + 'Tab';
+    document.getElementById(tabId).classList.add('active');
+  });
+});
+
+// ===== MODAL =====
+function openApprovalModal(id) {
+  currentApprovalId = id;
+  const d = approvalData[id];
+  if (!d) return;
+  document.getElementById('mTime').textContent = d.time;
+  document.getElementById('mType').textContent = d.type;
+  document.getElementById('mApplicant').textContent = d.applicant;
+  document.getElementById('mSummary').textContent = d.summary;
+  document.getElementById('mAmount').textContent = d.amount;
+  document.getElementById('mDept').textContent = d.dept;
+  document.getElementById('mComment').value = '';
+  document.getElementById('approvalModal').classList.add('show');
+}
+
+function closeApprovalModal() {
+  document.getElementById('approvalModal').classList.remove('show');
+  currentApprovalId = null;
+}
+
+function viewDetail(id) {
+  showToast('info', '查看详情功能开发中...');
+}
+
+// ===== APPROVE / REJECT =====
+function approveCurrent() {
+  if (!currentApprovalId) return;
+  const row = document.querySelector(`#pendingTableBody tr[data-id="${currentApprovalId}"]`);
+  if (row) {
+    row.querySelector('.status-tag').className = 'status-tag approved';
+    row.querySelector('.status-tag').textContent = '已通过';
+    row.querySelector('.action-btn.review').style.display = 'none';
+  }
+  closeApprovalModal();
+  updatePendingCount();
+  showToast('success', '审批已通过');
+}
+
+function rejectCurrent() {
+  if (!currentApprovalId) return;
+  const row = document.querySelector(`#pendingTableBody tr[data-id="${currentApprovalId}"]`);
+  if (row) {
+    row.querySelector('.status-tag').className = 'status-tag rejected';
+    row.querySelector('.status-tag').textContent = '已拒绝';
+    row.querySelector('.action-btn.review').style.display = 'none';
+  }
+  closeApprovalModal();
+  updatePendingCount();
+  showToast('error', '已拒绝该申请');
+}
+
+function updatePendingCount() {
+  const pendingRows = document.querySelectorAll('#pendingTableBody tr');
+  let count = 0;
+  pendingRows.forEach(row => {
+    const tag = row.querySelector('.status-tag');
+    if (tag && tag.classList.contains('pending')) count++;
+  });
+  const countEl = document.getElementById('pendingCount');
+  if (countEl) countEl.textContent = count;
+  // update page title
+  const titleEl = document.querySelector('.page-title small');
+  if (titleEl) titleEl.textContent = `共 ${count} 项待处理`;
+}
+
+// ===== TOAST =====
+function showToast(type, message) {
+  const toast = document.getElementById('toast');
+  const icon = document.getElementById('toastIcon');
+  const text = document.getElementById('toastText');
+  toast.className = 'toast ' + type;
+  text.textContent = message;
+  if (type === 'success') icon.innerHTML = '&#10004;';
+  else if (type === 'error') icon.innerHTML = '&#10006;';
+  else icon.innerHTML = '&#9432;';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ===== FILTERS =====
+function resetFilters() {
+  document.getElementById('filterType').value = '';
+  document.getElementById('filterDateFrom').value = '';
+  document.getElementById('filterDateTo').value = '';
+  document.getElementById('filterSearch').value = '';
+}
+
+// ===== USER MENU =====
+document.getElementById('userAvatarBtn').addEventListener('click', function(e) {
+  e.stopPropagation();
+  document.getElementById('userMenu').classList.toggle('show');
+});
+document.addEventListener('click', function() {
+  document.getElementById('userMenu').classList.remove('show');
+});
+
+// Close modal on overlay click
+document.getElementById('approvalModal').addEventListener('click', function(e) {
+  if (e.target === this) closeApprovalModal();
+});
+</script>
+</body>
+</html>
