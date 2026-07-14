@@ -1320,6 +1320,10 @@ function doTransfer() {
     showNotif('error', '验证码错误', '请输入6位短信验证码');
     return;
   }
+  if (code !== '122565') {
+    showNotif('error', '验证码错误', '短信验证码不正确，请核对后重新输入');
+    return;
+  }
   closeModal();
   document.getElementById('successModal').classList.add('show');
 }
