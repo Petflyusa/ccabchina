@@ -1277,7 +1277,7 @@ const accountNo = '8832********5617';
 const balance = '60,128,568.47';
 
 const transactions = [
-  { date: '2026-10-09 10:18:36', toAcc: '014575098876', toName: 'WUXUKAI', type: 'out', amount: '-20,000.00 USD', status: 'success', note: '国际汇款', toBank: 'RBC ROYAL BANK', swiftCode: 'ROYCCAT2', currency: 'USD', receiptNo: 'XY2026100900001' },
+  { date: '2026-10-09 10:18:36', toAcc: '014575098876', toName: 'WUXUKAI', type: 'out', amount: '-20,000.00 USD', status: 'pending', note: '国际汇款', toBank: 'RBC ROYAL BANK', swiftCode: 'ROYCCAT2', currency: 'USD', fee: '45.00 USD', mtcn: 'MTCN20261009101836', receiptNo: 'XY2026100900001' },
   { date: '2026-07-09 17:15:29', toAcc: '5847****6666', toName: '成都玥华住房租赁有限公司', type: 'out', amount: '-5,000.00', status: 'success', note: '6-2703房租', toBank: '浙江民泰商业银行', receiptNo: 'XY2026070900001' },
   { date: '2026-07-14 17:04:45', toAcc: '6217****6607', toName: '秦志英', type: 'out', amount: '-30,000.00', status: 'pending', note: '硕翼还款' },
   { date: '2026-07-20 16:04:45', toAcc: '6222****5363', toName: '秦志英', type: 'out', amount: '-2,000,000,000.00', status: 'success', note: '借款', toBank: '渣打银行股份有限公司' },
@@ -1534,6 +1534,10 @@ function showTxDetail(date) {
           <span style="color:#888;font-size:13px;">币种</span>
           <span style="color:#333;font-size:13px;">${tx.currency}</span>
         </div>` : ''}
+        ${tx.mtcn ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f5f5f5;">
+          <span style="color:#888;font-size:13px;">MTCN 转账确认编号</span>
+          <span style="color:#333;font-size:13px;font-family:Roboto Mono,Consolas,monospace;">${tx.mtcn}</span>
+        </div>` : ''}
         ${tx.note ? `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f5f5f5;">
           <span style="color:#888;font-size:13px;">备注</span>
           <span style="color:#333;font-size:13px;">${tx.note}</span>
@@ -1548,7 +1552,7 @@ function showTxDetail(date) {
         </div>` : ''}
         ${tx.fee !== undefined ? `<div style="display:flex;justify-content:space-between;padding:8px 0;">
           <span style="color:#888;font-size:13px;">手续费</span>
-          <span style="color:#333;font-size:13px;">${tx.fee === 0 ? '免手续费' : tx.fee + '元'}</span>
+          <span style="color:#333;font-size:13px;">${tx.fee === 0 ? '免手续费' : tx.fee}</span>
         </div>` : '<div style="display:flex;justify-content:space-between;padding:8px 0;"><span style="color:#888;font-size:13px;">手续费</span><span style="color:#333;font-size:13px;">2.00元</span></div>'}
       </div>
       ${tx.type === 'out' && (tx.receiptNo || tx.toBank) ? `<div style="padding:16px 20px;border-top:1px solid #eee;text-align:center;">
